@@ -1,6 +1,6 @@
 from django.contrib import admin
-from .models import Usersprofile
+from .models import UsersProfile
 # Register your models here.
-@admin.register(Usersprofile)
+@admin.register(UsersProfile)
 class UsersprofileAdmin(admin.ModelAdmin):
     pass

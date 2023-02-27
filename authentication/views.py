@@ -4,13 +4,12 @@ from django.shortcuts import render, redirect
 from django.core.mail import send_mail
 from django.contrib.auth import authenticate, login, logout
 from .forms import LoginForm, SignUpForm, ForgotPasswordForm, UpdatePasswordForm
-from api.helpers import wantsjson
 from .models import Users, PasswordReset, VerifiedEmail
 from django.conf import settings
 from random import choices
 from string import ascii_letters, digits
 from datetime import datetime, timedelta
-from usersprofile.models import UsersProfiles
+from userprofile.models import UsersProfile
 # from django.urls import reverse
 
 # Create your views here.
@@ -32,8 +31,8 @@ def login_view(request, *args, **kwargs):
             if user is not None:
                 login(request, user)
                 try:
-                    usersprofile = UsersProfiles.objects.get(userId = user.id)
-                except UsersProfiles.DoesNotExist:
+                    usersprofile = UsersProfile.objects.get(userId = user.id)
+                except UsersProfile.DoesNotExist:
                     return redirect("profile/create", alert="Please fill in your profile information")
                 else:
                     if len(usersprofile) > 0:
@@ -46,10 +45,8 @@ def login_view(request, *args, **kwargs):
                 msg = "Invalid credentials"
         else:
             msg = "Error validating the form"
-    if wantsjson(request):
-        output = JsonResponse({"form":form, "msg":msg})
-    else:
-        output = render(request, "auth/login.html", {"form":form, "msg":msg})
+
+    output = render(request, "auth/login.html", {"form":form, "msg":msg})
     return output
 
 @login_required(login_url="/login")
@@ -65,10 +62,7 @@ def logout_view(request, *args, **kwargs):
     else:
         msg = "Error validating the logut"
 
-    if wantsjson(request):
-        output = JsonResponse({"msg":msg})
-    else:
-        output = redirect("/login", alert)
+    output = redirect("/login", alert)
     return output
 
 
@@ -101,10 +95,8 @@ def register_user(request, *args, **kwargs):
             msg = "Form is not valid"
     else:
         form = SignUpForm()
-    if wantsjson(request):
-        output = JsonResponse({"form":form, "msg":msg, "success":success})
-    else:
-        output = render(request, "auth/register.html", {"form":form, "msg":msg, "success":success})
+        
+    output = render(request, "auth/register.html", {"form":form, "msg":msg, "success":success})
     return output
 
 
@@ -131,10 +123,8 @@ def forgot_password(request, *args, **kwargs):
                 msg = "Please check your email for a password reset link, if you can't find it in your inbox, please check the spam or junck email box "
     else:
         form = ForgotPasswordForm()
-    if wantsjson(request):
-        output = JsonResponse({"form":form, "msg":msg})
-    else:
-        output = render(request, "auth/forgot_password.html", {"form":form, "msg":msg})
+  
+    output = render(request, "auth/forgot_password.html", {"form":form, "msg":msg})
     return output   
                 
     
@@ -157,17 +147,13 @@ def update_password(request, id=None, token=None, *args, **kwargs):
             userById.set_password(password)
             userById.save()
             msg = " Password Reset/Update was sucessfull"
-            if wantsjson(request):
-                output = JsonResponse({"msg":msg})
-            else:
-                output = redirect("/login", msg)
+      
+            output = redirect("/login", msg)
             return output
         else:
             msg = "Token has expired, please try the reset password process again at the login page"    
-    if wantsjson(request):
-        output = JsonResponse({"form":form, "msg":msg})
-    else:
-        output = render(request, "auth/update_password.html", {"form":form, "msg":msg})
+    
+    output = render(request, "auth/update_password.html", {"form":form, "msg":msg})
     return output
 
 def confirm_email(request, email, *args, **kwargs):

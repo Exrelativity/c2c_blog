@@ -1,14 +1,14 @@
 from django.forms import ModelForm
-from .models import Usersprofile
+from .models import UsersProfile
 
-class UsersprofileForm(ModelForm):
+class UsersProfileForm(ModelForm):
     
     class Meta:
-        model = Usersprofile
+        model = UsersProfile
         fields = ("firstName","lastName", "gender","userId","details")
 
-class UsersprofileMutationForm(ModelForm):
+class UsersProfileMutationForm(ModelForm):
     
     class Meta:
-        model = Usersprofile
+        model = UsersProfile
         fields = ("id","firstName","lastName", "gender","userId","details")

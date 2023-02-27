@@ -150,4 +150,4 @@ ASSETS_ROOT = BASE_DIR/STATIC_URL
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-AUTH_USER_MODEL = "authentication.User"
+AUTH_USER_MODEL = "authentication.Users"

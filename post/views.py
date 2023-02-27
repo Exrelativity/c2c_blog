@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
 
@@ -59,7 +59,7 @@ def delete(request, id, msg = None):
         msg = "Deteted sucessfully"
     else:
         msg = "Error deleting the entry"
-        return HttpResponseRedirect(f"show/{id}", msg)
-    return HttpResponseRedirect("/post/", msg)
+        return redirect(f"show/{id}", msg)
+    return redirect("/post/", msg)
         
     
