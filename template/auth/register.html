@@ -22,7 +22,7 @@
                                     <span class="text-danger">{{ msg | safe }}</span>
                                 {% else %}
                                     <span>
-                                        Add your credentials
+                                        enter your credentials
                                     </span>
                                 {% endif %}  
                             </h6>     
@@ -38,7 +38,7 @@
 
                         {% else %}
 
-                            <form role="form" method="post" action="">
+                            <form role="form" method="post" action="/register">
             
                                 {% csrf_token %}
 
@@ -60,7 +60,13 @@
                                             </div>
                                             <span class="text-danger">{{ form.email.errors }}</span>
                                         </div>
-
+                                        <div class="col-md-12 px-md-1">
+                                            <div class="form-group">
+                                                <label>Phone</label>
+                                                {{ form.phone }}
+                                            </div>
+                                            <span class="text-danger">{{ form.phone.errors }}</span>
+                                        </div>
                                         <div class="col-md-12 px-md-1">
                                             <div class="form-group">
                                                 <label>Password</label>
@@ -82,7 +88,7 @@
                                     
                                 </div>
                                 <div class="card-footer text-center">
-                                    <button type="submit" name="register" class="btn btn-fill btn-primary">Register</button>
+                                    <input type="submit" name="submit" class="btn btn-fill btn-primary" value="Register">
 
                                     <br /><br />
                                     

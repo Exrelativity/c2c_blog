@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
+  <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+
+  <title>
+    {{ settings.APP_NAME }} - {% block title %}{% endblock %} | {{ settings.APP_NAME }}
+  </title>
+
+  <!--     Fonts and icons     -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet" />
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+  <!-- Nucleo Icons -->
+  <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet" />
+  <!-- CSS Files -->
+  <link href="{% static 'css/custom-boostrap.css' %}" rel="stylesheet" />
+  <link href="{% static 'css/theme-switcher.css' %}" rel="stylesheet" />
+  <!-- CSS Just for custom purpose, don't include it in your project -->
+  <link href="{% static 'custom/custom.css' %}" rel="stylesheet"/>
+
+  <!-- Specific Page CSS goes HERE  -->
+  {% block stylesheets %}{% endblock stylesheets %}
+  <style>
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    @media (min-width: 768px) {
+      .bd-placeholder-img-lg {
+        font-size: 3.5rem;
+      }
+    }
+
+    body {
+      padding-bottom: 20px;
+    }
+
+    .navbar {
+      margin-bottom: 20px;
+    }
+  </style>
+</head>
+
+<body class="" style="width: 100%">
+
+
+  {% include 'includes/header.html' %}
+
+  <div class="wrapper">
+
+    {% block content %}{% endblock content %}
+    {% include 'includes/fixed-plugin.html' %}
+    {% include 'includes/footer-fullscreen.html' %}
+
+  </div>
+
+
+  {% include 'includes/scripts.html' %}
+
+  <!-- Specific Page JS goes HERE  -->
+  {% block javascripts %}{% endblock javascripts %}
+
+</body>
+
+</html>

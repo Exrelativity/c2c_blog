@@ -1,0 +1,95 @@
+
+/*!
+
+* Coded by Creative Tim Modified by Exrelativity
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+
+ // Core
+
+ @import "custom-boostrap/custom/functions";
+ @import "custom-boostrap/bootstrap/functions";
+ 
+ @import "custom-boostrap/custom/variables";
+ @import "custom-boostrap/bootstrap/variables";
+ 
+ @import "custom-boostrap/custom/mixins";
+ @import "custom-boostrap/bootstrap/mixins";
+ 
+  // Bootstrap components
+ 
+ @import "custom-boostrap/bootstrap/root";
+ @import "custom-boostrap/bootstrap/reboot";
+ @import "custom-boostrap/bootstrap/type";
+ @import "custom-boostrap/bootstrap/images";
+ @import "custom-boostrap/bootstrap/code";
+ @import "custom-boostrap/bootstrap/grid";
+ @import "custom-boostrap/bootstrap/tables";
+ @import "custom-boostrap/bootstrap/forms";
+ @import "custom-boostrap/bootstrap/buttons";
+ @import "custom-boostrap/bootstrap/transitions";
+ @import "custom-boostrap/bootstrap/dropdown";
+ @import "custom-boostrap/bootstrap/button-group";
+ @import "custom-boostrap/bootstrap/input-group";
+ @import "custom-boostrap/bootstrap/custom-forms";
+ @import "custom-boostrap/bootstrap/nav";
+ @import "custom-boostrap/bootstrap/navbar";
+ @import "custom-boostrap/bootstrap/card";
+ @import "custom-boostrap/bootstrap/breadcrumb";
+ @import "custom-boostrap/bootstrap/pagination";
+ @import "custom-boostrap/bootstrap/badge";
+ @import "custom-boostrap/bootstrap/jumbotron";
+ @import "custom-boostrap/bootstrap/alert";
+ @import "custom-boostrap/bootstrap/progress";
+ @import "custom-boostrap/bootstrap/media";
+ @import "custom-boostrap/bootstrap/list-group";
+ @import "custom-boostrap/bootstrap/close";
+ @import "custom-boostrap/bootstrap/modal";
+ @import "custom-boostrap/bootstrap/tooltip";
+ @import "custom-boostrap/bootstrap/popover";
+ @import "custom-boostrap/bootstrap/carousel";
+ @import "custom-boostrap/bootstrap/utilities";
+ @import "custom-boostrap/bootstrap/print";
+ 
+  // Custom components
+ 
+  @import "custom-boostrap/custom/alerts.scss";
+  @import "custom-boostrap/custom/buttons.scss";
+  @import "custom-boostrap/custom/dropdown.scss";
+  @import "custom-boostrap/custom/footer.scss";
+  @import "custom-boostrap/custom/forms.scss";
+  @import "custom-boostrap/custom/images.scss";
+  @import "custom-boostrap/custom/modal.scss";
+  @import "custom-boostrap/custom/navbar.scss";
+  @import "custom-boostrap/custom/type.scss";
+  @import "custom-boostrap/custom/tables";
+  @import "custom-boostrap/custom/checkboxes-radio";
+  @import "custom-boostrap/custom/fixed-plugin";
+  @import "custom-boostrap/custom/sidebar-and-main-panel.scss";
+  @import "custom-boostrap/custom/misc.scss";
+  @import "custom-boostrap/custom/rtl.scss";
+  @import "custom-boostrap/custom/input-group.scss";
+ 
+ 
+  // Vendor / Plugins
+ 
+ @import "custom-boostrap/custom/vendor/plugin-perfect-scrollbar.scss";
+ @import "custom-boostrap/custom/vendor/plugin-animate-bootstrap-notify.scss";
+ 
+ // light mode
+ 
+ @import "custom-boostrap/custom/white-content.scss";
+ 
+ // Cards
+ 
+ @import 'custom-boostrap/custom/card';
+ @import "custom-boostrap/custom/cards/card-chart";
+ @import "custom-boostrap/custom/cards/card-map";
+ @import "custom-boostrap/custom/cards/card-user";
+ @import "custom-boostrap/custom/cards/card-task";
+ @import "custom-boostrap/custom/cards/card-plain";
+ 

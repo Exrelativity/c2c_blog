@@ -1,16 +1,29 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render
-from django.contrib.auth import authenticate, login
-from .forms import LoginForm, SignUpForm
+from django.http import HttpResponseRedirect, JsonResponse 
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.core.mail import send_mail
+from django.contrib.auth import authenticate, login, logout
+from .forms import LoginForm, SignUpForm, ForgotPasswordForm, UpdatePasswordForm
+from api.helpers import wantsjson
+from .models import Users, PasswordReset, VerifiedEmail
+from django.conf import settings
+from random import choices
+from string import ascii_letters, digits
+from datetime import datetime, timedelta
+from usersprofile.models import UsersProfiles
 # from django.urls import reverse
 
 # Create your views here.
 
-def login_view(request):
+def login_view(request, *args, **kwargs):
+    if request.user.is_authenticated:
+        return redirect("/dashboard")
+    if kwargs.__contains__('alert'):
+        alert = kwargs['alert']
+    else:
+        alert = None
     form = LoginForm(request.POST or None)
-
-    msg = None
-
+    msg = alert
     if request.method == "POST":
         if form.is_valid():
             username = form.cleaned_data.get("username")
@@ -18,39 +31,155 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return HttpResponseRedirect("/")
+                try:
+                    usersprofile = UsersProfiles.objects.get(userId = user.id)
+                except UsersProfiles.DoesNotExist:
+                    return redirect("profile/create", alert="Please fill in your profile information")
+                else:
+                    if len(usersprofile) > 0:
+                        request.session["usersprofile"] = usersprofile
+                    else:
+                        return redirect("profile/create", alert="Please fill in your profile information")
+                        
+                    return redirect("/dashboard", kwargs={"alert":"Hi, Welcome"})
             else:
                 msg = "Invalid credentials"
         else:
             msg = "Error validating the form"
+    if wantsjson(request):
+        output = JsonResponse({"form":form, "msg":msg})
+    else:
+        output = render(request, "auth/login.html", {"form":form, "msg":msg})
+    return output
 
-    return render(request, "auth/login.html", {"form":form, "msg":msg})
+@login_required(login_url="/login")
+def logout_view(request, *args, **kwargs):
+    if kwargs.__contains__('alert'):
+        alert = kwargs['alert']
+    else:
+        alert = None
+    msg = alert
+    if request.user.is_authenticated:
+        logout(request)    
+        msg = "Logged out sucessfully"
+    else:
+        msg = "Error validating the logut"
 
-def register_user(request):
-    msg = None
+    if wantsjson(request):
+        output = JsonResponse({"msg":msg})
+    else:
+        output = redirect("/login", alert)
+    return output
+
+
+def register_user(request, *args, **kwargs):
+    if request.user.is_authenticated:
+        return redirect("/dashboard")
+    if kwargs.__contains__('alert'):
+        alert = kwargs['alert']
+    else:
+        alert = None
+    msg = alert
     success = False
-
+    form = SignUpForm(request.POST or None)
     if request.method == "POST":
-        form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
             username = form.cleaned_data.get("username")
+            email = form.cleaned_data.get("email")
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
-            msg = "User created sucessfully."
+            mailSubject = f"Welcome to {settings.APP_NAME}"
+            mailContent = f"""Hi,\n\n\n Welcome to {settings.BASE_URL}.\n One more process to complete...\n\n 
+                {settings.BASE_URL}/confirm/email/{email}\n\nPlease click the link above or copy to your browser to send a request of email confirmation.
+                \n\nThanks and Regards"""
+            send_mail(mailSubject, mailContent, settings.EMAIL, email)
+            msg = "User created sucessfully, Please check your email for a password reset link, if you can't find it in your inbox, please check the spam or junck email box"
             success = True
-            return HttpResponseRedirect("/login/")
+            return redirect("/dashboard", msg)
         else:
             msg = "Form is not valid"
     else:
         form = SignUpForm()
-    return render(request, "auth/register.html", {"form":form, "msg":msg, "success":success})
+    if wantsjson(request):
+        output = JsonResponse({"form":form, "msg":msg, "success":success})
+    else:
+        output = render(request, "auth/register.html", {"form":form, "msg":msg, "success":success})
+    return output
 
-def forgot_password(request):
-    pass
 
-def update_password(request):
-    pass
+def forgot_password(request, *args, **kwargs):
+    if kwargs.__contains__('alert'):
+        alert = kwargs['alert']
+    else:
+        alert = None
+    msg = alert
+    form = ForgotPasswordForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            email = form.cleaned_data.get("email")
+            userByEmail = Users.object.get(email)
+            token =''.join(choices(ascii_letters + digits, k=16))
+            PasswordReset.object.create(userId = userByEmail.id, token=token)
+            if userByEmail.exist():
+                mailSubject = f"Forgot password Email from {settings.APP_NAME}"
+                mailContent = f"""You recently triggered a Reset/Forgot password, from our website {settings.BASE_URL}.\n To proceed with the process...\n\n 
+                {settings.BASE_URL}/password/update/{userByEmail.id}/{token}
+                \n\nPlease click the link above or copy to your browser and send a request within 48 hours to reset your password.\n\n
+                Do neglect this email if this was a mistake or is not important, otherwise send us a report about the activities going on in your account."""
+                send_mail(mailSubject, mailContent, settings.EMAIL, email)
+                msg = "Please check your email for a password reset link, if you can't find it in your inbox, please check the spam or junck email box "
+    else:
+        form = ForgotPasswordForm()
+    if wantsjson(request):
+        output = JsonResponse({"form":form, "msg":msg})
+    else:
+        output = render(request, "auth/forgot_password.html", {"form":form, "msg":msg})
+    return output   
+                
+    
 
-def confirm_email(request):
-    pass
+def update_password(request, id=None, token=None, *args, **kwargs):
+    if kwargs.__contains__('alert'):
+        alert = kwargs['alert']
+    else:
+        alert = None
+    try:
+        userById = Users.objects.get(id)
+    except Users.DoesNotExist:
+        return redirect("/notfound")
+        
+    userTokenColumn = PasswordReset.objects.filter(userId=id,token=token)
+    form = UpdatePasswordForm(request.POST or None)
+    if request.method == "POST" and userTokenColumn.exist():
+        if form.is_valid() and userTokenColumn.createdAt > (datetime.now() - timedelta(2,0,0)):
+            password = form.cleaned_data.get("password1")
+            userById.set_password(password)
+            userById.save()
+            msg = " Password Reset/Update was sucessfull"
+            if wantsjson(request):
+                output = JsonResponse({"msg":msg})
+            else:
+                output = redirect("/login", msg)
+            return output
+        else:
+            msg = "Token has expired, please try the reset password process again at the login page"    
+    if wantsjson(request):
+        output = JsonResponse({"form":form, "msg":msg})
+    else:
+        output = render(request, "auth/update_password.html", {"form":form, "msg":msg})
+    return output
+
+def confirm_email(request, email, *args, **kwargs):
+    if kwargs.__contains__('alert'):
+        alert = kwargs['alert']
+    else:
+        alert = None
+    x = VerifiedEmail(email=email)
+    x.save()
+    alert = "Thanks for confirming your email"
+    if request.user.is_authenticated:
+        return redirect("/dashboard", alert)
+    else:
+        alert = "Thanks for confirming your email, Please login"
+        return redirect("/login", alert)

@@ -17,9 +17,10 @@ Including another URLconf
 from django.urls import path
 from .views import *
 urlpatterns = [
-    path("login", login_view, name='login'),
-    path("register", register_user, name='register'),
-    path("password/forgot", forgot_password, name='forgot-password'),
-    path('password/update', update_password, name='password-update'),
-    path('confirm/email', confirm_email, name='confirm-email')
+    path("login", login_view, name="login"),
+    path("logout", logout_view, name="logout"),
+    path("register", register_user, name="register"),
+    path("password/forgot", forgot_password, name="forgot-password"),
+    path('password/update/<int:id>/<str:token>', update_password, name="update-password"),
+    path('confirm/email/<str:email>', confirm_email, name="confirm-email")
 ]

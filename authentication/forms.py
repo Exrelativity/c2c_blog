@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import User
+from .models import Users
 
 class LoginForm(forms.Form):
     username = forms.CharField(
@@ -49,11 +49,34 @@ class SignUpForm(UserCreationForm):
                 "class":"form-control"}
             ))
     class Meta:
-        model = User
+        model = Users
         fields = ("username", "email","phone", "password1", "password2")
+
+class ForgotPasswordForm(forms.Form):
+     email = forms.EmailField(
+        widget=forms.EmailInput(
+            attrs={
+                "placholder":"Email",
+                "class":"form-control"}
+            ))
+     
+class UpdatePasswordForm(forms.Form):
+    password1 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placholder":"Password",
+                "class":"form-control"}
+            ))
+    password2 = forms.CharField(
+        widget=forms.PasswordInput(
+            attrs={
+                "placholder":"Password check",
+                "class":"form-control"}
+            ))
+
 
 class UserForm(forms.ModelForm):
     
     class Meta:
-        model = User
+        model = Users
         fields = "__all__"

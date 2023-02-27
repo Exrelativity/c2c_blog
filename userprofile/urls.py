@@ -20,6 +20,6 @@ urlpatterns = [
     path("", index),
     path("<int:id>", show),
     path("<int:id>/update", update),
-    path('<int:id>/create', create),
+    path('create', create),
     path('<int:id>/delete', delete)
 ]

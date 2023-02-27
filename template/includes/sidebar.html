@@ -6,10 +6,10 @@
         <div class="sidebar-wrapper">
             <div class="logo">
                 <a href="javascript:void(0)" class="simple-text logo-mini">
-                    CT
+                    LOGO
                 </a>
                 <a href="javascript:void(0)" class="simple-text logo-normal">
-                    Creative Tim
+                    Brand Name
                 </a>
             </div>
             <ul class="nav">
@@ -19,50 +19,23 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="{% if 'icons' in segment %} active {% endif %}">
-                    <a href="/icons.html">
+                <li id="sidebar_posts" class="sidebar_dropdown_trigger {% if 'icons' in segment %} active {% endif %}">
+                    <a href="/posts">
                         <i class="tim-icons icon-atom"></i>
-                        <p>Icons</p>
+                        <p>Posts</p>
                     </a>
                 </li>
-                <li class="{% if 'map' in segment %} active {% endif %}">
-                    <a href="/map.html">
-                        <i class="tim-icons icon-pin"></i>
-                        <p>Maps</p>
-                    </a>
-                </li>
-                <li class="{% if 'notifications' in segment %} active {% endif %}">
-                    <a href="/notifications.html">
-                        <i class="tim-icons icon-bell-55"></i>
-                        <p>Notifications</p>
-                    </a>
-                </li>
-                <li class="{% if 'user' in segment %} active {% endif %}">
-                    <a href="/user.html">
-                        <i class="tim-icons icon-single-02"></i>
-                        <p>User Profile</p>
-                    </a>
-                </li>
-                <li class="{% if 'tables' in segment %} active {% endif %}">
-                    <a href="/tables.html">
-                        <i class="tim-icons icon-puzzle-10"></i>
-                        <p>Table List</p>
-                    </a>
-                </li>
-                <li class="{% if 'typography' in segment %} active {% endif %}">
-                    <a href="/typography.html">
-                        <i class="tim-icons icon-align-center"></i>
-                        <p>Typography</p>
+                <!-- <div id="sidebar_posts"  class="sidebar_dropdown_content">
+                    <p>I am the dropdown</p>
+                </div> -->
+                <li class="{% if 'icons' in segment %} active {% endif %}">
+                    <a href="/profile">
+                        <i class="tim-icons icon-atom"></i>
+                        <p>Profile</p>
                     </a>
                 </li>
                 <li>
-                    <a href="/rtl.html">
-                        <i class="tim-icons icon-world"></i>
-                        <p>RTL Support</p>
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'login' %}">
+                    <a href="{% url 'logout' %}">
                         <i class="tim-icons icon-button-power"></i>
                         <p>Logout</p>
                     </a>
@@ -70,3 +43,15 @@
             </ul>
         </div>
     </div>
+<script>
+windows.document.addEventListener("ready", ()=>{
+El_sidebarDropdownContent = document.querySelector(".sidebar_dropdown_content").style.display = "none"
+El_sidebarDropdownTrigger = document.querySelector(".sidebar_dropdown_trigger");
+El_sidebarDropdownTrigger.addEventListener("focus",()=>{
+    id = this.id;
+    El_sidebarDropdownContent = document.querySelector("#{id}").style.display = "block"
+})
+})
+
+
+</script>

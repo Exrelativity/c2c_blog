@@ -10,7 +10,7 @@
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
 
     <title>
-        Django Dashboard Black - {% block title %}{% endblock %} | AppSeed
+        Blog- {% block title %}{% endblock %} | El-Academy Blog
     </title>
     
     <!--     Fonts and icons     -->
@@ -19,10 +19,10 @@
     <!-- Nucleo Icons -->
     <link href="{% static 'css/nucleo-icons.css' %}" rel="stylesheet"/>
     <!-- CSS Files -->
-    <link href="{% static 'css/black-dashboard.css' %}" rel="stylesheet"/>
+    <link href="{% static 'css/custom-boostrap.css' %}" rel="stylesheet"/>
     <link href="{% static 'css/theme-switcher.css' %}" rel="stylesheet"/>
-    <!-- CSS Just for demo purpose, don't include it in your project -->
-    <link href="{% static 'demo/demo.css' %}" rel="stylesheet"/>
+    <!-- CSS Just for custom purpose, don't include it in your project -->
+    <link href="{% static 'custom/custom.css' %}" rel="stylesheet"/>
 
     <!-- Specific Page CSS goes HERE  -->
     {% block stylesheets %}{% endblock stylesheets %}
@@ -37,14 +37,14 @@
         <div class="container-fluid">
 
             {% block content %}{% endblock content %}
-
+            {% include 'includes/fixed-plugin.html' %}
             {% include 'includes/footer-fullscreen.html' %}
 
         </div>
 
     </div>
 
-    {% include 'includes/fixed-plugin.html' %}
+
 
     {% include 'includes/scripts.html' %}
 
