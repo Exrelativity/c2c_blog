@@ -1,13 +1,13 @@
-{% load static %}
+{% load static %} {% load meta %}
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
+<head {% meta_namespaces %}>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
-    <link rel=" icon" type="image/png" href="{% static 'img/favicon.png' %}">
-
+    <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
+    {% include "meta/meta.html" %}
     <title>
         {{ settings.APP_NAME }} - {% block title %}{% endblock %} | {{ settings.APP_NAME }}
     </title>
@@ -51,7 +51,7 @@
     {% include 'includes/fixed-plugin.html' %}
 
     {% include 'includes/scripts.html' %}
-    
+
     <!-- Specific Page JS goes HERE  -->
     {% block javascripts %}{% endblock javascripts %}
 

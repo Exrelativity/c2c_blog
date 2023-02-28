@@ -105,10 +105,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <input type="text" class="form-control" id="inlineFormInputGroup" placeholder="SEARCH">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <i class="tim-icons icon-simple-remove"></i>
-                </button>
+                <form action="/search" method="POST">
+                    <input type="search" class="form-control" id="inlineFormInputGroup" required placeholder="Search" value="">
+                    <button type="submit" name="submit">
+                        <i class="tim-icons icon-send"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </div>

@@ -37,8 +37,8 @@ def show(request, id, msg = None):
         userprofileById = UsersProfile.objects.get(id=id)
     except UsersProfile.DoesNotExist:
         msg = "Sorry UsersProfile Dost not exist"
-   
-    return render(request, "profile/show.html", {"msg":msg,"userprofile":userprofileById})
+    meta = userprofileById.as_meta()
+    return render(request, "profile/show.html", {"msg":msg,"userprofile":userprofileById, "meta":meta})
     
     
 @login_required(login_url="/login")

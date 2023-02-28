@@ -1,7 +1,12 @@
 <div class="container">
     <div class="row">
-      {% if page_obj.post %}
-      {% for posts in page_obj.post %}
+      {% if page_obj.category.post %}
+      {% for category in page_obj.category %}
+      <h4> {{ category.title }}</h4>
+      {% for subCategory in page_obj.category.subCategory %}
+      <h4> {{subCategory.title }}</h4>
+      {% for posts in page_obj.category.post.subCategoryId %} 
+      {% if posts.subCategoryId == subCategory.id %}
       <div class="col-md-4">
         <div class="card mb-4 shadow-sm">
           <img src="{{ posts.image }}" class="bd-placeholder-img card-img-top" width="100%" height="225" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -20,6 +25,9 @@
           </div>
         </div>
       </div>
+      {% endif %}
+      {% endfor %}
+      {% endfor %}
       {% endfor %}
       <div class="pagination">
       <span class="step-links">

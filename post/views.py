@@ -1,6 +1,7 @@
 from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.db.models import Q
 from .models import *
 from .forms import *
 
@@ -12,7 +13,7 @@ def index(request, msg = None):
     paginator = Paginator(post, 15) # Show 15 contacts per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    if request.user.is_autheticated:
+    if request.user.is_authenticated:
         return render(request, "post/index.html", {"msg":msg,"category": category, "subCategory":subCategory, 'page_obj': page_obj})
     else:
         return render(request, "post-front/index.html", {"msg":msg,"category": category, "subCategory":subCategory, 'page_obj': page_obj})
@@ -32,16 +33,33 @@ def create(request, msg = None):
          msg = "please fill in all infomation"
     return render(request, "post/create.html", {"form":postForm,"msg":msg,"category":category, "subCategory":subCategory})
         
-        
+def search(request, msg = None):
+    form = SearchForm(request.POST or None)
+    post = {} 
+    if request.method == "POST":
+        if form.is_valid():
+            search = form.cleaned_data.get("search")
+            search_list = search.split(" ")
+            for i in search_list:
+                post += Post.objects.filter(Q(title__icontains= i) | Q(content__icontains= i))
+    paginator = Paginator(post, 15) # Show 15 posts per page.
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    if request.user.is_authenticated:
+        return render(request, "post/search.html", {"msg":msg, "form":form, "page_obj":page_obj})
+    else:
+        return render(request, "post-front/search.html", {"msg":msg,"form":form, "page_obj":page_obj})
+    
 def show(request, id, msg = None):
     try:
         postById = Post.objects.get(id=id)
     except Post.DoesNotExist:
         msg = "Sorry Post Dost not exist"
-    if request.user.is_autheticated:
-        return render(request, "post/show.html", {"msg":msg,"post":postById})
+    meta = postById.as_meta()
+    if request.user.is_authenticated:
+        return render(request, "post/show.html", {"msg":msg,"post":postById, "meta":meta})
     else:
-        return render(request, "post-front/show.html", {"msg":msg,"post":postById})
+        return render(request, "post-front/show.html", {"msg":msg,"post":postById, "meta":meta})
     
 @login_required(login_url="/login")
 def update(request, id, msg = None):

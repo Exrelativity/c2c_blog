@@ -1,8 +1,9 @@
 from django.db import models
 from authentication.models import Users
+from meta.models import ModelMeta
 
 # Create your models here.
-class UsersProfile(models.Model):
+class UsersProfile(ModelMeta, models.Model):
     GENDERSET = (('M', 'Male'),
                  ('F', 'Female'))
     firstName = models.CharField(max_length=64, null=True)
@@ -23,5 +24,18 @@ class UsersProfile(models.Model):
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
    
+    _metadata = {
+        'title': 'get_full_name',
+        'description': 'details',
+        'image': 'get_meta_image',
+    }
     
+    def get_meta_image(self):
+        if self.image:
+            return self.image.url
+        
+    def get_full_name(self):
+        if self.firstName and self.lastName:
+            return self.firstName +" "+ self.lastName
+
 
