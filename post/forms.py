@@ -68,3 +68,11 @@ class SubCategoryForm(ModelForm):
     class Meta:
         model = SubCategory
         fields = ("name","categoryId","userId")
+
+class SearchForm(forms.Form):
+    search = forms.CharField(
+        widget=forms.TextInput(
+            attrs={
+                "placeholder":"search",
+                "class":"form-control"}
+            ))

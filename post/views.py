@@ -12,7 +12,10 @@ def index(request, msg = None):
     paginator = Paginator(post, 15) # Show 15 contacts per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, "post/index.html", {"msg":msg,"category": category, "subCategory":subCategory, 'page_obj': page_obj})
+    if request.user.is_autheticated:
+        return render(request, "post/index.html", {"msg":msg,"category": category, "subCategory":subCategory, 'page_obj': page_obj})
+    else:
+        return render(request, "post-front/index.html", {"msg":msg,"category": category, "subCategory":subCategory, 'page_obj': page_obj})
     
 @login_required(login_url="/login")
 def create(request, msg = None):
@@ -35,7 +38,10 @@ def show(request, id, msg = None):
         postById = Post.objects.get(id=id)
     except Post.DoesNotExist:
         msg = "Sorry Post Dost not exist"
-    return render(request, "post/show.html", {"msg":msg,"post":postById})
+    if request.user.is_autheticated:
+        return render(request, "post/show.html", {"msg":msg,"post":postById})
+    else:
+        return render(request, "post-front/show.html", {"msg":msg,"post":postById})
     
 @login_required(login_url="/login")
 def update(request, id, msg = None):
