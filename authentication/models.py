@@ -4,6 +4,8 @@ from django.contrib.auth.models import AbstractUser as BaseUser
 # Create your models here.
 class Users(BaseUser):
     phone = models.CharField(max_length=15, null=True)
+    profile = models.ManyToManyField("userprofile.UsersProfile")
+    posts = models.ManyToManyField("post.Post", related_name="users_posts")
 
 
 class PasswordReset(models.Model):

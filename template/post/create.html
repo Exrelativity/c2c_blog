@@ -16,7 +16,7 @@
                     <h5 class="title">Add Post</h5>
                 </div>
                 <div class="card-body">
-                    <form>
+                    <form action="/posts/create" method="POST" enctype="multipart/form-data">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
@@ -36,7 +36,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-4">
                                 <div class="form-group">
                                     <label>Category</label>
                                     <select name="categoryId" class="form-control">
@@ -73,6 +73,13 @@
                                     <input type="checkbox" name="front" class="form-control" required value="">
                                 </div>
                                 <span class="text-danger">{{ form.front.errors }}</span>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Slider</label>
+                                    <input type="checkbox" name="slider" class="form-control" required value="">
+                                </div>
+                                <span class="text-danger">{{ form.slider.errors }}</span>
                             </div>
                         </div>
                         <div class="row">
@@ -128,7 +135,7 @@
                         <div class="block block-three"></div>
                         <div class="block block-four"></div>
                         <a href="javascript:void(0)">
-                            <img class="avatar" src="{{ static(request.session['userprofile']['image']) }} alt="...">
+                            <img class="avatar" src="{{ request.session.usersprofile.image }} alt="...">
                             <h5 class="title">{{ request.user.get_full_name }}</h5>
                         </a>
                         <p class="description">

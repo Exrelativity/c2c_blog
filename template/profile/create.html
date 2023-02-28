@@ -23,7 +23,7 @@
     </h6>   
     </div>
     <div class="card-body">
-      <form action="/profile/create" method="POST">
+      <form action="/profile/create" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
           <div class="col-md-5 pr-md-1">

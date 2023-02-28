@@ -1,4 +1,5 @@
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
@@ -11,9 +12,9 @@ def index(request, msg = None):
     paginator = Paginator(post, 15) # Show 15 contacts per page.
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
-    return render(request, "post/index.html", {"msg":msg,"category": category, "subCategory":subCategory, "post":post, 'page_obj': page_obj})
+    return render(request, "post/index.html", {"msg":msg,"category": category, "subCategory":subCategory, 'page_obj': page_obj})
     
-
+@login_required(login_url="/login")
 def create(request, msg = None):
     postForm = PostForm(request.POST or None)
     category = Category.objects.all()
@@ -36,7 +37,7 @@ def show(request, id, msg = None):
         msg = "Sorry Post Dost not exist"
     return render(request, "post/show.html", {"msg":msg,"post":postById})
     
-
+@login_required(login_url="/login")
 def update(request, id, msg = None):
     postForm = PostMutationForm(request.POST or None)
     postById = Post.objects.get(id=id)
@@ -55,7 +56,7 @@ def update(request, id, msg = None):
          msg = "please fill in all infomation"
     return render(request, "post/update.html", {"form":postForm,"msg":msg,"postById":postById,"category":category, "subCategory":subCategory})
         
-
+@login_required(login_url="/login")
 def delete(request, id, msg = None):
     postById = Post.objects.get(id=id)
     if request.method == "DELETE":
