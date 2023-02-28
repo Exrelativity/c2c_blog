@@ -3,7 +3,8 @@
 {% block title %} Create Post {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet" />{% endblock stylesheets %}
 
 {% block content %}
 
@@ -20,7 +21,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Title</label>
-                                    {{ form.title }}
+                                    <input type="text" name="title" class="form-control" required value="">
                                 </div>
                                 <span class="text-danger">{{ form.title.errors }}</span>
                             </div>
@@ -29,27 +30,72 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Image</label>
-                                    {{ form.image }}
+                                    <input type="file" name="image" class="form-control-file" value="">
                                 </div>
                                 <span class="text-danger">{{ form.image.errors }}</span>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-5">
                                 <div class="form-group">
-                                    <label>Image</label>
-                                    {{ form.image }}
+                                    <label>Category</label>
+                                    <select name="categoryId" class="form-control">
+                                        {% for categorys in category %}
+                                        <option value="{{ categorys.id }}">{{ categorys.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
-                                <span class="text-danger">{{ form.image.errors }}</span>
+                                <span class="text-danger">{{ form.categoryId.errors }}</span>
+                            </div>
+                        
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Sub Category</label>
+                                    <select name="subCategoryId" class="form-control">
+                                        {% for subCategorys in subCategory %}
+                                        <option value="{{ subCategorys.id }}">{{ subCategorys.name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <span class="text-danger">{{ form.subCategoryId.errors }}</span>
+                            </div>
+
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <input type="checkbox" name="status" class="form-control" required value="">
+                                </div>
+                                <span class="text-danger">{{ form.status.errors }}</span>
+                            </div>
+                            <div class="col-md-1">
+                                <div class="form-group">
+                                    <label>Front</label>
+                                    <input type="checkbox" name="front" class="form-control" required value="">
+                                </div>
+                                <span class="text-danger">{{ form.front.errors }}</span>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>Content</label>
-                                    {{ form.content }}
+                                    <label>User Id (disable)</label>
+                                    <input type="text" disabled name="userId" class="form-control"
+                                        value="{{ request.user.id }}">
                                 </div>
-                                <span class="text-danger">{{ form.content.errors }}</span>
+                                <span class="text-danger">{{ form.userId.errors }}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="about">Content</label>
+                                    <input name="content" type="hidden">
+                                    <div id="editor-container">
+                                        <p>A robot who has developed sentience, and is the only robot of his kind shown
+                                            to be still functioning on Earth.</p>
+                                    </div>
+                                    <span class="text-danger">{{ form.content.errors }}</span>
+                                </div>
                             </div>
                         </div>
                         <div class="row" style="display: none;">
@@ -61,12 +107,15 @@
                                 <span class="text-danger">{{ form.userId.errors }}</span>
                             </div>
                         </div>
+                        <div class="row">
+                           
+                        </div>
                         <div class="card-footer">
                             <button type="submit" class="btn btn-fill btn-primary" value="submit">Save</button>
                         </div>
                     </form>
                 </div>
-                
+
             </div>
         </div>
         <div class="col-md-4">
@@ -79,17 +128,16 @@
                         <div class="block block-three"></div>
                         <div class="block block-four"></div>
                         <a href="javascript:void(0)">
-                            <img class="avatar" src="{{ ASSETS_ROOT }}/img/emilyz.jpg" alt="...">
-                            <h5 class="title">Mike Andrew</h5>
+                            <img class="avatar" src="{{ static(request.session['userprofile']['image']) }} alt="...">
+                            <h5 class="title">{{ request.user.get_full_name }}</h5>
                         </a>
                         <p class="description">
-                            Ceo/Co-Founder
+                            "Quote of the day"
                         </p>
                     </div>
                     </p>
                     <div class="card-description">
-                        Do not be scared of the truth because we need to restart the human foundation in truth And I
-                        love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                        request.session['userprofile']['details']
                     </div>
                 </div>
                 <div class="card-footer">
@@ -113,4 +161,30 @@
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+<script src="//cdn.quilljs.com/1.0.0/quill.js"></script>
+<script> var quill = new Quill('#editor-container', {
+        modules: {
+            toolbar: [
+                ['bold', 'italic'],
+                ['link', 'blockquote', 'code-block', 'image'],
+                [{ list: 'ordered' }, { list: 'bullet' }]
+            ]
+        },
+        placeholder: 'Compose an epic...',
+        theme: 'snow'
+    });
+
+    var form = document.querySelector('form');
+    form.onsubmit = function () {
+        // Populate hidden form on submit
+        var about = document.querySelector('input[name=content]');
+        about.value = JSON.stringify(quill.getContents());
+
+        console.log("Submitted", $(form).serialize(), $(form).serializeArray());
+
+        // No back end to actually submit to!
+        alert('Open the console to see the submit data!')
+        return false;
+    };
+</script>{% endblock javascripts %}

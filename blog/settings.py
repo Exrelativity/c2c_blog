@@ -16,7 +16,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 BASE_URL = 'http://localhost/'
-APP_NAME = 'DATING APP'
+APP_NAME = 'Blog'
 EMAIL = 'exrelativity@gmail.com'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -52,6 +52,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "post.middleware.category_provider_middleware",
 ]
 
 ROOT_URLCONF = "blog.urls"

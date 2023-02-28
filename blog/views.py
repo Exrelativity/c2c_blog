@@ -5,9 +5,9 @@ from post.forms import *
 
 # Create your views here.
 def index(request, msg = None):
-    category = Category.objects.all()
-    subCategory = SubCategory.objects.all() 
-    post = Post.objects.all()
+    category = Category.objects.filter(status=True)[:7]
+    subCategory = SubCategory.objects.filter(status=True) 
+    post = Post.objects.filter(status=True)[:21]
     return render(request, "index.html", {"msg":msg,"category": category, "subCategory":subCategory, "post":post})
 
 

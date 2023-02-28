@@ -1,6 +1,6 @@
 {% extends "layouts/base-two-side.html" %}
 
-{% block title %} Profile Edith {% endblock %}
+{% block title %} Edith Profile {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -11,7 +11,7 @@
 <div class="" style="width:100%">
   <div class="card">
     <div class="card-header">
-      <h5 class="title">Edit Profile</h5>
+      <h5 class="title">Edith Profile</h5>
       <h6 class="card-category">
         {% if alert %}
             <span class="text-danger">{{ alert | safe }}</span>
@@ -23,14 +23,14 @@
     </h6>   
     </div>
     <div class="card-body">
-      <form action="/profile/{{  request.user.id  }}/update" method="POST">
+      <form action="/profile/create" method="POST">
         {% csrf_token %}
         <div class="row">
           <div class="col-md-5 pr-md-1">
             <div class="form-group">
               <label>UserId (disabled)</label>
               <input type="text" name="userId" class="form-control" disabled placeholder="userId"
-                value="{{  userId  }}">
+                value="{{  request.user.id  }}">
             </div>
           </div>
           <div class="col-md-3 px-md-1">
@@ -49,51 +49,45 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6 pr-md-1">
-            <div class="form-group">
-              <label>First Name</label>
-              <input type="text" class="form-control" name="firstName" placeholder="First Name" required value="{% if usersprofileById %}{{ usersprofileById.firstName   }}{% endif %}">
-              <span class="text-danger">{{ form.firstName.errors }}</span>
-            </div>
-          </div>
-          <div class="col-md-6 pl-md-1">
-            <div class="form-group">
-              <label>Last Name</label>
-              <input type="text" name="lastName" class="form-control" placeholder="Last Name" required value="{% if usersprofileById %}{{  usersprofileById.lastName  }}{% endif %}">
-              <span class="text-danger">{{ form.lastName.errors }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-md-4 pr-md-1">
             <div class="form-group">
-              <label>Marital Status</label>
-              <select class="form-control" id="marital_status" name="maritalStatus">
-                <option>select status</option>
-                <option value="{% if usersprofileById %}{{  usersprofileById.maritalStatus  }}{% endif %}" selected> {% if usersprofileById %}{{  usersprofileById.maritalStatus  }}{% endif %}</option>
-                <option value="s">single</option>
-                <option value="m">married</option>
-              </select>
-              <span class="text-danger">{{ form.maritalStatus.errors }}</span>
+              <label>First Name</label>
+              <input type="text" class="form-control" name="firstName" placeholder="First Name" required value="{% if userprofile %}{{ usersprofile.firstName }}{% endif %}">
+              <span class="text-danger">{{ form.firstName.errors }}</span>
             </div>
           </div>
           <div class="col-md-4 px-md-1">
             <div class="form-group">
-              <label>Date of Birth</label>
-              <input type="date" name="dateOfBirth" class="form-control" required id="dateOfBirth" value="{% if usersprofileById %}{{  usersprofileById.dateOfBirth  }}{% endif %}">
+              <label>Last Name</label>
+              <input type="text" name="lastName" class="form-control" placeholder="Last Name" required value="{% if userprofile %}{{usersprofile.lastName}}{% endif %}">
+              <span class="text-danger">{{ form.lastName.errors }}</span>
             </div>
           </div>
           <div class="col-md-4 pl-md-1">
             <div class="form-group">
+              <label>Picture</label>
+              <input type="file" name="image" class="form-control-file" placeholder="Profile Pic" required value="{% if userprofile %}{{usersprofile.image}{% endif %}">
+              <span class="text-danger">{{ form.image.errors }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pr-md-1">
+            <div class="form-group">
+              <label>Date of Birth</label>
+              <input type="date" name="dateOfBirth" class="form-control" required id="dateOfBirth" value="{% if userprofile %}{{usersprofile.dateOfBirth}}{% endif %}">
+            </div>
+          </div>
+          <div class="col-md-6 pl-md-1">
+            <div class="form-group">
               <label>Gender</label>
               <select class="form-control" id="gender" name="genderId">
                 <option>select gender</option>
-                <option value="{% if usersprofileById %}{{  usersprofileById.genderId  }}{% endif %}" selected>{% if usersprofileById %}{{  usersprofileById.genderId  }}{% endif %}</option>
-                {% if genders %} {% for gender in genders %}
-                <option value="{{  gender.id  }}">{{ gender.name }}</option>
-                {% endfor %} {% endif %}
+                {% if userprofile %}<option value="{{usersprofile.gender}}" selected>{usersprofile.gender}}</option>{% endif %}
+                <option value="F">Female</option>
+                <option value="M">Male</option>
               </select>
-              <span class="text-danger">{{ form.genderId.errors }}</span>
+              <span class="text-danger">{{ form.gender.errors }}</span>
             </div>
           </div>
         </div>
@@ -101,7 +95,7 @@
           <div class="col-md-12">
             <div class="form-group">
               <label>Address</label>
-              <input type="text" name="address" class="form-control" placeholder="Your Home Address" required value="{% if usersprofileById %}{{  usersprofileById.address  }}{% endif %}">
+              <input type="text" name="address" class="form-control" placeholder="Your Home Address" required value="{% if userprofile %}{{usersprofile.address}}{% endif %}">
               <span class="text-danger">{{ form.address.errors }}</span>
             </div>
           </div>
@@ -110,7 +104,7 @@
           <div class="col-md-4 pr-md-1">
             <div class="form-group">
               <label>City</label>
-              <input type="text" name="city" class="form-control" placeholder="City" required value="{% if usersprofileById %}{{  usersprofileById.city  }}{% endif %}">
+              <input type="text" name="city" class="form-control" placeholder="City" required value="{% if userprofile %}{{usersprofile.city}}{% endif %}">
               <span class="text-danger">{{ form.city.errors }}</span>
             </div>
           </div>
@@ -119,7 +113,7 @@
               <label>Country</label>
               <select class="form-control" id="country" name="country">
                 <option>select country</option>
-                <option value="{% if usersprofileById %}{{  usersprofileById.country  }}{% endif %}" selected>{% if usersprofileById %}{{  usersprofileById.country  }}{% endif %}</option>
+                <option value="{% if userprofile %}{{usersprofile.country}}{% endif %}" selected>{% if userprofile %}{{usersprofile.country}}{% endif %}</option>
                 <option value="AF">Afghanistan</option>
                 <option value="AX">Aland Islands</option>
                 <option value="AL">Albania</option>
@@ -379,7 +373,7 @@
           <div class="col-md-4 pl-md-1">
             <div class="form-group">
               <label>Postal Code/Zip Code</label>
-              <input type="text" name="zipcode" class="form-control" required value="{% if usersprofileById %}{{  usersprofileById.zipcode  }}{% endif %}" placeholder="ZIP Code">
+              <input type="text" name="zipcode" class="form-control" required value="{% if userprofile %}{{usersprofile.zipcode}}{% endif %}" placeholder="ZIP Code">
               <span class="text-danger">{{ form.zipcode.errors }}</span>
             </div>
           </div>
@@ -389,7 +383,7 @@
             <div class="form-group">
               <label>About Me</label>
               <textarea rows="4" name="details" cols="80" class="form-control"
-                placeholder="Here can be your description" value="{% if usersprofileById %}{{  usersprofileById.details  }}{% endif %}"></textarea>
+                placeholder="Here can be your description" value="{% if userprofile %}{{usersprofile.details}}{% endif %}"></textarea>
                 <span class="text-danger">{{ form.details.errors }}</span>
               </div>
           </div>
@@ -407,14 +401,19 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-6">
+          <div class="col-md-4">
+            <label for="Continent">Continent </label>
+            <input type="text"  required name="region" id="lng" value="{% if userprofile %}{{usersprofile.region}{% endif %}">
+            <span class="text-danger">{{ form.region.errors }}</span>
+        </div>
+          <div class="col-md-4">
             <label for="lat">latitude (disable)</label>
-            <input type="text" disabled name="latitude" id="lat" value="{% if usersprofileById %}{{  usersprofileById.latitude  }}{% endif %}">
+            <input type="text" disabled name="latitude" id="lat" value="{% if userprofile %}{{usersprofile.latitude}}{% endif %}">
             <span class="text-danger">{{ form.latitude.errors }}</span>
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label for="lng">longitude (disable)</label>
-            <input type="text" disabled name="longitude" id="lng" value="{% if usersprofileById %}{{  usersprofileById.longitude  }}{% endif %}">
+            <input type="text" disabled name="longitude" id="lng" value="{% if userprofile %}{{usersprofile.longitude}}{% endif %}">
             <span class="text-danger">{{ form.longitude.errors }}</span>
           </div>
         </div>

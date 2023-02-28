@@ -5,67 +5,53 @@
           Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"
       -->
 <div class="sidebar-wrapper" style="width: 100%; height: 100%">
-    <div class="" style="background-color: rgba(84, 39, 95, 20); opacity: 60%; height: 100%;">
-    <div class="profile-photo">
+    <div class=""
+        style="background-color: rgba(84, 39, 95, 20); opacity: 60%; height: 100%; display: flex; flex-direction: column; justify-content:flex-start;">
+        <div class="profile-photo" style="justify-content: center; align-items: center;">
+            <a href="/profile/{{request.user.id}}">
+                <img class="avatar" src="{% static '/img/emilyz.jpg' %}" alt="...">
+                <h5 class="title" style="text-align: center; font-size: large; padding: auto;">
+                    {% if request.user.get_full_name %} 
+                    {{ request.user.get_full_name }} {% else %} 
+                    {{ request.user.username }} 
+                    {% endif %}
+                </h5>
+            </a>
+            <p class="description" style="text-align: center; font-size: large; padding: auto;">
+                {% if request.session.userprofile %}{{ request.session.details }}{% else %} 
+                You are welcome
+                {% endif %}
+            </p>
 
-            <a href="/profile/{{request.user.id}}">
-              <img class="avatar" src="{% static '/img/emilyz.jpg' %}" alt="...">
-              <h5 class="title">{% if request.user.get_full_name %} {{  request.user.get_full_name  }} {%  else  %} {{ request.user.username }} {% endif %}</h5>
-            </a>
-            <ul class="description">
-              <li> Ceo/Co-Founder </li>
+        </div>
+        <div>
+            <ul class="nav">
+                <li class="{% if 'index' in segment %} active {% endif %} ">
+                    <a href="/Dashboard">
+                        <i class="tim-icons icon-chart-pie-36"></i>
+                        <p>Dashboard</p>
+                    </a>
+                </li>
+                <li class="{% if 'icons' in segment %} active {% endif %}">
+                    <a href="/posts">
+                        <i class="tim-icons icon-atom"></i>
+                        <p>Posts</p>
+                    </a>
+                </li>
+
+                <li class="{% if 'map' in segment %} active {% endif %}">
+                    <a href="/profile/{{request.user.id}}">
+                        <i class="tim-icons icon-pin"></i>
+                        <p>Your Profile</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">
+                        <i class="tim-icons icon-button-power"></i>
+                        <p>Logout</p>
+                    </a>
+                </li>
             </ul>
-         
+        </div>
     </div>
-    <ul class="nav">
-        <li class="{% if 'index' in segment %} active {% endif %} ">
-            <a href="/Dashboard">
-                <i class="tim-icons icon-chart-pie-36"></i>
-                <p>Dashboard</p>
-            </a>
-        </li>
-        <li class="{% if 'icons' in segment %} active {% endif %}">
-            <a href="/posts">
-                <i class="tim-icons icon-atom"></i>
-                <p>Timeline</p>
-            </a>
-        </li>
-        <li class="{% if 'icons' in segment %} active {% endif %}">
-            <a href="/posts">
-                <i class="tim-icons icon-atom"></i>
-                <p>Posts</p>
-            </a>
-        </li>
-        <li class="{% if 'icons' in segment %} active {% endif %}">
-            <a href="/images">
-                <i class="tim-icons icon-atom"></i>
-                <p>Pictures</p>
-            </a>
-        </li>
-        <li class="{% if 'map' in segment %} active {% endif %}">
-            <a href="/videos">
-                <i class="tim-icons icon-pin"></i>
-                <p>Videos</p>
-            </a>
-        </li>
-        <li class="{% if 'map' in segment %} active {% endif %}">
-            <a href="/videos">
-                <i class="tim-icons icon-pin"></i>
-                <p>Friends</p>
-            </a>
-        </li>
-        <li class="{% if 'map' in segment %} active {% endif %}">
-            <a href="/profile/{{request.user.id}}">
-                <i class="tim-icons icon-pin"></i>
-                <p>Your Profile</p>
-            </a>
-        </li>
-        <li>
-            <a href="{% url 'logout' %}">
-                <i class="tim-icons icon-button-power"></i>
-                <p>Logout</p>
-            </a>
-        </li>
-    </ul>
-</div>
 </div>

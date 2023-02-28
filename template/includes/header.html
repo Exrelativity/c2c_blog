@@ -20,6 +20,28 @@
         </button>
         <div class="collapse navbar-collapse" id="navigation">
             <ul class="navbar-nav ml-auto">
+                {%  if request.session.__contains__("category") and request.session.__contains__("subCategory")  %}
+                {%  for categorys in request.session.__getitems__("category") %}
+                <li class="dropdown nav-item">
+                    <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
+                        <div class="category d-none d-lg-block d-xl-block"></div>
+                        <i class="tim-icons icon-sound-wave">{{ categorys.name }}</i>
+                        <p class="d-lg-none">
+                            {{ categorys.name }}
+                        </p>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
+                        {% for subCategorys in request.session.__getitems__("subCategory") %}
+                        {% if subCategorys.categoryId == categorys.id %}
+                        <li class="nav-link">
+                            <a href="category/{{ categorys.id }}/{{ subCategorys.id }}" class="nav-item dropdown-item">{{ subCategorys.name }}</a>
+                        </li>
+                        {% endif %}
+                        {% endfor  %}
+                    </ul>
+                </li>
+                {%  endfor  %}
+                {%  endif  %}
                 <li class="search-bar input-group">
                     <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i
                             class="tim-icons icon-zoom-split"></i>

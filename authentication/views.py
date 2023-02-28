@@ -87,7 +87,7 @@ def register_user(request, *args, **kwargs):
             mailContent = f"""Hi,\n\n\n Welcome to {settings.BASE_URL}.\n One more process to complete...\n\n 
                 {settings.BASE_URL}/confirm/email/{email}\n\nPlease click the link above or copy to your browser to send a request of email confirmation.
                 \n\nThanks and Regards"""
-            send_mail(mailSubject, mailContent, settings.EMAIL, email)
+            send_mail(mailSubject, mailContent, settings.EMAIL, [email])
             msg = "User created sucessfully, Please check your email for a password reset link, if you can't find it in your inbox, please check the spam or junck email box"
             success = True
             return redirect("/dashboard", msg)
