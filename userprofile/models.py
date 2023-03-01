@@ -9,7 +9,7 @@ class UsersProfile(ModelMeta, models.Model):
     firstName = models.CharField(max_length=64, null=True)
     lastName = models.CharField(max_length=64, null=True)
     image = models.FileField(upload_to="static/uploads/", max_length=150)
-    dateOfBirth = models.DateTimeField(auto_now=True)
+    dateOfBirth = models.DateTimeField()
     gender = models.CharField(max_length=1, choices=GENDERSET)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     details = models.TextField(max_length=500, null=True)
