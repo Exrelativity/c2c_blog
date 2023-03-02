@@ -16,6 +16,17 @@ def index(request, msg = None):
     page_obj = paginator.get_page(page_number)
     return render(request, "index.html", {"msg":msg, "page_obj":page_obj, "category": category }) #"subCategory":subCategory, "post":post})
 
+def about(request, msg = None):
+    return render(request, "about.html")
+
+
+def contact(request, msg = None):
+    return render(request, "contact.html")
+
+
+def faq(request, msg = None):
+    return render(request, "faq.html")
+
 def search(request, msg = None):
     form = SearchForm(request.POST or None)
     post = {} 

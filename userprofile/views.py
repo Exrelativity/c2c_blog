@@ -22,6 +22,7 @@ def create(request, msg = None):
             userprofileForm.save()
             msg = "Entries saved sucessfully"
             request.session['usersprofile'] = request.POST
+            return redirect("/profile/"+ request.user.id)
         else:
             msg = "Error validating the form"
     else:
