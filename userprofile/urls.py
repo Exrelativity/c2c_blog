@@ -21,5 +21,5 @@ urlpatterns = [
     path("<int:id>", show),
     path("<int:id>/update", update),
     path('create', create),
-    path('<int:id>/delete', delete)
+    path('<int:id>/delete', delete),
 ]

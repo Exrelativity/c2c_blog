@@ -8,9 +8,9 @@ class UsersProfile(ModelMeta, models.Model):
                  ('F', 'Female'))
     firstName = models.CharField(max_length=64, null=True)
     lastName = models.CharField(max_length=64, null=True)
-    image = models.FileField(upload_to="static/uploads/", max_length=150)
-    dateOfBirth = models.DateTimeField()
-    gender = models.CharField(max_length=1, choices=GENDERSET)
+    image = models.FileField(upload_to="static/uploads/")
+    dateOfBirth = models.DateTimeField(null=True)
+    gender = models.CharField(max_length=1, choices=GENDERSET, null=True)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     details = models.TextField(max_length=500, null=True)
     zipcode = models.CharField(max_length=15, null=True)
@@ -33,7 +33,7 @@ class UsersProfile(ModelMeta, models.Model):
     def get_meta_image(self):
         if self.image:
             return self.image.url
-        
+    
     def get_full_name(self):
         if self.firstName and self.lastName:
             return self.firstName +" "+ self.lastName

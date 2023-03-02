@@ -30,7 +30,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Image</label>
-                                    <input type="file" name="image" class="form-control-file" value="">
+                                    <input type="file" name="image" class="form-control-file" accept="image/*" value="">
                                 </div>
                                 <span class="text-danger">{{ form.image.errors }}</span>
                             </div>
@@ -85,8 +85,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>User Id (disable)</label>
-                                    <input type="text" disabled name="userId" class="form-control"
+                                    <label>User Id (readonly)</label>
+                                    <input type="text" readonly name="userId" class="form-control"
                                         value="{{ request.user.id }}">
                                 </div>
                                 <span class="text-danger">{{ form.userId.errors }}</span>

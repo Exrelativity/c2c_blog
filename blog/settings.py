@@ -18,6 +18,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_URL = 'http://localhost/'
 APP_NAME = 'Blog'
 EMAIL = 'exrelativity@gmail.com'
+# please  dont use because is not mine
+G_MAP_API_KEY = 'YOUR_API_KEY'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -79,7 +81,8 @@ SETTINGS_EXPORT = [
     'BASE_DIR',
     'BASE_URL',
     'APP_NAME',
-    'EMAIL'
+    'EMAIL',
+    'G_MAP_API_KEY'
 ]
 
 WSGI_APPLICATION = "blog.wsgi.application"

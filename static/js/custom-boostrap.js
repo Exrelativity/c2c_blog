@@ -103,15 +103,15 @@ $(document).ready(function() {
     });
   }
 
-  blackDashboard.initMinimizeSidebar();
+  customDashboard.initMinimizeSidebar();
 
   $navbar = $('.navbar[color-on-scroll]');
   scroll_distance = $navbar.attr('color-on-scroll') || 500;
 
   // Check if we have the class "navbar-color-on-scroll" then add the function to remove the class "navbar-transparent" so it will transform to a plain color.
   if ($('.navbar[color-on-scroll]').length != 0) {
-    blackDashboard.checkScrollForTransparentNavbar();
-    $(window).on('scroll', blackDashboard.checkScrollForTransparentNavbar)
+    customDashboard.checkScrollForTransparentNavbar();
+    $(window).on('scroll', customDashboard.checkScrollForTransparentNavbar)
   }
 
   $('.form-control').on("focus", function() {
@@ -136,9 +136,9 @@ $(document).ready(function() {
 $(document).on('click', '.navbar-toggle', function() {
   var $toggle = $(this);
 
-  if (blackDashboard.misc.navbar_menu_visible == 1) {
+  if (customDashboard.misc.navbar_menu_visible == 1) {
     $html.removeClass('nav-open');
-    blackDashboard.misc.navbar_menu_visible = 0;
+    customDashboard.misc.navbar_menu_visible = 0;
     setTimeout(function() {
       $toggle.removeClass('toggled');
       $('.bodyClick').remove();
@@ -152,7 +152,7 @@ $(document).on('click', '.navbar-toggle', function() {
     var div = '<div class="bodyClick"></div>';
     $(div).appendTo('body').click(function() {
       $html.removeClass('nav-open');
-      blackDashboard.misc.navbar_menu_visible = 0;
+      customDashboard.misc.navbar_menu_visible = 0;
       setTimeout(function() {
         $toggle.removeClass('toggled');
         $('.bodyClick').remove();
@@ -160,7 +160,7 @@ $(document).on('click', '.navbar-toggle', function() {
     });
 
     $html.addClass('nav-open');
-    blackDashboard.misc.navbar_menu_visible = 1;
+    customDashboard.misc.navbar_menu_visible = 1;
   }
 });
 
@@ -178,7 +178,7 @@ $(window).resize(function() {
   }
 });
 
-blackDashboard = {
+customDashboard = {
   misc: {
     navbar_menu_visible: 0
   },
@@ -194,11 +194,11 @@ blackDashboard = {
       if (sidebar_mini_active == true) {
         $('body').removeClass('sidebar-mini');
         sidebar_mini_active = false;
-        blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+        customDashboard.showSidebarMessage('Sidebar mini deactivated...');
       } else {
         $('body').addClass('sidebar-mini');
         sidebar_mini_active = true;
-        blackDashboard.showSidebarMessage('Sidebar mini activated...');
+        customDashboard.showSidebarMessage('Sidebar mini activated...');
       }
 
       // we simulate the window Resize so the charts will get updated in realtime.

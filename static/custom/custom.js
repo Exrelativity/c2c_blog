@@ -1,6 +1,6 @@
 type = ["primary", "info", "success", "warning", "danger"];
 
-demo = {
+customjs = {
   initPickColor: function () {
     $(".pick-class-label").click(function () {
       var new_class = $(this).attr("new-class");
@@ -865,7 +865,7 @@ demo = {
       // To add the marker to the map, call setMap();
       // marker.setMap(map)};
     };
-    window.initMap = initMap;
+    window.document.initMap = initMap;
   },
 
   showNotification: function (from, align) {
@@ -875,7 +875,7 @@ demo = {
       {
         icon: "tim-icons icon-bell-55",
         message:
-          "Welcome to <b>Black Dashboard</b> - a beautiful freebie for every web developer.",
+          "You are welcome",
       },
       {
         type: type[color],

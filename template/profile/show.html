@@ -1,7 +1,7 @@
 {% extends "layouts/base-two-side.html" %}
 
-{% block title %} {% if usersprofile %}{{ usersprofile.firstName }} {{
-usersprofile.lastName }}{% endif %} {% endblock %}
+{% block title %} {% if usersprofile %}{{ usersprofile.firstName }} 
+{{  usersprofile.lastName  }}{%  endif  %} {%  endblock  %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -79,7 +79,7 @@ usersprofile.lastName }}{% endif %} {% endblock %}
             </li>
             <li>
               <label>Postal Code/Zip Code: </label>
-              <span>% if usersprofile %}{{usersprofile.zipcode}}{% endif %}</span>
+              <span>{% if usersprofile %}{{usersprofile.zipcode}}{% endif %}</span>
             </li>
             <li>
               <label>About Me: </label>

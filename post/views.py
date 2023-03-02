@@ -20,7 +20,7 @@ def index(request, msg = None):
     
 @login_required(login_url="/login")
 def create(request, msg = None):
-    postForm = PostForm(request.POST or None)
+    postForm = PostForm(request.POST, request.FILES)
     category = Category.objects.all()
     subCategory = SubCategory.objects.all()
     if request.method == "POST":
@@ -34,7 +34,7 @@ def create(request, msg = None):
     return render(request, "post/create.html", {"form":postForm,"msg":msg,"category":category, "subCategory":subCategory})
         
 def search(request, msg = None):
-    form = SearchForm(request.POST or None)
+    form = SearchForm(request.POST)
     post = {} 
     if request.method == "POST":
         if form.is_valid():
@@ -63,12 +63,12 @@ def show(request, id, msg = None):
     
 @login_required(login_url="/login")
 def update(request, id, msg = None):
-    postForm = PostMutationForm(request.POST or None)
+    postForm = PostMutationForm(request.POST, request.FILES)
     postById = Post.objects.get(id=id)
     category = Category.objects.all()
     subCategory = SubCategory.objects.all()
     if request.method == "PUT":
-        if postForm.is_valid:
+        if postForm.is_valid():
             if request.user.id == postById.userId:
                 postForm.save()
                 msg = "Entries updated sucessfully"
