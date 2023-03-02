@@ -63,10 +63,10 @@ function js(){
   return gulp
   .src(paths.src.js + "/custom-boostrap.js")
   .pipe(wait(500))
-  .pipe(sourcemaps.init())
+  // .pipe(sourcemaps.init())
   .pipe(babel())
   .pipe(uglify())
-  .pipe(sourcemaps.write("."))
+  // .pipe(sourcemaps.write(""))
   .pipe(rename(function (path) {
     // Updates the object in-place
     path.dirname += "";
