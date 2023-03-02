@@ -53,11 +53,11 @@ $(document).ready(function() {
       if (sidebar_mini_active == true) {
         $('body').removeClass('sidebar-mini');
         sidebar_mini_active = false;
-        blackDashboard.showSidebarMessage('Sidebar mini deactivated...');
+        customDashboard.showSidebarMessage('Sidebar mini deactivated...');
       } else {
         $('body').addClass('sidebar-mini');
         sidebar_mini_active = true;
-        blackDashboard.showSidebarMessage('Sidebar mini activated...');
+        customDashboard.showSidebarMessage('Sidebar mini activated...');
       }
 
       // we simulate the window Resize so the charts will get updated in realtime.
