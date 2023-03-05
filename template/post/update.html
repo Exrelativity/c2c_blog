@@ -14,6 +14,11 @@
             <div class="card">
                 <div class="card-header">
                     <h5 class="title">Update Post</h5>
+                    <h6 class="card-category">
+                        {% if msg %}
+                          <span class="text-danger">{{ msg | safe }}</span>
+                        {% endif %}  
+                    </h6>
                 </div>
                 <div class="card-body">
                     <form action="{{request.path}}" enctype="multipart/form-data" method="PUT">
