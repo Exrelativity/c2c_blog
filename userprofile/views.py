@@ -13,7 +13,7 @@ def index(request, msg = None):
 @login_required(login_url="/login")
 def create(request, msg = None):
     if UsersProfile.objects.filter(userId = request.user.id).exists():
-        return redirect("/profile/"+ request.user.id +"/update", alert="Please update in your profile information")
+        return redirect("/profile/"+ request.user.id +"/update", msg="Please update in your profile information")
     userprofileForm = UsersProfileForm()
     
     if request.method == "POST":
@@ -27,14 +27,14 @@ def create(request, msg = None):
             msg = "Error validating the form"
     else:
          msg = "Please fill all necessary feild to make a good entry"
-    return render(request, "profile/create.html", {"form":userprofileForm,"msg":msg })
+    return render(request, "profile/create.html", {"form":userprofileForm, "msg":msg })
         
         
 @login_required(login_url="/login")
 def show(request, id, msg = None):
     if request.user.is_authenticated:
             if not request.session.__contains__("usersprofile"):
-                 return redirect("/profile/create", alert="Please fill in your profile information")
+                 return redirect("/profile/create", msg="Please fill in your profile information")
     userprofileById:object
     try:
         userprofileById = UsersProfile.objects.get(id=id)
@@ -48,7 +48,7 @@ def show(request, id, msg = None):
 def update(request, id, msg = None):
     if request.user.is_authenticated:
             if not request.session.__contains__("usersprofile"):
-                 return redirect("/profile/create", alert="Please fill in your profile information")
+                 return redirect("/profile/create", msg="Please fill in your profile information")
     userprofileForm = UsersProfileMutationForm()
     userprofileById = UsersProfile.objects.get(id=id)
     

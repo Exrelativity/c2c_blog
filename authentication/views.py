@@ -17,12 +17,12 @@ from userprofile.models import UsersProfile
 def login_view(request, *args, **kwargs):
     if request.user.is_authenticated:
         return redirect("/dashboard")
-    if kwargs.__contains__('alert'):
-        alert = kwargs['alert']
+    if kwargs.__contains__('msg'):
+        msg = kwargs['msg']
     else:
-        alert = None
+        msg = None
     form = LoginForm(request.POST or None)
-    msg = alert
+    msg = msg
     if request.method == "POST":
         if form.is_valid():
             username = form.cleaned_data.get("username")
@@ -33,14 +33,14 @@ def login_view(request, *args, **kwargs):
                 try:
                     usersprofile = UsersProfile.objects.get(userId = user.id)
                 except UsersProfile.DoesNotExist:
-                    return redirect("profile/create", alert="Please fill in your profile information")
+                    return redirect("profile/create", msg="Please fill in your profile information")
                 else:
                     if len(usersprofile) > 0:
                         request.session["usersprofile"] = usersprofile
                     else:
-                        return redirect("profile/create", alert="Please fill in your profile information")
+                        return redirect("profile/create", msg="Please fill in your profile information")
                         
-                    return redirect("/dashboard", kwargs={"alert":"Hi, Welcome"})
+                    return redirect("/dashboard", kwargs={"msg":"Hi, Welcome"})
             else:
                 msg = "Invalid credentials"
         else:
@@ -51,29 +51,29 @@ def login_view(request, *args, **kwargs):
 
 @login_required(login_url="/login")
 def logout_view(request, *args, **kwargs):
-    if kwargs.__contains__('alert'):
-        alert = kwargs['alert']
+    if kwargs.__contains__('msg'):
+        msg = kwargs['msg']
     else:
-        alert = None
-    msg = alert
+        msg = None
+    msg = msg
     if request.user.is_authenticated:
         logout(request)    
         msg = "Logged out sucessfully"
     else:
         msg = "Error validating the logut"
 
-    output = redirect("/login", alert)
+    output = redirect("/login", msg)
     return output
 
 
 def register_user(request, *args, **kwargs):
     if request.user.is_authenticated:
         return redirect("/dashboard")
-    if kwargs.__contains__('alert'):
-        alert = kwargs['alert']
+    if kwargs.__contains__('msg'):
+        msg = kwargs['msg']
     else:
-        alert = None
-    msg = alert
+        msg = None
+    msg = msg
     success = False
     form = SignUpForm(request.POST or None)
     if request.method == "POST":
@@ -101,11 +101,11 @@ def register_user(request, *args, **kwargs):
 
 
 def forgot_password(request, *args, **kwargs):
-    if kwargs.__contains__('alert'):
-        alert = kwargs['alert']
+    if kwargs.__contains__('msg'):
+        msg = kwargs['msg']
     else:
-        alert = None
-    msg = alert
+        msg = None
+    msg = msg
     form = ForgotPasswordForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
@@ -130,10 +130,10 @@ def forgot_password(request, *args, **kwargs):
     
 
 def update_password(request, id=None, token=None, *args, **kwargs):
-    if kwargs.__contains__('alert'):
-        alert = kwargs['alert']
+    if kwargs.__contains__('msg'):
+        msg = kwargs['msg']
     else:
-        alert = None
+        msg = None
     try:
         userById = Users.objects.get(id)
     except Users.DoesNotExist:
@@ -157,15 +157,15 @@ def update_password(request, id=None, token=None, *args, **kwargs):
     return output
 
 def confirm_email(request, email, *args, **kwargs):
-    if kwargs.__contains__('alert'):
-        alert = kwargs['alert']
+    if kwargs.__contains__('msg'):
+        msg = kwargs['msg']
     else:
-        alert = None
+        msg = None
     x = VerifiedEmail(email=email)
     x.save()
-    alert = "Thanks for confirming your email"
+    msg = "Thanks for confirming your email"
     if request.user.is_authenticated:
-        return redirect("/dashboard", alert)
+        return redirect("/dashboard", msg)
     else:
-        alert = "Thanks for confirming your email, Please login"
-        return redirect("/login", alert)
+        msg = "Thanks for confirming your email, Please login"
+        return redirect("/login", msg)
