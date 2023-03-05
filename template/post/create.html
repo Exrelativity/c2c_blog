@@ -62,22 +62,22 @@
 
                             <div class="col-md-1">
                                 <div class="form-group">
-                                    <label>Status</label>
+                                    <label>Status (active)</label>
                                     <input type="checkbox" name="status" class="form-control" required value="">
                                 </div>
                                 <span class="text-danger">{{ form.status.errors }}</span>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
-                                    <label>Front</label>
-                                    <input type="checkbox" name="front" class="form-control" required value="">
+                                    <label>Front (readonly)</label>
+                                    <input type="checkbox" readonly name="front" class="form-control" value="">
                                 </div>
                                 <span class="text-danger">{{ form.front.errors }}</span>
                             </div>
                             <div class="col-md-1">
                                 <div class="form-group">
-                                    <label>Slider</label>
-                                    <input type="checkbox" name="slider" class="form-control" required value="">
+                                    <label>Slider (readonly)</label>
+                                    <input type="checkbox" readonly name="slider" class="form-control" required value="">
                                 </div>
                                 <span class="text-danger">{{ form.slider.errors }}</span>
                             </div>

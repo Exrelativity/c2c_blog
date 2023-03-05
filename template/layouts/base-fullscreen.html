@@ -9,7 +9,7 @@
     <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
     {% include "meta/meta.html" %}
     <title>
-        Blog- {% block title %}{% endblock %} | El-Academy Blog
+        Blog- {% block title %}{% endblock %} | {{ settings.APP_NAME }}
     </title>
 
     <!--     Fonts and icons     -->
@@ -28,13 +28,13 @@
 
 </head>
 
-<body class="" style="font-size: medium;">
+<body class="" style="font-size: medium !important;">
 
-    <div class="wrapper" style="font-size:medium;">
+    <div class="wrapper">
 
         {% include 'includes/navigation-fullscreen.html' %}
 
-        <div class="container-fluid" style="font-size:medium;">
+        <div class="container-fluid">
 
             {% block content %}{% endblock content %}
             {% include 'includes/fixed-plugin.html' %}
