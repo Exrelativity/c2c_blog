@@ -52,14 +52,16 @@ def search(request, msg = None):
     
 def show(request, id, msg = None):
     try:
-        postById = Post.objects.get(id=id)
+        postById = Post.objects.select_related("UserId").get(id=id)
+        relatedPostByCategory = Category.objects.prefetch_related("Post").get(id=postById.categoryId)
+        relatedPostBySubCategory = SubCategory.objects.prefetch_related("Post").get(id=postById.subCategoryId)
     except Post.DoesNotExist:
         msg = "Sorry Post Dost not exist"
     meta = postById.as_meta()
     if request.user.is_authenticated:
-        return render(request, "post/show.html", {"msg":msg,"post":postById, "meta":meta})
+        return render(request, "post/show.html", {"msg":msg,"post":postById,"relatedPostByCategory":relatedPostByCategory,"relatedPostBySubCategory":relatedPostBySubCategory, "meta":meta})
     else:
-        return render(request, "post-front/show.html", {"msg":msg,"post":postById, "meta":meta})
+        return render(request, "post-front/show.html", {"msg":msg,"post":postById,"relatedPostByCategory":relatedPostByCategory,"relatedPostBySubCategory":relatedPostBySubCategory,"meta":meta})
     
 @login_required(login_url="/login")
 def update(request, id, msg = None):
