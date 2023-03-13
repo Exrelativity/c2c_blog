@@ -68,7 +68,7 @@
           <div class="col-md-4 pl-md-1">
             <div class="form-group">
               <label>Picture</label>
-              <input type="file" name="image" class="form-control-file" accept="image/*" title="please upload a Picture" placeholder="Profile Pic"
+              <input type="file" style="display: block;" name="image" class="form-control-file" accept="image/*" title="please upload a Picture" placeholder="Profile Pic"
                 required>
               <span class="text-danger">{{ form.image.errors }}</span>
             </div>
@@ -404,14 +404,14 @@
           <div class="col-md-4">
             <label for="lat">latitude (readonly)</label>
             <input class="form-control" type="text"
-              title="Please wait for the geolocation button or click it to set this" readonly required name="latitude"
+              title="Please wait for the geolocation button or click it to set this" readonly  name="latitude"
               id="lat" value="{% if usersprofile %}{{usersprofile.latitude}}{% endif %}">
             <span class="text-danger">{{ form.latitude.errors }}</span>
           </div>
           <div class="col-md-4">
             <label for="lng">longitude (readonly)</label>
             <input class="form-control" type="text"
-              title="Please wait for the geolocation button or click it to set this" readonly required name="longitude"
+              title="Please wait for the geolocation button or click it to set this" readonly  name="longitude"
               id="lng" value="{% if usersprofile %}{{usersprofile.longitude}}{% endif %}">
             <span class="text-danger">{{ form.longitude.errors }}</span>
           </div>

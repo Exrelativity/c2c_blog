@@ -13,7 +13,7 @@ def index(request, msg = None):
 @login_required(login_url="/login")
 def create(request, msg = None):
     if UsersProfile.objects.filter(userId = request.user.id).exists():
-        return redirect("/profile/"+ request.user.id +"/update", msg="Please update in your profile information")
+        return redirect("/profile/"+ request.user.id +"/update", msg="Please update your profile information")
     userprofileForm = UsersProfileForm()
     
     if request.method == "POST":

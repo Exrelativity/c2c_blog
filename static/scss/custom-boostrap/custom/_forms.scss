@@ -4,7 +4,7 @@
 .form-control{
   border-color: lighten($black,5%);
   border-radius: $border-radius-lg;
-  font-size: $font-size-sm;
+  font-size: $font-size-lg;
   @include transition-input-focus-color();
 
 

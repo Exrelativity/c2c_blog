@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Category</label>
                                     <select name="categoryId" class="form-control">
@@ -53,7 +53,7 @@
                                 <span class="text-danger">{{ form.categoryId.errors }}</span>
                             </div>
                         
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Sub Category</label>
                                     <select name="subCategoryId" class="form-control">
@@ -65,36 +65,37 @@
                                 <span class="text-danger">{{ form.subCategoryId.errors }}</span>
                             </div>
 
-                            <div class="col-md-1">
-                                <div class="form-group">
-                                    <label>Status (active)</label>
-                                    <input type="checkbox" name="status" class="form-control" required value="">
-                                </div>
-                                <span class="text-danger">{{ form.status.errors }}</span>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="form-group">
-                                    <label>Front (readonly)</label>
-                                    <input type="checkbox" readonly name="front" class="form-control" value="">
-                                </div>
-                                <span class="text-danger">{{ form.front.errors }}</span>
-                            </div>
-                            <div class="col-md-1">
-                                <div class="form-group">
-                                    <label>Slider (readonly)</label>
-                                    <input type="checkbox" readonly name="slider" class="form-control" required value="">
-                                </div>
-                                <span class="text-danger">{{ form.slider.errors }}</span>
-                            </div>
+                           
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>User Id (readonly)</label>
                                     <input type="text" readonly name="userId" class="form-control"
                                         value="{{ request.user.id }}">
                                 </div>
                                 <span class="text-danger">{{ form.userId.errors }}</span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Status (active)</label>
+                                    <input type="checkbox" name="status" class="form-control" required value="">
+                                </div>
+                                <span class="text-danger">{{ form.status.errors }}</span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Front (readonly)</label>
+                                    <input type="checkbox" readonly name="front" class="form-control" value="">
+                                </div>
+                                <span class="text-danger">{{ form.front.errors }}</span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Slider (readonly)</label>
+                                    <input type="checkbox" readonly name="slider" class="form-control" required value="">
+                                </div>
+                                <span class="text-danger">{{ form.slider.errors }}</span>
                             </div>
                         </div>
                         <div class="row">
@@ -132,7 +133,7 @@
                         <div class="block block-three"></div>
                         <div class="block block-four"></div>
                         <a href="javascript:void(0)">
-                            <img class="avatar" src="{{ request.session.usersprofile.image }} alt="...">
+                            <img class="avatar" src="{{ request.session.usersprofile.image }}" alt="...">
                             <h5 class="title">{{ request.user.get_full_name }}</h5>
                         </a>
                         <p class="description">

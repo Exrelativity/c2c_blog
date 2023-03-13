@@ -8,7 +8,7 @@ class UsersProfile(ModelMeta, models.Model):
                  ('F', 'Female'))
     firstName = models.CharField(max_length=64, null=True)
     lastName = models.CharField(max_length=64, null=True)
-    image = models.FileField(upload_to="uploads/%Y/%m/%d/")
+    image = models.FileField(upload_to="uploads/%Y/%m/%d/",  null=True)
     dateOfBirth = models.DateTimeField(null=True)
     gender = models.CharField(max_length=1, choices=GENDERSET, null=True)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)

@@ -1,5 +1,5 @@
 {% extends "layouts/base-frontend.html" %}
-
+{% load modelus %}
 {% block metadata %}
 
 {% endblock metadata %}
@@ -106,8 +106,8 @@
                 <div class="col-sm-6">
                     <ul class="list-unstyled mb-0">
                         {% for categorys in request.session.subCategory %}
-                        {%  if (categorys.index%2) != 0  %}
-                        <li><a href="category/{{ categorys.id }}/{{categorys.id}}">{{categorys.name}}</a></li>
+                        {%  if categorys.index|modelus:2 != 0  %}
+                        <li><a href="category/{{ categorys.id }}/{{categorys.id}}">{{  categorys.name  }}</a></li>
                         {%  endif  %}
                         {%  endfor %}
                     </ul>
@@ -115,8 +115,8 @@
                 <div class="col-sm-6">
                     <ul class="list-unstyled mb-0">
                         {% for categorys in request.session.subCategory %}
-                        {%  if (categorys.index%2) == 0  %}
-                        <li><a href="category/{{ categorys.id }}/{{categorys.id}}">{{categorys.name}}</a></li>
+                        {%  if categorys.index|modelus:2 != 0  %}
+                        <li><a href="category/{{ categorys.id }}/{{categorys.id}}">{{  categorys.name  }}</a></li>
                         {%  endif  %}
                         {%  endfor %}
                     </ul>
