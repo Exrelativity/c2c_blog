@@ -80,3 +80,8 @@ class UserForm(forms.ModelForm):
     class Meta:
         model = Users
         fields = "__all__"
+
+class UsersMutationForm(forms.ModelForm):
+    class Meta:
+        model = Users
+        fields = "__all__"

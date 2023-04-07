@@ -78,6 +78,7 @@ def register_user(request, *args, **kwargs):
     form = SignUpForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
+            form.cleaned_data
             form.save()
             username = form.cleaned_data.get("username")
             email = form.cleaned_data.get("email")
@@ -140,7 +141,7 @@ def update_password(request, id=None, token=None, *args, **kwargs):
         return redirect("/notfound")
         
     userTokenColumn = PasswordReset.objects.filter(userId=id,token=token)
-    form = UpdatePasswordForm(request.POST or None)
+    form = UpdatePasswordForm(request.POST or userById)
     if request.method == "POST" and userTokenColumn.exist():
         if form.is_valid() and userTokenColumn.createdAt > (datetime.now() - timedelta(2,0,0)):
             password = form.cleaned_data.get("password1")

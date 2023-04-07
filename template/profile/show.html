@@ -1,10 +1,14 @@
 {% extends "layouts/base-two-side.html" %}
 
-{% block title %} {% if usersprofile %}{{ usersprofile.firstName }} 
-{{  usersprofile.lastName  }}{%  endif  %} {%  endblock  %}
+{% block title %} 
+{% if usersprofile %}
+{{ usersprofile.firstName }} 
+{{ usersprofile.lastName }}
+{%  endif  %} 
+{%  endblock  %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}{% endblock %}
 
 {% block content %}
 
@@ -12,8 +16,11 @@
 <div class="" style="width:100%">
   <div class="card">
     <div class="card-header">
-      <h5 class="title">{% if usersprofile %}{{ usersprofile.firstName }} {{
-        usersprofile.lastName }}{% endif %}</h5>
+      <h5 class="title">
+        {% if usersprofile %}
+        {{ usersprofile.firstName }} 
+        {{ usersprofile.lastName }}
+        {% endif %}</h5>
       <h6 class="card-category">
         {% if alert %}
         <span class="text-danger">{{ alert | safe }}</span>
@@ -25,7 +32,7 @@
         <div class="row" id="profilebtn">
           <ul>
             <li><a href="/profile/{{request.user.id}}/update">
-              <button type="button" class="btn-primary"> Edith Profile</button></a>
+              <button type="button" class="btn-primary"> show Profile</button></a>
           </li>
             <li><a href="/interests"><button type="button" class="btn-primary"> Interest </button></a></li>
           </ul>
@@ -33,81 +40,83 @@
         <div class="row">
           <ul>
             <li>
-              <label>UserId (disabled): </label>
-              <span>{{ userId }}</span>
+              <p>UserId (readonly):
+                <span>{{ request.user.id }}</span>
+              </p>
             </li>
             <li>
-              <label>Username (disabled): </label>
-              <span>{{request.user.username}}</span>
+              <p>Username (readonly):
+                <span>{{ request.user.username }}</span>
+              </p>
             </li>
             <li>
-              <label>Email address (disabled): </label>
-              <span>{{request.user.email}}</span>
+              <p>Email address (readonly):
+                <span>{{ request.user.email }}</span>
+              </p>
+            </li>
+            {% if usersprofile %}
+            <li>
+              <p>First Name:
+                <span>{{ usersprofile.firstName }} </span>
+              </p>
             </li>
             <li>
-              <label>First Name: </label>
-              <span>{% if usersprofile %}{{ usersprofile.firstName }}{% endif %}</span>
+              <p>Last Name:
+                <span>{{ usersprofile.lastName }} </span>
+              </p>
             </li>
             <li>
-              <label>Last Name: </label>
-              <span>{% if usersprofile %}{{usersprofile.lastName}}{% endif %}</span>
+              <p>Marital Status:
+                <span>{{ usersprofile.maritalStatus }}</span>
+              </p>
             </li>
             <li>
-              <label>Marital Status: </label>
-              <span>{% if usersprofile %}{{usersprofile.maritalStatus}}{% endif %}</span>
+              <p>Date of Birth:
+                <span>{{ usersprofile.dateOfBirth }} </span>
+              </p>
             </li>
             <li>
-              <label>Date of Birth: </label>
-              <span>{% if usersprofile %}{{usersprofile.dateOfBirth}}{% endif %}</span>
+              <p>Gender:
+                <span>{{ usersprofile.genderId }} 
+                  </span>
+              </p>
             </li>
             <li>
-              <label>Gender: </label>
-              <span>{% if usersprofile %}{% if genders.id == usersprofile.genderId %} {{ gender.name }} {% endif %}{%
-                endif %}</span>
+              <p>Address:
+                <span>{{ usersprofile.address }} </span>
+              </p>
             </li>
             <li>
-              <label>Address: </label>
-              <span>{% if usersprofile %}{{usersprofile.address}}{% endif %}</span>
+              <p>City:
+                <span>{{ usersprofile.city }} </span>
+              </p>
             </li>
             <li>
-              <label>City: </label>
-              <span>{% if usersprofile %}{{usersprofile.city}}{% endif %}</span>
+              <p>Country:
+                <span>{{ usersprofile.country }} </span>
+              </p>
             </li>
             <li>
-              <label>Country: </label>
-              <span>{% if usersprofile %}{{usersprofile.country}}{% endif %}</span>
+              <p>Postal Code/Zip Code:
+                <span>{{ usersprofile.zipcode }} </span>
+              </p>
             </li>
             <li>
-              <label>Postal Code/Zip Code: </label>
-              <span>{% if usersprofile %}{{usersprofile.zipcode}}{% endif %}</span>
+              <p>About Me:
+                <Span>{{ usersprofile.details }} </span>
+              </p>
             </li>
             <li>
-              <label>About Me: </label>
-              <Span>{% if usersprofile %}{{usersprofile.details}}{% endif %}</span>
+              <p for="lat">Latitude (readonly):
+                <span>{{ usersprofile.latitude }}</span>
+              </p>
             </li>
             <li>
-              <div class="card card-plain">
-                <div class="card-header">
-                  Google Maps
-                </div>
-                <div class="card-body">
-                  <div id="map" class="map"></div>
-                </div>
-              </div>
-              <div class="card-footer">
-                <div class="row">
-                  <div class="form-group">
-                    <label for="lat">Latitude (disable): </label>
-                    <input type="text" disabled name="latitude" id="lat"
-                      value="{% if usersprofile %}{{usersprofile.latitude}}{% endif %}">
-                  </div>
-                  <div class="form-group">
-                    <label for="lng">Longitude (disable): </label>
-                    <input type="text" disabled name="longitude" id="lng"
-                      value="{% if usersprofile %}{{usersprofile.longitude}}{% endif %}">
-                  </div>
-                </div>
-              </div>
+              <p for="lng">Longitude (readonly):
+                <span>{{ usersprofile.longitude }} </span>
+              </p>
+            </li>
+            {% endif %}
           </ul>
         </div>
 

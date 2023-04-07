@@ -26,7 +26,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Title</label>
-                                    <input type="text" name="title" class="form-control" required value="">
+                                   {{ form.title }}
                                 </div>
                                 <span class="text-danger">{{ form.title.errors }}</span>
                             </div>
@@ -35,54 +35,56 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Image</label>
-                                    <input type="file" style="display: block;" name="image" accept="image/*" class="form-control-file" value="">
+                                   {{ form.image }}
                                 </div>
                                 <span class="text-danger">{{ form.image.errors }}</span>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-5">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select name="categoryId" class="form-control">
-                                        {% for categorys in category %}
-                                        <option value="{{ categorys.id }}">{{ categorys.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                                   {{ form.category }}
                                 </div>
                                 <span class="text-danger">{{ form.categoryId.errors }}</span>
                             </div>
                         
-                            <div class="col-md-4">
+                            <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Sub Category</label>
-                                    <select name="subCategoryId" class="form-control">
-                                        {% for subCategorys in subCategory %}
-                                        <option value="{{ subCategorys.id }}">{{ subCategorys.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {{ form.subCategoryId }}
                                 </div>
                                 <span class="text-danger">{{ form.subCategoryId.errors }}</span>
                             </div>
 
-                            <div class="col-md-1">
+                           
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
                                 <div class="form-group">
-                                    <label>Status</label>
-                                    <input type="checkbox" name="status" class="form-control" required value="">
+                                    <label>User Id (readonly)</label>
+                                    {{ form.userId }}
+                                </div>
+                                <span class="text-danger">{{ form.userId.errors }}</span>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Status (active)</label>
+                                    {{ form.status }}
                                 </div>
                                 <span class="text-danger">{{ form.status.errors }}</span>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Front</label>
-                                    <input type="checkbox" name="front" class="form-control" required value="">
+                                    <label>Front (readonly)</label>
+                                    {{ form.front }}
                                 </div>
                                 <span class="text-danger">{{ form.front.errors }}</span>
                             </div>
-                            <div class="col-md-1">
+                            <div class="col-md-2">
                                 <div class="form-group">
-                                    <label>Slider</label>
-                                    <input type="checkbox" name="slider" class="form-control" required value="">
+                                    <label>Slider (readonly)</label>
+                                    {{ form.slider }}
                                 </div>
                                 <span class="text-danger">{{ form.slider.errors }}</span>
                             </div>
@@ -90,18 +92,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label>User Id (readonly)</label>
-                                    <input type="text" readonly name="userId" class="form-control"
-                                        value="{{ request.user.id }}">
-                                </div>
-                                <span class="text-danger">{{ form.userId.errors }}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
                                     <label for="about">Content</label>
-                                    <input name="content" type="hidden">
+                                    {{ form.content }}
                                     <div id="editor-container">
                                         <p>A robot who has developed sentience, and is the only robot of his kind shown
                                             to be still functioning on Earth.</p>
@@ -110,20 +102,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row" style="display: none;">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>userId</label>
-                                    {{ form.userId }}
-                                </div>
-                                <span class="text-danger">{{ form.userId.errors }}</span>
-                            </div>
-                        </div>
+                       
                         <div class="row">
                            
                         </div>
                         <div class="card-footer">
-                            <button type="submit" class="btn btn-fill btn-primary" value="submit">Save</button>
+                            <input type="submit" name="submit" class="btn btn-fill btn-primary" value="submit">
                         </div>
                     </form>
                 </div>

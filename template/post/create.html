@@ -4,7 +4,8 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
-<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet" />{% endblock stylesheets %}
+<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet" />
+{% endblock stylesheets %}
 
 {% block content %}
 
@@ -26,7 +27,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Title</label>
-                                    <input type="text" name="title" class="form-control" required value="">
+                                   {{ form.title }}
                                 </div>
                                 <span class="text-danger">{{ form.title.errors }}</span>
                             </div>
@@ -35,7 +36,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Image</label>
-                                    <input type="file" name="image" class="form-control-file" accept="image/*" value="">
+                                   {{ form.image }}
                                 </div>
                                 <span class="text-danger">{{ form.image.errors }}</span>
                             </div>
@@ -44,11 +45,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Category</label>
-                                    <select name="categoryId" class="form-control">
-                                        {% for categorys in category %}
-                                        <option value="{{ categorys.id }}">{{ categorys.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                                   {{ form.category }}
                                 </div>
                                 <span class="text-danger">{{ form.categoryId.errors }}</span>
                             </div>
@@ -56,11 +53,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Sub Category</label>
-                                    <select name="subCategoryId" class="form-control">
-                                        {% for subCategorys in subCategory %}
-                                        <option value="{{ subCategorys.id }}">{{ subCategorys.name }}</option>
-                                        {% endfor %}
-                                    </select>
+                                    {{ form.subCategoryId }}
                                 </div>
                                 <span class="text-danger">{{ form.subCategoryId.errors }}</span>
                             </div>
@@ -71,29 +64,28 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>User Id (readonly)</label>
-                                    <input type="text" readonly name="userId" class="form-control"
-                                        value="{{ request.user.id }}">
+                                    {{ form.userId }}
                                 </div>
                                 <span class="text-danger">{{ form.userId.errors }}</span>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Status (active)</label>
-                                    <input type="checkbox" name="status" class="form-control" required value="">
+                                    {{ form.status }}
                                 </div>
                                 <span class="text-danger">{{ form.status.errors }}</span>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Front (readonly)</label>
-                                    <input type="checkbox" readonly name="front" class="form-control" value="">
+                                    {{ form.front }}
                                 </div>
                                 <span class="text-danger">{{ form.front.errors }}</span>
                             </div>
                             <div class="col-md-2">
                                 <div class="form-group">
                                     <label>Slider (readonly)</label>
-                                    <input type="checkbox" readonly name="slider" class="form-control" required value="">
+                                    {{ form.slider }}
                                 </div>
                                 <span class="text-danger">{{ form.slider.errors }}</span>
                             </div>
@@ -102,7 +94,7 @@
                             <div class="col-md-12">
                                 <div class="form-group">
                                     <label for="about">Content</label>
-                                    <input name="content" type="hidden">
+                                    {{ form.content }}
                                     <div id="editor-container">
                                         <p>A robot who has developed sentience, and is the only robot of his kind shown
                                             to be still functioning on Earth.</p>

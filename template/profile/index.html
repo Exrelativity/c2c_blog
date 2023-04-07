@@ -1,10 +1,14 @@
 {% extends "layouts/base-two-side.html" %}
 
-{% block title %} {% if usersprofile %}{{ usersprofile.firstName }}
-{{ usersprofile.lastName }}{% endif %} {% endblock %}
+{% block title %}
+{% if usersprofile %}
+{{ usersprofile.firstName }}
+{{ usersprofile.lastName }} 
+{% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+{% endblock %}
 
 {% block content %}
 
@@ -12,25 +16,25 @@
 <div class="" style="width:100%">
   <div class="card">
     <div class="card-header">
-      <h5 class="title">{% if usersprofile %}{{ usersprofile.firstName }}
-        {{ usersprofile.lastName }}{% endif %}</h5>
+      <h5 class="title">{% if usersprofile %} {{ usersprofile.firstName }}{% endif %}
+        {{ usersprofile.lastName }}</h5>
       <h6 class="card-category">
         {% if alert %}
         <span class="text-danger">{{ alert | safe }}</span>
-        {% endif %}
+        
       </h6>
 
       <div class="card-body">
 
         <div class="row" id="profilebtn">
           <ul>
-            <li><a href="profile/{{ request.user.id }}/update"><button type="button" class="btn-primary"> Edith Profile1
+            <li><a href="profile/{{ request.user.id }}/update"><button type="button" class="btn-primary"> Edit Profile
         </div>
         <div class="row">
           <ul>
             <li>
               <p>UserId (readonly):
-                <span>{{ userId }}</span>
+                <span>{{ request.user.id }}</span>
               </p>
             </li>
             <li>
@@ -43,67 +47,69 @@
                 <span>{{ request.user.email }}</span>
               </p>
             </li>
+            {% if usersprofile %}
             <li>
               <p>First Name:
-                <span>{% if usersprofile %} {{ usersprofile.firstName }} {% endif %}</span>
+                <span>{{ usersprofile.firstName }} </span>
               </p>
             </li>
             <li>
               <p>Last Name:
-                <span>{% if usersprofile %} {{ usersprofile.lastName }} {% endif %}</span>
+                <span>{{ usersprofile.lastName }} </span>
               </p>
             </li>
             <li>
               <p>Marital Status:
-                <span>{% if usersprofile %}{{ usersprofile.maritalStatus }}{% endif %}</span>
+                <span>{{ usersprofile.maritalStatus }}</span>
               </p>
             </li>
             <li>
               <p>Date of Birth:
-                <span>{% if usersprofile %} {{ usersprofile.dateOfBirth }} {% endif %}</span>
+                <span>{{ usersprofile.dateOfBirth }} </span>
               </p>
             </li>
             <li>
               <p>Gender:
-                <span>{% if usersprofile %} {% if genders.id == usersprofile.genderId %} {{ gender.name }} {% endif %}
-                  {% endif %}</span>
+                <span>{{ usersprofile.genderId }} 
+                  </span>
               </p>
             </li>
             <li>
               <p>Address:
-                <span>{% if usersprofile %} {{ usersprofile.address }} {% endif %}</span>
+                <span>{{ usersprofile.address }} </span>
               </p>
             </li>
             <li>
               <p>City:
-                <span>{% if usersprofile %} {{ usersprofile.city }} {% endif %}</span>
+                <span>{{ usersprofile.city }} </span>
               </p>
             </li>
             <li>
               <p>Country:
-                <span>{% if usersprofile %} {{ usersprofile.country }} {% endif %}</span>
+                <span>{{ usersprofile.country }} </span>
               </p>
             </li>
             <li>
               <p>Postal Code/Zip Code:
-                <span>{% if usersprofile %} {{ usersprofile.zipcode }} {% endif %}</span>
+                <span>{{ usersprofile.zipcode }} </span>
               </p>
             </li>
             <li>
               <p>About Me:
-                <Span>{% if usersprofile %} {{ usersprofile.details }} {% endif %}</span>
+                <Span>{{ usersprofile.details }} </span>
               </p>
             </li>
             <li>
               <p for="lat">Latitude (readonly):
-                <span> {% if usersprofile %}{{usersprofile.latitude}}{% endif %}</span>
+                <span>{{ usersprofile.latitude }}</span>
               </p>
             </li>
             <li>
               <p for="lng">Longitude (readonly):
-                <span>{% if usersprofile %}{{usersprofile.longitude}}{% endif %} </span>
+                <span>{{ usersprofile.longitude }} </span>
               </p>
             </li>
+            {% endif %}
           </ul>
         </div>
 
