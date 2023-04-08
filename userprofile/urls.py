@@ -19,8 +19,8 @@ from .views import *
 
 urlpatterns = [
     path("", index),
-    path("<int:id>", show),
-    path("<int:id>/update", update),
+    path("<uuid:userId>", show),
+    path("<uuid:userId>/update", update),
     path("create", create),
-    path("<int:id>/delete", delete),
+    path("<uuid:userId>/delete", delete),
 ]

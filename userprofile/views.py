@@ -7,12 +7,25 @@ from .forms import *
 # Create your views here.
 @login_required(login_url="/login")
 def index(request, msg=None):
-    userprofile = UsersProfile.objects.all()
+    if request.user.is_authenticated:
+        if not request.session.__contains__("usersprofile"):
+            return redirect(
+                "/profile/create", msg="Please fill in your profile information"
+            )
+    try:
+        userId = request.user.id
+        userprofileById = UsersProfile.objects.get(userId=userId)
+    except UsersProfile.DoesNotExist:
+        return redirect(
+             "/profile/create", msg="Please fill in your profile information"
+        )
+    meta = userprofileById.as_meta()
     return render(
-        request, "profile/index.html", {"msg": msg, "userprofile": userprofile}
+        request,
+        "profile/show.html",
+        {"msg": msg, "userprofile": userprofileById, "meta": meta},
     )
-
-
+    
 @login_required(login_url="/login")
 def create(request, msg=None):
     if UsersProfile.objects.filter(userId=request.user.id).exists():
@@ -41,17 +54,18 @@ def create(request, msg=None):
 
 
 @login_required(login_url="/login")
-def show(request, id, msg=None):
+def show(request, userId, msg=None):
     if request.user.is_authenticated:
         if not request.session.__contains__("usersprofile"):
             return redirect(
                 "/profile/create", msg="Please fill in your profile information"
             )
-    userprofileById: object
     try:
-        userprofileById = UsersProfile.objects.get(id=id)
+        userprofileById = UsersProfile.objects.get(userId=userId)
     except UsersProfile.DoesNotExist:
-        msg = "Sorry UsersProfile Dost not exist"
+        return redirect(
+             "/dashboard", msg="Sorry this profile does not exist"
+        )
     meta = userprofileById.as_meta()
     return render(
         request,
@@ -61,14 +75,14 @@ def show(request, id, msg=None):
 
 
 @login_required(login_url="/login")
-def update(request, id, msg=None):
+def update(request, userId, msg=None):
     if request.user.is_authenticated:
         if not request.session.__contains__("usersprofile"):
             return redirect(
                 "/profile/create", msg="Please fill in your profile information"
             )
     userprofileForm = UsersProfileMutationForm()
-    userprofileById = UsersProfile.objects.get(id=id)
+    userprofileById = UsersProfile.objects.get(userId=userId)
     if request.method == "PUT":
         userprofileForm = UsersProfileMutationForm(request.POST, request.FILES)
         if userprofileForm.is_valid():
@@ -104,8 +118,8 @@ def update(request, id, msg=None):
 
 
 @login_required(login_url="/login")
-def delete(request, id, msg=None):
-    userprofileById = UsersProfile.objects.get(id=id)
+def delete(request, userId, msg=None):
+    userprofileById = UsersProfile.objects.get(userId=userId)
     if request.method == "DELETE":
         userprofileById.delete()
         msg = "Deteted sucessfully"

@@ -18,10 +18,10 @@ from .views import *
 
 urlpatterns = [
     path("", index),
-    path("<int:id>", show),
-    path("<int:id>/update", update),
+    path("<uuid:id>", show),
+    path("<uuid:id>/update", update),
     path("create", create),
-    path("<int:id>/delete", delete),
-    path("category/<int:categoryId>", byCategory),
+    path("<uuid:id>/delete", delete),
+    path("category/<uuid:categoryId>", byCategory),
     path("category/<str:categoryId>/<str:subCategoryId>", bySubCategory),
 ]
