@@ -154,8 +154,8 @@
     var locationButton = document.getElementById("locationButton");
     locationButton.addEventListener("click", () => {
       // Try HTML5 geolocation.
-      var latElement = document.getElementById("lat");
-      var longElement = document.getElementById("lng");
+      var latElement = document.getElementById("id_latitude");
+      var longElement = document.getElementById("id_longitude");
 
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(

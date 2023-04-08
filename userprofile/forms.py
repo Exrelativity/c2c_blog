@@ -277,7 +277,7 @@ class UsersProfileForm(ModelForm):
             ))
     
     image = forms.FileField(
-        widget=forms.TextInput(
+        widget=forms.FileInput(
             attrs={
                 "placeholder":"image",
                 "class":"form-control"}
@@ -286,8 +286,9 @@ class UsersProfileForm(ModelForm):
     dateOfBirth = forms.DateField(
         widget=forms.DateInput(
             attrs={
-                "placeholder":"dateOfBirth",
-                "class":"form-control"}
+                "placeholder":"Date of birth",
+                "class":"form-control",
+                "type":"date"}
             ))
     
     gender = forms.CharField(
@@ -638,7 +639,7 @@ class UsersProfileMutationForm(ModelForm):
             ))
     
     image = forms.FileField(
-        widget=forms.TextInput(
+        widget=forms.FileInput(
             attrs={
                 "placeholder":"image",
                 "class":"form-control"}

@@ -23,5 +23,5 @@ urlpatterns = [
     path("create", create),
     path("<uuid:id>/delete", delete),
     path("category/<uuid:categoryId>", byCategory),
-    path("category/<str:categoryId>/<str:subCategoryId>", bySubCategory),
+    path("category/<uuid:categoryId>/<uuid:subCategoryId>", bySubCategory),
 ]

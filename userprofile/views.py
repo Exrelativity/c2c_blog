@@ -120,8 +120,8 @@ def update(request, userId, msg=None):
 @login_required(login_url="/login")
 def delete(request, userId, msg=None):
     userprofileById = UsersProfile.objects.get(userId=userId)
-    if request.method == "DELETE":
-        userprofileById.delete()
+    if request.method == "DELETE" and request.user.id == userprofileById.userId:
+        userprofileById.soft_delete()
         msg = "Deteted sucessfully"
         return redirect("/profile/usersprofiles", msg)
     else:

@@ -168,7 +168,7 @@ def delete(request, id, msg=None):
     postById = Post.objects.get(id=id)
     if request.method == "DELETE":
         if request.user.id == postById.userId:
-            postById.delete()
+            postById.soft_delete()
             msg = "Deteted sucessfully"
         else:
             msg = "Permission Denied"
