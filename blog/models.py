@@ -1,5 +1,6 @@
 from django.db import models
 import uuid
+from datetime import datetime
 
 
 class BaseAbstractModel(models.Model):
@@ -11,15 +12,13 @@ class BaseAbstractModel(models.Model):
      is_deleted
     """
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    created_at = models.DateTimeField(auto_now_add=True, editable=False)
-    updated_at = models.DateTimeField(auto_now=True, editable=False)
-    is_deleted = models.BooleanField(default=False)
+    deletedAt = models.DateTimeField(null=True)
 
     def soft_delete(self):
         """soft  delete a model instance"""
-        self.is_deleted=True
+        self.deletedAt = datetime.now() 
         self.save()
 
     class Meta:
         abstract = True
-        ordering = ['-created_at']
+        ordering = ['-createdAt']
