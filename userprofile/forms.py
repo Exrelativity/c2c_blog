@@ -263,7 +263,7 @@ class UsersProfileForm(ModelForm):
     firstName = forms.CharField(  
         widget=forms.TextInput(
             attrs={
-                "placeholder":"firstNamefirstName",
+                "placeholder":"firstName",
                 "class":"form-control",
                }
             ))
@@ -296,40 +296,40 @@ class UsersProfileForm(ModelForm):
                 "placeholder":"gender",
                 "class":"form-control"},
             choices=GENDERSET
-            ),)
+            ))
 
     details = forms.CharField(
         widget=forms.Textarea(
             attrs={
-                "placeholder":"title",
+                "placeholder":"details",
                 "class":"form-control"}
             ))
     
     zipcode = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"zipcode",
                 "class":"form-control"}
             ))
     
     address = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"address",
                 "class":"form-control"}
             ))
     
     city = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"city",
                 "class":"form-control"}
             ))
     
     region = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"region",
                 "class":"form-control"}
             ))
     
@@ -337,28 +337,28 @@ class UsersProfileForm(ModelForm):
         widget=forms.Select(
             choices=COUNTRY,
             attrs={
-                "placeholder":"title",
+                "placeholder":"country",
                 "class":"form-control"}
             ))
     
     longitude = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"longitude",
                 "class":"form-control"}
             ))
     
     latitude = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"latitude",
                 "class":"form-control"}
             ))
     
     popularity = forms.FloatField(
         widget=forms.NumberInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"popularity",
                 "class":"form-control"}
             ))
     
@@ -626,7 +626,7 @@ class UsersProfileMutationForm(ModelForm):
     firstName = forms.CharField(  
         widget=forms.TextInput(
             attrs={
-                "placeholder":"firstNamefirstName",
+                "placeholder":"firstName",
                 "class":"form-control"}
             ))
     
@@ -662,7 +662,7 @@ class UsersProfileMutationForm(ModelForm):
     details = forms.CharField(
         widget=forms.Textarea(
             attrs={
-                "placeholder":"title",
+                "placeholder":"details",
                 "class":"form-control",
                 "rows":"10", 
                 "cols":"100",
@@ -672,35 +672,35 @@ class UsersProfileMutationForm(ModelForm):
     zipcode = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"zipcode",
                 "class":"form-control"}
             ))
     
     address = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"address",
                 "class":"form-control"}
             ))
     
     city = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"city",
                 "class":"form-control"}
             ))
     
     region = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"region",
                 "class":"form-control"}
             ))
 
     country = forms.CharField(
         widget=forms.Select(
             attrs={
-                "placeholder":"title",
+                "placeholder":"country",
                 "class":"form-control"},
             choices=COUNTRY,
             ))
@@ -708,7 +708,7 @@ class UsersProfileMutationForm(ModelForm):
     longitude = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"longitude",
                 "class":"form-control",
                 "id":"lng"}
             ))
@@ -716,7 +716,7 @@ class UsersProfileMutationForm(ModelForm):
     latitude = forms.CharField(
         widget=forms.TextInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"latitude",
                 "class":"form-control",
                 "id":"lat"}
             ))
@@ -724,7 +724,7 @@ class UsersProfileMutationForm(ModelForm):
     popularity = forms.FloatField(
         widget=forms.HiddenInput(
             attrs={
-                "placeholder":"title",
+                "placeholder":"popularity",
                 "class":"form-control"}
             ))
     class Meta:

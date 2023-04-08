@@ -26,20 +26,14 @@
       <form action="/profile/create" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
-          <div class="col-md-2 pr-md-1">
-            <div class="form-group">
-              <label>UserId (readonly)</label>
-              {{form.UserId}}
-            </div>
-          </div>
-          <div class="col-md-5 pr-md-1">
+          <div class="col-md-6 pr-md-1">
             <div class="form-group">
               <label>First Name</label>
               {{ form.firstName }}
               <span class="text-danger">{{ form.firstName.errors }}</span>
             </div>
           </div>
-          <div class="col-md-5 px-md-1">
+          <div class="col-md-6 pl-md-1">
             <div class="form-group">
               <label>Last Name</label>
               {{ form.lastName }}
@@ -48,7 +42,7 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-md-12 pl-md-1">
+          <div class="col-md-12">
             <div class="form-group">
               <label>Picture</label>
               {{ form.image }}
