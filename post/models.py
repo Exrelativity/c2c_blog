@@ -69,3 +69,11 @@ class Post(ModelMeta, BaseAbstractModel):
     def get_meta_image(self):
         if self.image:
             return self.image.url
+
+
+class Comments(ModelMeta, BaseAbstractModel):
+    postId = models.ForeignKey(Post, on_delete=models.CASCADE)
+    userId = models.ForeignKey(Users, on_delete=models.CASCADE)
+    content = models.TextField()
+    updatedAt = models.DateTimeField(auto_now=True)
+    createdAt = models.DateTimeField(auto_now_add=True)

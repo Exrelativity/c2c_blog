@@ -53,7 +53,7 @@ class SignUpForm(UserCreationForm):
         fields = ("username", "email","phone", "password1", "password2")
 
 class ForgotPasswordForm(forms.Form):
-     email = forms.EmailField(
+    email = forms.EmailField(
         widget=forms.EmailInput(
             attrs={
                 "placholder":"Email",
