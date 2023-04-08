@@ -11,7 +11,7 @@ def index(request, msg=None):
     category = Category.objects.filter(status=True)
     subCategory = SubCategory.objects.filter(status=True)
     post = Post.objects.filter(status=True)
-    paginator = Paginator(post, 15)  # Show 15 contacts per page.
+    paginator = Paginator(post, 15)  # Show 15 posts per page.
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     if request.user.is_authenticated:
@@ -45,7 +45,8 @@ def create(request, msg=None):
     subCategory = SubCategory.objects.all()
     if request.method == "POST":
         if postForm.is_valid:
-            postForm.cleaned_data
+            postForm.cleaned_data.all()
+            postForm.instance.userId = request.user.id
             postForm.save()
             msg = "Entries saved sucessfully"
         else:
@@ -139,7 +140,8 @@ def update(request, id, msg=None):
     if request.method == "PUT":
         if postForm.is_valid():
             if request.user.id == postById.userId:
-                postForm.cleaned_data
+                postForm.cleaned_data.all()
+                postForm.instance.userId = request.user.id
                 postForm.save()
                 msg = "Entries updated sucessfully"
             else:

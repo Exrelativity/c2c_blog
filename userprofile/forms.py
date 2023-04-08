@@ -265,27 +265,31 @@ class UsersProfileForm(ModelForm):
             attrs={
                 "placeholder":"firstNamefirstName",
                 "class":"form-control",
-                "value":request.user.firstName}
+               }
             ))
+    
     lastName = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"lastName",
                 "class":"form-control",
-                "value":request.user.lastName}
+               }
             ))
+    
     image = forms.FileField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"image",
                 "class":"form-control"}
             ))
+    
     dateOfBirth = forms.DateField(
         widget=forms.DateInput(
             attrs={
                 "placeholder":"dateOfBirth",
                 "class":"form-control"}
             ))
+    
     gender = forms.CharField(
         widget=forms.Select(
             attrs={
@@ -293,43 +297,42 @@ class UsersProfileForm(ModelForm):
                 "class":"form-control"},
             choices=GENDERSET
             ),)
-    userId = forms.ModelChoiceField(
-        widget=forms.HiddenInput(
-            attrs={
-                "placeholder":"userId",
-                "class":"form-control",
-                "value":request.user.id}
-            ))
-    details = forms.TextField(
+
+    details = forms.CharField(
         widget=forms.Textarea(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     zipcode = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     address = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     city = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     region = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     country = forms.CharField(
         widget=forms.Select(
             choices=COUNTRY,
@@ -337,18 +340,21 @@ class UsersProfileForm(ModelForm):
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     longitude = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     latitude = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     popularity = forms.FloatField(
         widget=forms.NumberInput(
             attrs={
@@ -616,37 +622,35 @@ class UsersProfileMutationForm(ModelForm):
                 ("YE","Yemen"),
                 ("ZM","Zambia"),
                 ("ZW","Zimbabwe"))
-    id = forms.ModelChoiceField(
-        queryset=UsersProfile.objects.get(id=id),
-        widget=forms.HiddenInput(
-            attrs={
-                "placeholder":"id",
-                "class":"form-control"}
-            ))
+
     firstName = forms.CharField(  
         widget=forms.TextInput(
             attrs={
                 "placeholder":"firstNamefirstName",
                 "class":"form-control"}
             ))
+    
     lastName = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"lastName",
                 "class":"form-control"}
             ))
+    
     image = forms.FileField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"image",
                 "class":"form-control"}
             ))
+    
     dateOfBirth = forms.DateTimeField(
         widget=forms.DateInput(
             attrs={
                 "placeholder":"dateOfBirth",
                 "class":"form-control"}
             ))
+    
     gender = forms.CharField(
         widget=forms.Select(
             attrs={
@@ -654,13 +658,8 @@ class UsersProfileMutationForm(ModelForm):
                 "class":"form-control"},
             choices=GENDERSET
             ))
-    userId = forms.ModelChoiceField(
-        widget=forms.HiddenInput(
-            attrs={
-                "placeholder":"userId",
-                "class":"form-control"}
-            ))
-    details = forms.TextField(
+    
+    details = forms.CharField(
         widget=forms.Textarea(
             attrs={
                 "placeholder":"title",
@@ -669,30 +668,35 @@ class UsersProfileMutationForm(ModelForm):
                 "cols":"100",
                 "placeholder":"Here can be your description, Put relevant infomation, like jobs and what you want others to know about you"}
             ))
+    
     zipcode = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     address = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     city = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+    
     region = forms.CharField(
         widget=forms.TextInput(
             attrs={
                 "placeholder":"title",
                 "class":"form-control"}
             ))
+
     country = forms.CharField(
         widget=forms.Select(
             attrs={
@@ -700,6 +704,7 @@ class UsersProfileMutationForm(ModelForm):
                 "class":"form-control"},
             choices=COUNTRY,
             ))
+
     longitude = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -707,6 +712,7 @@ class UsersProfileMutationForm(ModelForm):
                 "class":"form-control",
                 "id":"lng"}
             ))
+    
     latitude = forms.CharField(
         widget=forms.TextInput(
             attrs={
@@ -714,6 +720,7 @@ class UsersProfileMutationForm(ModelForm):
                 "class":"form-control",
                 "id":"lat"}
             ))
+    
     popularity = forms.FloatField(
         widget=forms.HiddenInput(
             attrs={

@@ -26,6 +26,9 @@ def create(request, msg=None):
         userprofileForm = UsersProfileForm(request.POST, request.FILES)
         if userprofileForm.is_valid():
             userprofileForm.cleaned_data.all()
+            userprofileForm.instance.userId = request.user.id
+            userprofileForm.instance.firstName = request.user.firstName
+            userprofileForm.instance.lastName = request.user.lastName
             userprofileForm.save()
             msg = "Entries saved sucessfully"
             request.session["usersprofile"] = request.POST

@@ -20,7 +20,7 @@ class UsersProfile(ModelMeta, models.Model):
     country = models.CharField(max_length=150, null=True)
     longitude = models.CharField(max_length=15, null=True)
     latitude = models.CharField(max_length=15, null=True)
-    popularity = models.FloatField(max_digits=10,decimal_places=2, null=True)
+    popularity = models.DecimalField(max_digits=10,decimal_places=2, null=True)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
    

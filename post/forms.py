@@ -4,51 +4,51 @@ from django import forms
 
 
 class PostMutationForm(ModelForm):
-    id = forms.ModelChoiceField(
-        widget=forms.HiddenInput(attrs={"placeholder": "id", "class": "form-control"})
-    )
+
 
     title = forms.CharField(
         widget=forms.TextInput(attrs={"placeholder": "title", "class": "form-control"})
     )
+    
     status = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={"placeholder": "status", "class": "form-control"}
         )
     )
+    
     front = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={"placeholder": "front", "class": "form-control"}
         )
     )
+    
     slider = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={"placeholder": "slider", "class": "form-control"}
         )
     )
+    
     image = forms.FileField(
         widget=forms.FileInput(attrs={"placeholder": "image", "class": "form-control"})
     )
+    
     content = forms.CharField(
         widget=forms.HiddenInput(
             attrs={"placeholder": "content", "class": "form-control"}
         )
     )
-    userId = forms.ModelChoiceField(
-        widget=forms.HiddenInput(
-            attrs={"placeholder": "userId", "class": "form-control"}
-        )
-    )
+    
     categoryId = forms.ModelChoiceField(
-        queryset="",
+        queryset=Category.objects.all() or None,
         widget=forms.Select(
-            attrs={"placeholder": "categoryId", "class": "form-control"}
+            attrs={"placeholder": "category", "class": "form-control"}
         ),
     )
 
     subCategoryId = forms.ModelChoiceField(
+        queryset=SubCategory.objects.all() or None,
         widget=forms.Select(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "sub Category", "class": "form-control"}
         )
     )
 
@@ -69,86 +69,80 @@ class PostMutationForm(ModelForm):
 
 
 class CategoryMutationForm(ModelForm):
-    id = forms.ModelChoiceField(
-        widget=forms.HiddenInput(attrs={"placeholder": "id", "class": "form-control"})
-    )
 
     name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "name", "class": "form-control"}
         )
     )
+    
     status = forms.BooleanField(
         widget=forms.CheckboxInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "status", "class": "form-control"}
         )
     )
+    
     front = forms.BooleanField(
         widget=forms.CheckboxInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "front", "class": "form-control"}
         )
     )
+    
     image = forms.FileField(
         widget=forms.FileInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "image", "class": "form-control"}
         )
     )
-    description = forms.TextField(
+    
+    description = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "description", "class": "form-control"}
         )
     )
 
-    userId = forms.ModelChoiceField(
-        widget=forms.HiddenInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
-        )
-    )
 
     class Meta:
         model = Category
-        fields = ("id", "name", "status", "front", "image", "description", "userId")
+        fields = ("id", "name", "status", "front", "image", "description")
 
 
 class SubCategoryMutationForm(ModelForm):
-    id = forms.ModelChoiceField(
-        widget=forms.HiddenInput(attrs={"placeholder": "id", "class": "form-control"})
-    )
+
 
     name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "name", "class": "form-control"}
         )
     )
+    
     status = forms.BooleanField(
         widget=forms.CheckboxInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "status", "class": "form-control"}
         )
     )
+    
     front = forms.BooleanField(
         widget=forms.CheckboxInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "front", "class": "form-control"}
         )
     )
+    
     image = forms.FileField(
         widget=forms.FileInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "image", "class": "form-control"}
         )
     )
-    description = forms.TextField(
+    
+    description = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "description", "class": "form-control"}
         )
     )
+    
     categoryId = forms.ModelChoiceField(
+        queryset=Category.objects.all() or None,
         widget=forms.Select(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
-        )
-    )
-
-    userId = forms.ModelChoiceField(
-        widget=forms.HiddenInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "category", "class": "form-control"}
         )
     )
 
@@ -161,55 +155,55 @@ class SubCategoryMutationForm(ModelForm):
             "front",
             "image",
             "description",
-            "categoryId",
-            "userId",
+            "categoryId"
+            
         )
 
 
 class PostForm(ModelForm):
+        
     title = forms.CharField(
         widget=forms.TextInput(attrs={"placeholder": "title", "class": "form-control"})
     )
+    
     status = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={"placeholder": "status", "class": "form-control"}
         )
     )
+    
     front = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={"placeholder": "front", "class": "form-control"}
         )
     )
+    
     slider = forms.BooleanField(
         widget=forms.CheckboxInput(
             attrs={"placeholder": "slider", "class": "form-control"}
         )
     )
+    
     image = forms.FileField(
         widget=forms.FileInput(attrs={"placeholder": "image", "class": "form-control"})
     )
+    
     content = forms.CharField(
         widget=forms.Textarea(attrs={"placeholder": "content", "class": "form-control"})
     )
-    userId = forms.CharField(
-        widget=forms.HiddenInput(
-            attrs={
-                "placeholder": "userId",
-                "class": "form-control",
-                "value": request.user.id,
-            }
-        )
-    )
+    
+
     categoryId = forms.ModelChoiceField(
-        queryset=SubCategory.objects.all(),
+        queryset=SubCategory.objects.all() or None,
         widget=forms.Select(
-            attrs={"placeholder": "categoryId", "class": "form-control"}
+            attrs={"placeholder": "category", "class": "form-control"}
         ),
     )
+    
     subCategoryId = forms.ModelChoiceField(
-        queryset=SubCategory.objects.all(),
+        queryset=SubCategory.objects.all() or None,
         widget=forms.Select(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "subCategory", "class": "form-control"}
         ),
     )
 
@@ -222,97 +216,89 @@ class PostForm(ModelForm):
             "slider",
             "image",
             "content",
-            "userId",
             "categoryId",
             "subCategoryId",
         )
 
 
 class CategoryForm(ModelForm):
+
+        
     name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "name", "class": "form-control"}
         )
     )
+    
     status = forms.BooleanField(
         widget=forms.CheckboxInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "status", "class": "form-control"}
         )
     )
+    
     front = forms.BooleanField(
         widget=forms.CheckboxInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "front", "class": "form-control"}
         )
     )
+    
     image = forms.FileField(
         widget=forms.FileInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "image", "class": "form-control"}
         )
     )
-    description = forms.TextField(
+    
+    description = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "description", "class": "form-control"}
         )
     )
 
-    userId = forms.CharField(
-        widget=forms.HiddenInput(
-            attrs={
-                "placeholder": "userId",
-                "class": "form-control",
-                "value": request.user.id,
-            }
-        )
-    )
 
     class Meta:
         model = Category
-        fields = ("name", "status", "front", "image", "description", "userId")
+        fields = ("name", "status", "front", "image", "description")
 
 
 class SubCategoryForm(ModelForm):
+        
     name = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "name", "class": "form-control"}
         )
     )
+    
     status = forms.BooleanField(
         widget=forms.CheckboxInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "status", "class": "form-control"}
         )
     )
+    
     front = forms.BooleanField(
         widget=forms.CheckboxInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "front", "class": "form-control"}
         )
     )
+    
     image = forms.FileField(
         widget=forms.FileInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "image", "class": "form-control"}
         )
     )
-    description = forms.TextField(
+    
+    description = forms.CharField(
         widget=forms.TextInput(
-            attrs={"placeholder": "subCategoryId", "class": "form-control"}
+            attrs={"placeholder": "description", "class": "form-control"}
         )
     )
 
     categoryId = forms.ModelChoiceField(
-        queryset=SubCategory.objects.all(),
+        queryset=Category.objects.all() or None,
         widget=forms.Select(
-            attrs={"placeholder": "categoryId", "class": "form-control"}
+            attrs={"placeholder": "category", "class": "form-control"}
         ),
     )
 
-    userId = forms.CharField(
-        widget=forms.HiddenInput(
-            attrs={
-                "placeholder": "userId",
-                "class": "form-control",
-                "value": request.user.id,
-            }
-        )
-    )
 
     class Meta:
         model = SubCategory
@@ -322,8 +308,8 @@ class SubCategoryForm(ModelForm):
             "front",
             "image",
             "description",
-            "categoryId",
-            "userId",
+            "categoryId"
+            
         )
 
 
