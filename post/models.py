@@ -1,10 +1,10 @@
 from django.db import models
 from authentication.models import Users
 from meta.models import ModelMeta
-
+from blog.models import BaseAbstractModel
 
 # Create your models here.
-class Category(ModelMeta, models.Model):
+class Category(ModelMeta, BaseAbstractModel):
     name = models.CharField(max_length=64)
     status = models.BooleanField()
     front = models.BooleanField()
@@ -25,7 +25,7 @@ class Category(ModelMeta, models.Model):
             return self.image.url
 
 
-class SubCategory(ModelMeta, models.Model):
+class SubCategory(ModelMeta, BaseAbstractModel):
     name = models.CharField(max_length=64)
     status = models.BooleanField()
     front = models.BooleanField()
@@ -47,7 +47,7 @@ class SubCategory(ModelMeta, models.Model):
             return self.image.url
 
 
-class Post(ModelMeta, models.Model):
+class Post(ModelMeta, BaseAbstractModel):
     title = models.CharField(max_length=150)
     status = models.BooleanField()
     front = models.BooleanField()

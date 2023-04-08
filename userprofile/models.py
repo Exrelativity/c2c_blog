@@ -1,9 +1,10 @@
 from django.db import models
 from authentication.models import Users
 from meta.models import ModelMeta
+from blog.models import BaseAbstractModel
 
 # Create your models here.
-class UsersProfile(ModelMeta, models.Model):
+class UsersProfile(ModelMeta, BaseAbstractModel):
     GENDERSET = (('M', 'Male'),
                  ('F', 'Female'))
     firstName = models.CharField(max_length=64, null=True)
