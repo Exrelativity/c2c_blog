@@ -3,7 +3,7 @@ from .models import *
 from django import forms
 
 
-class fileForm(ModelForm):
+class FileForm(ModelForm):
     FILETYPE = (
         ("Image", "Image"),
         ("Video", "Video"),
@@ -34,7 +34,7 @@ class fileForm(ModelForm):
         fields = ("source", "userId", "fileType")
 
 
-class File__PostForm(ModelForm):
+class FilePostForm(ModelForm):
     # postId = forms.ModelChoiceField(
     #     queryset=Post.objects.all() or None,
     #     widget=forms.Select(
@@ -53,7 +53,7 @@ class File__PostForm(ModelForm):
         fields = ("postId", "fileId")
 
 
-class File__CategoryForm(ModelForm):
+class FileCategoryForm(ModelForm):
     # categoryId = forms.ModelChoiceField(
     #     queryset=Category.objects.all() or None,
     #     widget=forms.Select(
@@ -72,7 +72,7 @@ class File__CategoryForm(ModelForm):
         fields = ("categoryId", "fileId")
 
 
-class File__SubCategoryForm(ModelForm):
+class FileSubCategoryForm(ModelForm):
     # subCategoryId = forms.ModelChoiceField(
     #     queryset=SubCategory.objects.all() or None,
     #     widget=forms.Select(
@@ -91,7 +91,7 @@ class File__SubCategoryForm(ModelForm):
         fields = ("subCategoryId", "fileId")
 
 
-class File__ProfileForm(ModelForm):
+class FileProfileForm(ModelForm):
     # profileId = forms.ModelChoiceField(
     #     queryset=UserProfile.objects.all() or None,
     #     widget=forms.Select(
