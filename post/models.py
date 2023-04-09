@@ -74,6 +74,8 @@ class Post(ModelMeta, BaseAbstractModel):
 class Comments(ModelMeta, BaseAbstractModel):
     postId = models.ForeignKey(Post, on_delete=models.CASCADE)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
-    content = models.TextField(max_length=150, unique=True)
+    content = models.TextField(max_length=150)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    
+    #need to add a unique index for userid and content
