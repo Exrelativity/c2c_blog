@@ -20,3 +20,9 @@ class SubCatgoryAdmin(admin.ModelAdmin):
 class PostAdmin(admin.ModelAdmin):
     class Meta:
         form = PostForm
+
+@admin.register(Comments)
+class CommentAdmin(admin.ModelAdmin):
+    
+    class Meta:
+        form = CommentsForm

@@ -12,11 +12,14 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 BASE_URL = 'http://localhost/'
+
 APP_NAME = 'Blog'
+
 EMAIL = 'exrelativity@gmail.com'
 # please  dont use because is not mine
 G_MAP_API_KEY = 'YOUR_API_KEY'
@@ -30,7 +33,6 @@ SECRET_KEY = "django-insecure-1e+8-yjm9&39!%8z7pnfg83^d3nm3ps2!xl-ang!z_$ii3+#mu
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -84,7 +86,7 @@ SETTINGS_EXPORT = [
     'BASE_URL',
     'APP_NAME',
     'EMAIL',
-    'G_MAP_API_KEY'
+    'G_MAP_API_KEY',
 ]
 
 WSGI_APPLICATION = "blog.wsgi.application"
@@ -137,6 +139,7 @@ USE_TZ = True
 
 
 MEDIA_ROOT = "media/"
+
 MEDIA_URL = "media/"
 
 

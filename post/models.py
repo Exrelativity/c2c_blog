@@ -5,7 +5,7 @@ from blog.models import BaseAbstractModel
 
 # Create your models here.
 class Category(ModelMeta, BaseAbstractModel):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     status = models.BooleanField()
     front = models.BooleanField()
     image = models.FileField(upload_to="uploads/%Y/%m/%d/")
@@ -26,7 +26,7 @@ class Category(ModelMeta, BaseAbstractModel):
 
 
 class SubCategory(ModelMeta, BaseAbstractModel):
-    name = models.CharField(max_length=64)
+    name = models.CharField(max_length=64, unique=True)
     status = models.BooleanField()
     front = models.BooleanField()
     image = models.FileField(upload_to="uploads/%Y/%m/%d/")
@@ -48,12 +48,12 @@ class SubCategory(ModelMeta, BaseAbstractModel):
 
 
 class Post(ModelMeta, BaseAbstractModel):
-    title = models.CharField(max_length=150)
+    title = models.CharField(max_length=150, unique=True)
     status = models.BooleanField()
     front = models.BooleanField()
     slider = models.BooleanField()
     image = models.FileField(upload_to="uploads/%Y/%m/%d/")
-    content = models.TextField()
+    content = models.TextField(max_length=1500)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     categoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
     subCategoryId = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
@@ -74,6 +74,6 @@ class Post(ModelMeta, BaseAbstractModel):
 class Comments(ModelMeta, BaseAbstractModel):
     postId = models.ForeignKey(Post, on_delete=models.CASCADE)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
-    content = models.TextField()
+    content = models.TextField(max_length=150, unique=True)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)

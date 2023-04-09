@@ -4,8 +4,8 @@
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
-<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet" />{% endblock stylesheets %}
-
+<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet" />
+{% endblock stylesheets %}
 {% block content %}
 
 <div class="content">
@@ -124,7 +124,7 @@
                         <div class="block block-three"></div>
                         <div class="block block-four"></div>
                         <a href="javascript:void(0)">
-                            <img class="avatar" src="{{ static(request.session['userprofile']['image']) }} alt="...">
+                            <img class="avatar" src="{{ headerdata.profile.image }} alt="...">
                             <h5 class="title">{{ request.user.get_full_name }}</h5>
                         </a>
                         <p class="description">
@@ -133,7 +133,7 @@
                     </div>
                     </p>
                     <div class="card-description">
-                        request.session['userprofile']['details']
+                        {{ headerdata.profile.details }} 
                     </div>
                 </div>
                 <div class="card-footer">

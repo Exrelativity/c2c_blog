@@ -5,7 +5,7 @@
         style="background-color: rgba(84, 39, 95, 20); opacity: 60%; height: 100%; display: flex; flex-direction: column; justify-content:flex-start;">
         <div class="profile-photo" style="justify-content: center; align-items: center;">
             <a href="/profile/{{request.user.id}}">
-                <img class="avatar" src="{% static '/img/emilyz.jpg' %}" alt="...">
+                <img class="avatar" style="width:100%" src="{% if headerdata.profile.image %} {% static headerdata.profile.image %} {% else %} {% static 'img/anime3.png' %}{% endif %}" alt="Profile Photo">
                 <h5 class="title" style="text-align: center; font-size: large; padding: auto;">
                     {% if request.user.get_full_name %} 
                     {{ request.user.get_full_name }} {% else %} 

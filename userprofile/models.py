@@ -12,7 +12,7 @@ class UsersProfile(ModelMeta, BaseAbstractModel):
     image = models.FileField(upload_to="uploads/%Y/%m/%d/",  null=True)
     dateOfBirth = models.DateTimeField(null=True)
     gender = models.CharField(max_length=1, choices=GENDERSET, null=True)
-    userId = models.ForeignKey(Users, on_delete=models.CASCADE)
+    userId = models.OneToOneField(Users, on_delete=models.CASCADE, unique=True)
     details = models.TextField(max_length=500, null=True)
     zipcode = models.CharField(max_length=15, null=True)
     address = models.CharField(max_length=150, null=True)

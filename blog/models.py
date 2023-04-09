@@ -12,12 +12,12 @@ class BaseAbstractModel(models.Model):
      is_deleted
     """
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
-    deletedAt = models.DateTimeField(null=True)
+    # deletedAt = models.DateTimeField(null=True)
 
-    def soft_delete(self):
-        """soft  delete a model instance"""
-        self.deletedAt = datetime.now() 
-        self.save()
+    # def soft_delete(self):
+    #     """soft  delete a model instance"""
+    #     self.deletedAt = datetime.now() 
+    #     self.save()
 
     class Meta:
         abstract = True

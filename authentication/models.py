@@ -4,12 +4,12 @@ from blog.models import BaseAbstractModel
 
 # Create your models here.
 class Users(BaseUser, BaseAbstractModel):
-    phone = models.CharField(max_length=15, null=True)
+    phone = models.CharField(max_length=15, null=True, unique=True)
     
 
 
 class PasswordReset(BaseAbstractModel):
-    userId = models.ForeignKey("authentication.Users", null=True, on_delete=models.SET_NULL)
+    userId = models.OneToOneField("authentication.Users", null=True, on_delete=models.SET_NULL, unique=True)
     token = models.CharField(max_length=15, null=True)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_created=True)
@@ -21,7 +21,7 @@ class PasswordReset(BaseAbstractModel):
 
 
 class VerifiedEmail(BaseAbstractModel):
-    email = models.CharField(max_length=150, null=True)
+    email = models.CharField(max_length=150, null=True, unique=True)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_created=True)
     
