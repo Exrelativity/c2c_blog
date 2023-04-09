@@ -24,19 +24,21 @@ class UsersProfile(ModelMeta, BaseAbstractModel):
     popularity = models.DecimalField(max_digits=10,decimal_places=2, null=True)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    files = models.ManyToManyField(to="file.File", through="file.FileProfile",through_fields=("profileId","fileId"))
    
     _metadata = {
         'title': 'get_full_name',
         'description': 'details',
-        'image': 'get_meta_image',
+        'image': 'get_meta_images',
     }
     
-    def get_meta_image(self):
-        if self.image:
-            return self.image.url
+    def get_meta_images(self):
+        if self.file:
+            return [x.source for x in self.files]
     
     def get_full_name(self):
         if self.firstName and self.lastName:
             return self.firstName +" "+ self.lastName
 
+  
 

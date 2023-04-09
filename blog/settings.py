@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'meta',
     "post",
     "userprofile",
-    "authentication"
+    "authentication",
+    "file"
 ]
 
 MIDDLEWARE = [
@@ -89,6 +90,7 @@ SETTINGS_EXPORT = [
     'G_MAP_API_KEY',
 ]
 
+ASGI_APPLICATION = "blog.asgi.application"
 WSGI_APPLICATION = "blog.wsgi.application"
 
 
@@ -164,4 +166,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "authentication.Users"
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 ACCOUNT_EMAIL_VERIFICATION = "none"

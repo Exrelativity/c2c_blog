@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from .models import *
 from .forms import *
+from django.http import JsonResponse
+from asgiref.sync import sync_to_async
 
 
 # Create your views here.
@@ -39,7 +41,7 @@ def index(request, msg=None):
 
 
 @login_required(login_url="/login")
-def create(request, msg=None):
+async def create(request, msg=None):
     postForm = PostForm(request.POST, request.FILES)
     category = Category.objects.all()
     subCategory = SubCategory.objects.all()
@@ -47,7 +49,7 @@ def create(request, msg=None):
         if postForm.is_valid:
             postForm.cleaned_data.all()
             postForm.instance.userId = request.user.id
-            postForm.save()
+            await sync_to_async(postForm.save(), thread_sensitive=True)
             msg = "Entries saved sucessfully"
         else:
             msg = "Error validating the form"
@@ -132,7 +134,7 @@ def show(request, id, msg=None):
 
 
 @login_required(login_url="/login")
-def update(request, id, msg=None):
+async def update(request, id, msg=None):
     postForm = PostMutationForm(request.POST, request.FILES)
     postById = Post.objects.get(id=id)
     category = Category.objects.all()
@@ -142,7 +144,7 @@ def update(request, id, msg=None):
             if request.user.id == postById.userId:
                 postForm.cleaned_data.all()
                 postForm.instance.userId = request.user.id
-                postForm.save()
+                await sync_to_async(postForm.save(), thread_sensitive=True)
                 msg = "Entries updated sucessfully"
             else:
                 msg = "Permission Denied"
@@ -168,7 +170,7 @@ def delete(request, id, msg=None):
     postById = Post.objects.get(id=id)
     if request.method == "DELETE":
         if request.user.id == postById.userId:
-            postById.soft_delete()
+            postById.delete()
             msg = "Deteted sucessfully"
         else:
             msg = "Permission Denied"
@@ -214,3 +216,48 @@ def bySubCategory(request, categoryId, subCategoryId, msg=None):
             "page_obj": page_obj,
         },
     )
+
+async def createComment(request):
+    commentForm = CommentForm(request.POST or None)
+    if request.method == "POST":
+        if commentForm.is_valid:
+            commentForm.cleaned_data.all()
+            commentForm.instance.userId = request.user.id
+            await sync_to_async(commentForm.save(), thread_sensitive=True)
+            msg = "Entries saved sucessfully"
+            status = 200
+        else:
+            msg = "Error validating the form"
+            status = 200
+    else:
+        msg = "please fill in all infomation"
+    data =  {
+            "form": commentForm,
+            "msg": msg
+            }
+    return JsonResponse(data, status)
+
+
+def postComments(request, postId):
+    comments = Comment.objects.filter(postId=postId)
+    msg = "list of comments associated with post"
+    status = 200
+    data =  {
+            "comments": comments,
+            "msg": msg
+            }
+    return JsonResponse(data, status)
+
+@login_required(login_url="/login")
+def deleteComment(request, id, msg=None):
+    commentById = Comment.objects.get(id=id)
+    if request.method == "DELETE":
+        if request.user.id == commentById.userId:
+            commentById.delete()
+            msg = "Deteted sucessfully"
+        else:
+            msg = "Permission Denied"
+    else:
+        msg = "Error deleting the entry"
+        return redirect(f"show/{id}", msg)
+    return redirect("/post/", msg)

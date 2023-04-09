@@ -28,10 +28,6 @@ class PostMutationForm(ModelForm):
         )
     )
     
-    image = forms.FileField(
-        widget=forms.FileInput(attrs={"placeholder": "image", "class": "form-control"})
-    )
-    
     content = forms.CharField(
         widget=forms.HiddenInput(
             attrs={"placeholder": "content", "class": "form-control"}
@@ -59,7 +55,6 @@ class PostMutationForm(ModelForm):
             "status",
             "front",
             "slider",
-            "image",
             "content",
             "userId",
             "categoryId",
@@ -87,12 +82,6 @@ class CategoryMutationForm(ModelForm):
         )
     )
     
-    image = forms.FileField(
-        widget=forms.FileInput(
-            attrs={"placeholder": "image", "class": "form-control"}
-        )
-    )
-    
     description = forms.CharField(
         widget=forms.TextInput(
             attrs={"placeholder": "description", "class": "form-control"}
@@ -102,7 +91,7 @@ class CategoryMutationForm(ModelForm):
 
     class Meta:
         model = Category
-        fields = ("name", "status", "front", "image", "description")
+        fields = ("name", "status", "front", "description")
 
 
 class SubCategoryMutationForm(ModelForm):
@@ -126,11 +115,6 @@ class SubCategoryMutationForm(ModelForm):
         )
     )
     
-    image = forms.FileField(
-        widget=forms.FileInput(
-            attrs={"placeholder": "image", "class": "form-control"}
-        )
-    )
     
     description = forms.CharField(
         widget=forms.TextInput(
@@ -151,7 +135,6 @@ class SubCategoryMutationForm(ModelForm):
             "name",
             "status",
             "front",
-            "image",
             "description",
             "categoryId"
             
@@ -182,9 +165,6 @@ class PostForm(ModelForm):
         )
     )
     
-    image = forms.FileField(
-        widget=forms.FileInput(attrs={"placeholder": "image", "class": "form-control"})
-    )
     
     content = forms.CharField(
         widget=forms.Textarea(attrs={"placeholder": "content", "class": "form-control"})
@@ -212,7 +192,6 @@ class PostForm(ModelForm):
             "status",
             "front",
             "slider",
-            "image",
             "content",
             "categoryId",
             "subCategoryId",
@@ -240,11 +219,6 @@ class CategoryForm(ModelForm):
         )
     )
     
-    image = forms.FileField(
-        widget=forms.FileInput(
-            attrs={"placeholder": "image", "class": "form-control"}
-        )
-    )
     
     description = forms.CharField(
         widget=forms.TextInput(
@@ -255,7 +229,7 @@ class CategoryForm(ModelForm):
 
     class Meta:
         model = Category
-        fields = ("name", "status", "front", "image", "description")
+        fields = ("name", "status", "front", "description")
 
 
 class SubCategoryForm(ModelForm):
@@ -278,11 +252,6 @@ class SubCategoryForm(ModelForm):
         )
     )
     
-    image = forms.FileField(
-        widget=forms.FileInput(
-            attrs={"placeholder": "image", "class": "form-control"}
-        )
-    )
     
     description = forms.CharField(
         widget=forms.TextInput(
@@ -304,17 +273,23 @@ class SubCategoryForm(ModelForm):
             "name",
             "status",
             "front",
-            "image",
             "description",
             "categoryId"
             
         )
 
-class CommentsForm(ModelForm):
+class CommentForm(ModelForm):
     # postId = forms.ModelChoiceField(
     #     queryset=Post.objects.all() or None,
     #     widget=forms.Select(
     #         attrs={"placeholder": "post", "class": "form-control"}
+    #     ),
+    # )
+    
+    # userId = forms.ModelChoiceField(
+    #     queryset=User.objects.all() or None,
+    #     widget=forms.Select(
+    #         attrs={"placeholder": "user", "class": "form-control"}
     #     ),
     # )
     
@@ -323,7 +298,7 @@ class CommentsForm(ModelForm):
     )
     
     class Meta:
-        model = Comments
+        model = Comment
         fields = (
             "postId",
             "userId",

@@ -19,12 +19,6 @@ from .views import *
 urlpatterns = [
     path("", index),
     path("<uuid:id>", show),
-    path("<uuid:id>/update", update),
-    path("create", create),
-    path("<uuid:id>/delete", delete),
-    path("category/<uuid:categoryId>", byCategory),
-    path("category/<uuid:categoryId>/<uuid:subCategoryId>", bySubCategory),
-    path("comments/<uuid:postId>", postComments),
-    path("comments/create", createComment),
-    path("comments/<uuid:id>/delete", deleteComment)
+    path("upload", create),
+    path("<uuid:id>/delete", delete)
 ]

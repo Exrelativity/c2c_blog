@@ -6,6 +6,9 @@ from blog.models import BaseAbstractModel
 class Users(BaseUser, BaseAbstractModel):
     phone = models.CharField(max_length=15, null=True, unique=True)
     
+    def get_full_name(self):
+        if self.firstName and self.lastName:
+            return self.firstName +" "+ self.lastName
 
 
 class PasswordReset(BaseAbstractModel):

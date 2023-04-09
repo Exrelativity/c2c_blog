@@ -2,19 +2,18 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
+from asgiref.sync import sync_to_async
 
 
 # Create your views here.
 @login_required(login_url="/login")
 def index(request, msg=None):
-    if request.user.is_authenticated:
-        if not request.session.__contains__("usersprofile"):
-            return redirect(
+    if UsersProfile.objects.get(userId=request.user.id).exists():
+        return redirect(
                 "/profile/create", msg="Please fill in your profile information"
             )
     try:
-        userId = request.user.id
-        userprofileById = UsersProfile.objects.get(userId=userId)
+        userprofileById = UsersProfile.objects.get(userId=request.user.id)
     except UsersProfile.DoesNotExist:
         return redirect(
              "/profile/create", msg="Please fill in your profile information"
@@ -27,8 +26,8 @@ def index(request, msg=None):
     )
     
 @login_required(login_url="/login")
-def create(request, msg=None):
-    if UsersProfile.objects.filter(userId=request.user.id).exists():
+async def create(request, msg=None):
+    if UsersProfile.objects.get(userId=request.user.id).exists():
         return redirect(
             "/profile/" + request.user.id + "/update",
             msg="Please update your profile information",
@@ -42,9 +41,8 @@ def create(request, msg=None):
             userprofileForm.instance.userId = request.user.id
             userprofileForm.instance.firstName = request.user.firstName
             userprofileForm.instance.lastName = request.user.lastName
-            userprofileForm.save()
+            await sync_to_async(userprofileForm.save(), thread_sensitive=True)
             msg = "Entries saved sucessfully"
-            request.session["usersprofile"] = request.POST
             return redirect("/profile/" + request.user.id)
         else:
             msg = "Error validating the form"
@@ -55,9 +53,8 @@ def create(request, msg=None):
 
 @login_required(login_url="/login")
 def show(request, userId, msg=None):
-    if request.user.is_authenticated:
-        if not request.session.__contains__("usersprofile"):
-            return redirect(
+    if not UsersProfile.objects.get(userId=request.user.id).exists():
+        return redirect(
                 "/profile/create", msg="Please fill in your profile information"
             )
     try:
@@ -75,10 +72,9 @@ def show(request, userId, msg=None):
 
 
 @login_required(login_url="/login")
-def update(request, userId, msg=None):
-    if request.user.is_authenticated:
-        if not request.session.__contains__("usersprofile"):
-            return redirect(
+async def update(request, userId, msg=None):
+    if UsersProfile.objects.get(userId=request.user.id).exists():
+        return redirect(
                 "/profile/create", msg="Please fill in your profile information"
             )
     userprofileForm = UsersProfileMutationForm()
@@ -103,7 +99,7 @@ def update(request, userId, msg=None):
             userprofileById.longitude = UsersProfileForm.cleaned_data.get("longitude")
             userprofileById.latitude = UsersProfileForm.cleaned_data.get("latitude")
             userprofileById.popularity = UsersProfileForm.cleaned_data.get("popularity")
-            userprofileById.save()
+            await sync_to_async(userprofileById.save(), thread_sensitive=True)
             msg = "Entries updated sucessfully"
         else:
             msg = "Error validating the form"

@@ -1,0 +1,43 @@
+from django.db import models
+from authentication.models import Users
+from blog.models import BaseAbstractModel
+from post.models import *
+from userprofile.models import UsersProfile
+
+# Create your models here.
+class File(BaseAbstractModel):
+    FILETYPE = (('Image', 'Image'),
+            ('Video', 'Video'),
+            ('Audio', 'Audio'),
+            ('Document', 'Document'),
+            ('Others', 'Others'))
+    source = models.FileField(upload_to="uploads/%Y/%m/%d/%H/%M/%S/")
+    userId = models.ForeignKey(Users, on_delete=models.CASCADE)
+    fileType = models.CharField(max_length=12, choices=FILETYPE, null=True)
+    updatedAt = models.DateTimeField(auto_now=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+
+    
+class FilePost(BaseAbstractModel):
+    fileId = models.ForeignKey(File, on_delete=models.CASCADE)
+    postId = models.ForeignKey(Post, on_delete=models.CASCADE)
+    updatedAt = models.DateTimeField(auto_now=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    
+class FileCategory(BaseAbstractModel):
+    fileId = models.ForeignKey(File, on_delete=models.CASCADE)
+    categoryId = models.ForeignKey(Category, on_delete=models.CASCADE) 
+    updatedAt = models.DateTimeField(auto_now=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+
+class FileSubCategory(BaseAbstractModel):
+    fileId = models.ForeignKey(File, on_delete=models.CASCADE)
+    subCategoryId = models.ForeignKey(SubCategory, on_delete=models.CASCADE) 
+    updatedAt = models.DateTimeField(auto_now=True)
+    createdAt = models.DateTimeField(auto_now_add=True)
+    
+class FileProfile(BaseAbstractModel):
+    fileId = models.ForeignKey(File, on_delete=models.CASCADE)
+    profileId = models.ForeignKey(UsersProfile, on_delete=models.CASCADE)
+    updatedAt = models.DateTimeField(auto_now=True)
+    createdAt = models.DateTimeField(auto_now_add=True)

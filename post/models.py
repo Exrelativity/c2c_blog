@@ -8,43 +8,47 @@ class Category(ModelMeta, BaseAbstractModel):
     name = models.CharField(max_length=64, unique=True)
     status = models.BooleanField()
     front = models.BooleanField()
-    image = models.FileField(upload_to="uploads/%Y/%m/%d/")
     description = models.TextField()
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    files = models.ManyToManyField(to="file.File",through="file.FileCategory",through_fields=("categoryId","fileId"))
 
     _metadata = {
         "title": "name",
         "description": "content",
-        "image": "get_meta_image",
+        "image": "get_meta_images",
     }
 
-    def get_meta_image(self):
-        if self.image:
-            return self.image.url
+    def get_meta_images(self):
+        if self.file:
+            return [x.source for x in self.files]
+    
+   
 
 
 class SubCategory(ModelMeta, BaseAbstractModel):
     name = models.CharField(max_length=64, unique=True)
     status = models.BooleanField()
     front = models.BooleanField()
-    image = models.FileField(upload_to="uploads/%Y/%m/%d/")
     description = models.TextField()
     categoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    files = models.ManyToManyField(to="file.File",through="file.FileSubCategory",through_fields=("subCategoryId","fileId"))
 
     _metadata = {
         "title": "name",
         "description": "description",
-        "image": "get_meta_image",
+        "images": "get_meta_images",
     }
 
-    def get_meta_image(self):
-        if self.image:
-            return self.image.url
+    def get_meta_images(self):
+        if self.file:
+            return [x.source for x in self.files]
+        
+    
 
 
 class Post(ModelMeta, BaseAbstractModel):
@@ -52,26 +56,27 @@ class Post(ModelMeta, BaseAbstractModel):
     status = models.BooleanField()
     front = models.BooleanField()
     slider = models.BooleanField()
-    image = models.FileField(upload_to="uploads/%Y/%m/%d/")
     content = models.TextField(max_length=1500)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     categoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
     subCategoryId = models.ForeignKey(SubCategory, on_delete=models.CASCADE)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    files = models.ManyToManyField(to="file.File",through="file.FilePost",through_fields=("postId", "fileId"))
 
     _metadata = {
         "title": "title",
         "description": "description",
-        "image": "get_meta_image",
+        "images": "get_meta_images",
     }
 
-    def get_meta_image(self):
-        if self.image:
-            return self.image.url
+    def get_meta_images(self):
+        if self.file:
+            return [x.source for x in self.files]
+        
+  
 
-
-class Comments(ModelMeta, BaseAbstractModel):
+class Comment(BaseAbstractModel):
     postId = models.ForeignKey(Post, on_delete=models.CASCADE)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     content = models.TextField(max_length=150)
@@ -79,3 +84,5 @@ class Comments(ModelMeta, BaseAbstractModel):
     createdAt = models.DateTimeField(auto_now_add=True)
     
     #need to add a unique index for userid and content
+    # blank=True,
+        # null=True,

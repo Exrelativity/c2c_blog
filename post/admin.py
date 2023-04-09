@@ -21,8 +21,8 @@ class PostAdmin(admin.ModelAdmin):
     class Meta:
         form = PostForm
 
-@admin.register(Comments)
+@admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
     
     class Meta:
-        form = CommentsForm
+        form = CommentForm

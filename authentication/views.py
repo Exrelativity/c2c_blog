@@ -30,17 +30,9 @@ def login_view(request, *args, **kwargs):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                try:
-                    usersprofile = UsersProfile.objects.get(userId = user.id)
-                except UsersProfile.DoesNotExist:
+                if not UsersProfile.objects.get(userId = user.id).exists():
                     return redirect("profile/create", msg="Please fill in your profile information")
-                else:
-                    if len(usersprofile) > 0:
-                        request.session["usersprofile"] = usersprofile
-                    else:
-                        return redirect("profile/create", msg="Please fill in your profile information")
-                        
-                    return redirect("/dashboard", kwargs={"msg":"Hi, Welcome"})
+                return redirect("/dashboard", kwargs={"msg":"Hi, Welcome"})
             else:
                 msg = "Invalid credentials"
         else:
@@ -61,7 +53,6 @@ def logout_view(request, *args, **kwargs):
         msg = "Logged out sucessfully"
     else:
         msg = "Error validating the logut"
-
     output = redirect("/login", msg)
     return output
 

@@ -21,4 +21,4 @@ class BaseAbstractModel(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ['-createdAt']
+        ordering = ['createdAt']
