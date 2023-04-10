@@ -1,4 +1,5 @@
 {% load static %}
+{% load headerdata %}
 <!--  Tip 1: You can change the color of the sidebar using: data-color="blue | green | orange | red"  -->
 <div class="sidebar-wrapper" style="width: 100%; height: 100%">
     <div class=""
@@ -7,14 +8,11 @@
             <a href="/profile/{{request.user.id}}">
                 <img class="avatar" style="width:100%" src="{% if headerdata.profile.image %} {% static headerdata.profile.image %} {% else %} {% static 'img/anime3.png' %}{% endif %}" alt="Profile Photo">
                 <h5 class="title" style="text-align: center; font-size: large; padding: auto;">
-                    {% if request.user.get_full_name %} 
-                    {{ request.user.get_full_name }} {% else %} 
                     {{ request.user.username }} 
-                    {% endif %}
                 </h5>
             </a>
             <p class="description" style="text-align: center; font-size: large; padding: auto;">
-                {% if request.session.userprofile %}{{ request.session.details }}{% else %} 
+                {% if headerdata.profile %}{{ headerdata.profile.details }}{% else %} 
                 You are welcome
                 {% endif %}
             </p>
@@ -28,12 +26,15 @@
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li class="{% if 'icons' in segment %} active {% endif %}">
+                <li id="sidebar_posts" class="sidebar_dropdown_trigger {% if 'icons' in segment %} active {% endif %}">
                     <a href="/posts">
                         <i class="tim-icons icon-atom"></i>
                         <p>Posts</p>
                     </a>
                 </li>
+                <div id="sidebar_posts"  class="sidebar_dropdown_content">
+                    <p>Add a Post</p>
+                </div>
                  <li class="{% if 'icons' in segment %} active {% endif %}">
                     <a href="/comments">
                         <i class="tim-icons icon-atom"></i>
@@ -47,6 +48,15 @@
                         <p>Your Profile</p>
                     </a>
                 </li>
+                <li id="sidebar_media" class="sidebar_dropdown_trigger {% if 'icons' in segment %} active {% endif %}">
+                    <a href="/media">
+                        <i class="tim-icons icon-atom"></i>
+                        <p>Media</p>
+                    </a>
+                </li>
+                <div id="sidebar_media"  class="sidebar_dropdown_content">
+                    <p>Add a Media</p>
+                </div>
                 <li>
                     <a href="{% url 'logout' %}">
                         <i class="tim-icons icon-button-power"></i>
@@ -57,3 +67,15 @@
         </div>
     </div>
 </div>
+<script>
+    windows.document.addEventListener("ready", ()=>{
+    El_sidebarDropdownContent = document.querySelector(".sidebar_dropdown_content").style.display = "none"
+    El_sidebarDropdownTrigger = document.querySelector(".sidebar_dropdown_trigger");
+    El_sidebarDropdownTrigger.addEventListener("focus",()=>{
+        id = this.id;
+        El_sidebarDropdownContent = document.querySelector("#{id}").style.display = "block"
+    })
+    })
+    
+    
+</script>

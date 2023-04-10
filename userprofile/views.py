@@ -17,23 +17,21 @@ def index(request, msg=None):
     return render(
         request,
         "profile/show.html",
-        {"msg": msg, "userprofile": userprofileById, "meta": meta},
+        {"msg": msg, "profile": userprofileById, "meta": meta},
     )
     
 @login_required(login_url="/login")
 def create(request, msg=None):
     try:
         UsersProfile.objects.get(userId=request.user.id)
-    except UsersProfile.DoesNotExist:
         return redirect(
-            "/profile/" + request.user.id + "/update",
+            "/profile/" + str(request.user.id) + "/update",
             msg="Please update your profile information",
         )
-        
-    userprofileForm = UsersProfileForm()
-
+    except UsersProfile.DoesNotExist:
+        pass
+    userprofileForm = UsersProfileForm(request.POST or None, request.FILES or None)
     if request.method == "POST":
-        userprofileForm = UsersProfileForm(request.POST, request.FILES)
         if userprofileForm.is_valid():
             userprofileForm.cleaned_data.all()
             userprofileForm.instance.userId = request.user.id
@@ -46,7 +44,6 @@ def create(request, msg=None):
             msg = "Error validating the form"
     else:
         msg = "Please fill all necessary feild to make a good entry"
-    
     return render(request, "profile/create.html", {"form": userprofileForm, "msg": msg})
     
 
@@ -62,7 +59,7 @@ def show(request, userId, msg=None):
     return render(
         request,
         "profile/show.html",
-        {"msg": msg, "userprofile": userprofileById, "meta": meta},
+        {"msg": msg, "profile": userprofileById, "meta": meta},
     )
 
 
@@ -74,7 +71,7 @@ def update(request, userId, msg=None):
         return redirect(
                 "/profile/create", msg="Please fill in your profile information"
             )
-    userprofileForm = UsersProfileMutationForm()
+    userprofileForm = UsersProfileMutationForm(userprofileById or None)
     if request.method == "PUT":
         userprofileForm = UsersProfileMutationForm(request.POST, request.FILES)
         if userprofileForm.is_valid():
@@ -105,7 +102,7 @@ def update(request, userId, msg=None):
     return render(
         request,
         "profile/update.html",
-        {"form": userprofileForm, "msg": msg, "userprofileById": userprofileById},
+        {"form": userprofileForm, "msg": msg, "profile": userprofileById},
     )
 
 

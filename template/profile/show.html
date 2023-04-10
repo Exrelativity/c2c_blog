@@ -1,9 +1,9 @@
 {% extends "layouts/base-two-side.html" %}
 
 {% block title %} 
-{% if usersprofile %}
-{{ usersprofile.firstName }} 
-{{ usersprofile.lastName }}
+{% if profile %}
+{{ profile.firstName }} 
+{{ profile.lastName }}
 {%  endif  %} 
 {%  endblock  %}
 
@@ -17,9 +17,9 @@
   <div class="card">
     <div class="card-header">
       <h5 class="title">
-        {% if usersprofile %}
-        {{ usersprofile.firstName }} 
-        {{ usersprofile.lastName }}
+        {% if profile %}
+        {{ profile.firstName }} 
+        {{ profile.lastName }}
         {% endif %}</h5>
       <h6 class="card-category">
         {% if alert %}
@@ -54,66 +54,66 @@
                 <span>{{ request.user.email }}</span>
               </p>
             </li>
-            {% if usersprofile %}
+            {% if profile %}
             <li>
               <p>First Name:
-                <span>{{ usersprofile.firstName }} </span>
+                <span>{{ profile.firstName }} </span>
               </p>
             </li>
             <li>
               <p>Last Name:
-                <span>{{ usersprofile.lastName }} </span>
+                <span>{{ profile.lastName }} </span>
               </p>
             </li>
             <li>
               <p>Marital Status:
-                <span>{{ usersprofile.maritalStatus }}</span>
+                <span>{{ profile.maritalStatus }}</span>
               </p>
             </li>
             <li>
               <p>Date of Birth:
-                <span>{{ usersprofile.dateOfBirth }} </span>
+                <span>{{ profile.dateOfBirth }} </span>
               </p>
             </li>
             <li>
               <p>Gender:
-                <span>{{ usersprofile.genderId }} 
+                <span>{{ profile.genderId }} 
                   </span>
               </p>
             </li>
             <li>
               <p>Address:
-                <span>{{ usersprofile.address }} </span>
+                <span>{{ profile.address }} </span>
               </p>
             </li>
             <li>
               <p>City:
-                <span>{{ usersprofile.city }} </span>
+                <span>{{ profile.city }} </span>
               </p>
             </li>
             <li>
               <p>Country:
-                <span>{{ usersprofile.country }} </span>
+                <span>{{ profile.country }} </span>
               </p>
             </li>
             <li>
               <p>Postal Code/Zip Code:
-                <span>{{ usersprofile.zipcode }} </span>
+                <span>{{ profile.zipcode }} </span>
               </p>
             </li>
             <li>
               <p>About Me:
-                <Span>{{ usersprofile.details }} </span>
+                <Span>{{ profile.details }} </span>
               </p>
             </li>
             <li>
               <p for="lat">Latitude (readonly):
-                <span>{{ usersprofile.latitude }}</span>
+                <span>{{ profile.latitude }}</span>
               </p>
             </li>
             <li>
               <p for="lng">Longitude (readonly):
-                <span>{{ usersprofile.longitude }} </span>
+                <span>{{ profile.longitude }} </span>
               </p>
             </li>
             {% endif %}

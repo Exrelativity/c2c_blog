@@ -4,7 +4,8 @@
         {% if slider %}
         {% for sliders in slider %}
         <div class="carousel-item {% if sliders.index == 0 %} {{'active'}} {% endif %}">
-          <a href="posts/{{sliders.id}}"><img class="d-block w-100" src="{{sliders.image}}" alt="{{sliders.title}}"></a>
+          <a href="posts/{{sliders.id}}">
+          <img class="d-block w-100" src="{{sliders.image}}" alt="{{sliders.title}}"></a>
         </div>
         {% endfor %}
         {% else %}
