@@ -31,12 +31,11 @@ def create(request, msg=None):
     except UsersProfile.DoesNotExist:
         pass
     userprofileForm = UsersProfileForm(request.POST or None, request.FILES or None)
+    userprofileForm.media.queryset = File.objects.filter(userId = request.user.id)
     if request.method == "POST":
         if userprofileForm.is_valid():
             userprofileForm.cleaned_data.all()
             userprofileForm.instance.userId = request.user.id
-            userprofileForm.instance.firstName = request.user.firstName
-            userprofileForm.instance.lastName = request.user.lastName
             userprofileForm.save()
             msg = "Entries saved sucessfully"
             return redirect("/profile/" + request.user.id)

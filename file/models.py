@@ -13,9 +13,12 @@ class File(BaseAbstractModel):
             ('Others', 'Others'))
     source = models.FileField(upload_to="uploads/%Y/%m/%d/%H/%M/%S/")
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
-    fileType = models.CharField(max_length=12, choices=FILETYPE, null=True)
+    fileType = models.CharField(max_length=12, choices=FILETYPE)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return "<div><img src=" +  str(self.source) + "></div>"
 
     
 class FilePost(BaseAbstractModel):

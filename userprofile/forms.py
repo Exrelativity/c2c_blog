@@ -1,6 +1,14 @@
 from django.forms import ModelForm
 from .models import UsersProfile
+from file.models import File
 from django import forms
+
+# def mediaQueryset(request):
+#     try:
+#         queryset = File.objects.filter(userId = request.user.id)
+#     except File.DoesNotExist:
+#         return None
+#     return queryset
 
 class UsersProfileForm(ModelForm):
     GENDERSET = (('M', 'Male'),
@@ -282,7 +290,8 @@ class UsersProfileForm(ModelForm):
             attrs={
                 "placeholder":"Date of birth",
                 "class":"form-control",
-                "type":"date"}
+                "type":"date",
+                "value":"20/10/2001"}
             ))
     
     gender = forms.CharField(
@@ -356,6 +365,14 @@ class UsersProfileForm(ModelForm):
                 "placeholder":"popularity",
                 "class":"form-control"}
             ))
+    media = forms.MultipleChoiceField(
+    
+        widget=forms.SelectMultiple(
+            attrs={
+            "placeholder":"profile medias",
+            "class":"form-control"}
+        )
+    )
     
     class Meta:
         model = UsersProfile
@@ -717,6 +734,16 @@ class UsersProfileMutationForm(ModelForm):
                 "placeholder":"popularity",
                 "class":"form-control"}
             ))
+    
+    media = forms.MultipleChoiceField(
+    
+        widget=forms.SelectMultiple(
+            attrs={
+            "placeholder":"profile medias",
+            "class":"form-control"}
+        )
+    )
+    
     class Meta:
         model = UsersProfile
         fields = "__all__"

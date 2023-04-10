@@ -3,6 +3,52 @@ from .models import *
 from django import forms
 
 
+# def categoryQueryset():
+#     try:
+#         queryset = Category.objects.all()
+#     except Category.DoesNotExist:
+#         return None
+#     return queryset
+
+# def subCategoryQueryset():
+#     try:
+#         queryset = SubCategory.objects.all()
+#     except SubCategory.DoesNotExist:
+#         return None
+#     return queryset
+
+# def postQueryset():
+#     try:
+#         queryset = Post.objects.all()
+#     except Post.DoesNotExist:
+#         return None
+#     return queryset
+
+# def authQueryset(request):
+#     try:
+#         queryset = Users.objects.get(id = request.user.id)
+       
+#     except Users.DoesNotExist:
+#         return None
+#     return queryset
+
+# def mediaQueryset(request):
+#     try:
+#         queryset = File.objects.filter(userId = request.user.id)
+       
+#     except File.DoesNotExist:
+#         return None
+#     return queryset
+
+# def profileQueryset(request):
+#     try:
+#         queryset = UsersProfile.objects.get(userId = request.user.id)
+       
+#     except UsersProfile.DoesNotExist:
+#         return None
+#     return queryset
+
+
 class FileForm(ModelForm):
     FILETYPE = (
         ("Image", "Image"),
@@ -12,12 +58,11 @@ class FileForm(ModelForm):
         ("Others", "Others"),
     )
 
-    # userId = forms.ModelChoiceField(
-    #     queryset=User.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "post", "class": "form-control"}
-    #     ),
-    # )
+    userId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "post", "class": "form-control"}
+        ),
+    )
 
     source = forms.FileField(
         widget=forms.FileInput(attrs={"placeholder": "file", "class": "form-control"})
@@ -35,76 +80,68 @@ class FileForm(ModelForm):
 
 
 class FilePostForm(ModelForm):
-    # postId = forms.ModelChoiceField(
-    #     queryset=Post.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "post", "class": "form-control"}
-    #     ),
-    # )
+    postId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "post", "class": "form-control"}
+        ),
+    )
 
-    # fileId = forms.ModelChoiceField(
-    #     queryset=File.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "file", "class": "form-control"}
-    #     ),
-    # )
+    fileId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "file", "class": "form-control"}
+        ),
+    )
     class Meta:
         model = FilePost
         fields = ("postId", "fileId")
 
 
 class FileCategoryForm(ModelForm):
-    # categoryId = forms.ModelChoiceField(
-    #     queryset=Category.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "category", "class": "form-control"}
-    #     ),
-    # )
+    categoryId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "category", "class": "form-control"}
+        ),
+    )
 
-    # fileId = forms.ModelChoiceField(
-    #     queryset=File.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "file", "class": "form-control"}
-    #     ),
-    # )
+    fileId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "file", "class": "form-control"}
+        ),
+    )
     class Meta:
         model = FileCategory
         fields = ("categoryId", "fileId")
 
 
 class FileSubCategoryForm(ModelForm):
-    # subCategoryId = forms.ModelChoiceField(
-    #     queryset=SubCategory.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "SubCategory", "class": "form-control"}
-    #     ),
-    # )
+    subCategoryId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "SubCategory", "class": "form-control"}
+        ),
+    )
 
-    # fileId = forms.ModelChoiceField(
-    #     queryset=File.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "file", "class": "form-control"}
-    #     ),
-    # )
+    fileId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "file", "class": "form-control"}
+        ),
+    )
     class Meta:
         model = FileSubCategory
         fields = ("subCategoryId", "fileId")
 
 
 class FileProfileForm(ModelForm):
-    # profileId = forms.ModelChoiceField(
-    #     queryset=UserProfile.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "User Profile", "class": "form-control"}
-    #     ),
-    # )
+    profileId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "User Profile", "class": "form-control"}
+        ),
+    )
 
-    # fileId = forms.ModelChoiceField(
-    #     queryset=File.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "file", "class": "form-control"}
-    #     ),
-    # )
+    fileId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "file", "class": "form-control"}
+        ),
+    )
 
     class Meta:
         model = FileProfile

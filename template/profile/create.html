@@ -25,7 +25,7 @@
     <div class="card-body">
       <form action="/profile/create" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <!-- <div class="row">
+        <div class="row">
           <div class="col-md-6 pr-md-1">
             <div class="form-group">
               <label>First Name</label>
@@ -40,13 +40,13 @@
               <span class="text-danger">{{ form.lastName.errors }}</span>
             </div>
           </div>
-        </div> -->
+        </div>
         <div class="row">
           <div class="col-md-12">
             <div class="form-group">
               <label>Picture</label>
-              {{ form.image }}
-              <span class="text-danger">{{ form.image.errors }}</span>
+              {{ form.media }}
+              <span class="text-danger">{{ form.media.errors }}</span>
             </div>
           </div>
         </div>

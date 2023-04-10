@@ -6,8 +6,8 @@ from blog.models import BaseAbstractModel
 # Create your models here.
 class Category(ModelMeta, BaseAbstractModel):
     name = models.CharField(max_length=64, unique=True)
-    status = models.BooleanField()
-    front = models.BooleanField()
+    status = models.BooleanField(default=False)
+    front = models.BooleanField(default=False)
     description = models.TextField()
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     updatedAt = models.DateTimeField(auto_now=True)
@@ -24,13 +24,17 @@ class Category(ModelMeta, BaseAbstractModel):
         if self.file:
             return [x.source for x in self.files]
     
+    def __str__(self):
+        return self.name
+    
+    
    
 
 
 class SubCategory(ModelMeta, BaseAbstractModel):
     name = models.CharField(max_length=64, unique=True)
-    status = models.BooleanField()
-    front = models.BooleanField()
+    status = models.BooleanField(default=False)
+    front = models.BooleanField(default=False)
     description = models.TextField()
     categoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
@@ -48,14 +52,16 @@ class SubCategory(ModelMeta, BaseAbstractModel):
         if self.file:
             return [x.source for x in self.files]
         
+    def __str__(self):
+        return self.name
     
 
 
 class Post(ModelMeta, BaseAbstractModel):
     title = models.CharField(max_length=150, unique=True)
-    status = models.BooleanField()
-    front = models.BooleanField()
-    slider = models.BooleanField()
+    status = models.BooleanField(default=False)
+    front = models.BooleanField(default=False)
+    slider = models.BooleanField(default=False)
     content = models.TextField(max_length=1500)
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     categoryId = models.ForeignKey(Category, on_delete=models.CASCADE)
@@ -74,6 +80,9 @@ class Post(ModelMeta, BaseAbstractModel):
         if self.file:
             return [x.source for x in self.files]
         
+    def __str__(self):
+        return self.title
+    
   
 
 class Comment(BaseAbstractModel):

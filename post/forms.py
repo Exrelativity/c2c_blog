@@ -1,8 +1,45 @@
 from django.forms import ModelForm
 from .models import *
 from django import forms
+# from file.models import File
 
+# def categoryQueryset():
+#     try:
+#         queryset = Category.objects.all()
+#     except Category.DoesNotExist:
+#         return None
+#     return queryset
 
+# def subCategoryQueryset():
+#     try:
+#         queryset = SubCategory.objects.all()
+#     except SubCategory.DoesNotExist:
+#         return None
+#     return queryset
+
+# def postQueryset():
+#     try:
+#         queryset = Post.objects.all()
+#     except SubCategory.DoesNotExist:
+#         return None
+#     return queryset
+
+# def mediaQueryset(request):
+#     try:
+#         queryset = File.objects.filter(userId = request.user.id)
+       
+#     except File.DoesNotExist:
+#         return None
+#     return queryset
+
+# def authQueryset(request):
+#     try:
+#         queryset = Users.objects.get(id = request.user.id)
+
+#     except Users.DoesNotExist:
+#         return None
+#     return queryset
+    
 class PostMutationForm(ModelForm):
 
 
@@ -34,19 +71,25 @@ class PostMutationForm(ModelForm):
         )
     )
     
-    # categoryId = forms.ModelChoiceField(
-    #     queryset=Category.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "category", "class": "form-control"}
-    #     ),
-    # )
+    categoryId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "category", "class": "form-control"}
+        ),
+    )
 
-    # subCategoryId = forms.ModelChoiceField(
-    #     queryset=SubCategory.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "sub Category", "class": "form-control"}
-    #     )
-    # )
+    subCategoryId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "sub Category", "class": "form-control"}
+        )
+    )
+    
+    media = forms.MultipleChoiceField(
+        widget=forms.SelectMultiple(
+            attrs={
+            "placeholder":"profile medias",
+            "class":"form-control"}
+        )
+    )
 
     class Meta:
         model = Post
@@ -87,6 +130,14 @@ class CategoryMutationForm(ModelForm):
             attrs={"placeholder": "description", "class": "form-control"}
         )
     )
+    
+    media = forms.MultipleChoiceField(
+        widget=forms.SelectMultiple(
+            attrs={
+            "placeholder":"profile medias",
+            "class":"form-control"}
+        )
+    )
 
 
     class Meta:
@@ -122,13 +173,19 @@ class SubCategoryMutationForm(ModelForm):
         )
     )
     
-    # categoryId = forms.ModelChoiceField(
-    #     queryset=Category.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "category", "class": "form-control"}
-    #     )
-    # )
+    categoryId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "category", "class": "form-control"}
+        ),
+    )
 
+    media = forms.MultipleChoiceField(
+        widget=forms.SelectMultiple(
+            attrs={
+            "placeholder":"profile medias",
+            "class":"form-control"}
+        )
+    )
     class Meta:
         model = SubCategory
         fields = (
@@ -171,20 +228,26 @@ class PostForm(ModelForm):
     )
     
 
-    # categoryId = forms.ModelChoiceField(
-    #     queryset=SubCategory.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "category", "class": "form-control"}
-    #     ),
-    # )
-    
-    # subCategoryId = forms.ModelChoiceField(
-    #     queryset=SubCategory.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "subCategory", "class": "form-control"}
-    #     ),
-    # )
+    categoryId = forms.ChoiceField(
+        
+        widget=forms.Select(
+            attrs={"placeholder": "category", "class": "form-control"}
+        ),
+    )
 
+    subCategoryId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "sub Category", "class": "form-control"}
+        )
+    )
+    
+    media = forms.MultipleChoiceField(
+        widget=forms.SelectMultiple(
+            attrs={
+            "placeholder":"profile medias",
+            "class":"form-control"}
+        )
+    )
     class Meta:
         model = Post
         fields = (
@@ -196,6 +259,8 @@ class PostForm(ModelForm):
             "categoryId",
             "subCategoryId",
         )
+        
+    
 
 
 class CategoryForm(ModelForm):
@@ -226,6 +291,13 @@ class CategoryForm(ModelForm):
         )
     )
 
+    media = forms.MultipleChoiceField(
+        widget=forms.SelectMultiple(
+            attrs={
+            "placeholder":"profile medias",
+            "class":"form-control"}
+        )
+    )
 
     class Meta:
         model = Category
@@ -258,14 +330,21 @@ class SubCategoryForm(ModelForm):
             attrs={"placeholder": "description", "class": "form-control"}
         )
     )
+    
+    categoryId = forms.ChoiceField(
+        
+        widget=forms.Select(
+            attrs={"placeholder": "category", "class": "form-control"}
+        ),
+    )
 
-    # categoryId = forms.ModelChoiceField(
-    #     queryset=Category.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "category", "class": "form-control"}
-    #     ),
-    # )
-
+    media = forms.MultipleChoiceField(
+        widget=forms.SelectMultiple(
+            attrs={
+            "placeholder":"profile medias",
+            "class":"form-control"}
+        )
+    )
 
     class Meta:
         model = SubCategory
@@ -279,19 +358,17 @@ class SubCategoryForm(ModelForm):
         )
 
 class CommentForm(ModelForm):
-    # postId = forms.ModelChoiceField(
-    #     queryset=Post.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "post", "class": "form-control"}
-    #     ),
-    # )
+    postId = forms.ChoiceField(
+    widget=forms.Select(
+            attrs={"placeholder": "post", "class": "form-control"}
+        ),
+    )
     
-    # userId = forms.ModelChoiceField(
-    #     queryset=User.objects.all() or None,
-    #     widget=forms.Select(
-    #         attrs={"placeholder": "user", "class": "form-control"}
-    #     ),
-    # )
+    userId = forms.ChoiceField(
+        widget=forms.Select(
+            attrs={"placeholder": "user", "class": "form-control"}
+        ),
+    )
     
     content = forms.CharField(
         widget=forms.Textarea(attrs={"placeholder": "content", "class": "form-control"})
