@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from django.http import JsonResponse
-from asgiref.sync import sync_to_async
+from asgiref.sync import async_to_sync
 
 # Create your views here.
 @login_required(login_url="/login")
@@ -29,7 +29,7 @@ async def create(request, msg=None):
             fileForm.cleaned_data.all()
             fileForm.instance.userId = request.user.id
 
-            await sync_to_async(fileForm.save(), thread_sensitive=True)
+            await async_to_sync(fileForm.save())
             msg = "uploaded sucessfully"
             status = 200
             return redirect("file")

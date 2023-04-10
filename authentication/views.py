@@ -30,7 +30,9 @@ def login_view(request, *args, **kwargs):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                if not UsersProfile.objects.get(userId = user.id).exists():
+                try:
+                    UsersProfile.objects.get(userId = user.id)
+                except UsersProfile.DoesNotExist:
                     return redirect("profile/create", msg="Please fill in your profile information")
                 return redirect("/dashboard", kwargs={"msg":"Hi, Welcome"})
             else:

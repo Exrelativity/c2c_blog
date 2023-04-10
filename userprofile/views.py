@@ -2,16 +2,11 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
-from asgiref.sync import sync_to_async
 
 
 # Create your views here.
 @login_required(login_url="/login")
 def index(request, msg=None):
-    if UsersProfile.objects.get(userId=request.user.id).exists():
-        return redirect(
-                "/profile/create", msg="Please fill in your profile information"
-            )
     try:
         userprofileById = UsersProfile.objects.get(userId=request.user.id)
     except UsersProfile.DoesNotExist:
@@ -26,12 +21,15 @@ def index(request, msg=None):
     )
     
 @login_required(login_url="/login")
-async def create(request, msg=None):
-    if UsersProfile.objects.get(userId=request.user.id).exists():
+def create(request, msg=None):
+    try:
+        UsersProfile.objects.get(userId=request.user.id)
+    except UsersProfile.DoesNotExist:
         return redirect(
             "/profile/" + request.user.id + "/update",
             msg="Please update your profile information",
         )
+        
     userprofileForm = UsersProfileForm()
 
     if request.method == "POST":
@@ -41,28 +39,25 @@ async def create(request, msg=None):
             userprofileForm.instance.userId = request.user.id
             userprofileForm.instance.firstName = request.user.firstName
             userprofileForm.instance.lastName = request.user.lastName
-            await sync_to_async(userprofileForm.save(), thread_sensitive=True)
+            userprofileForm.save()
             msg = "Entries saved sucessfully"
             return redirect("/profile/" + request.user.id)
         else:
             msg = "Error validating the form"
     else:
         msg = "Please fill all necessary feild to make a good entry"
+    
     return render(request, "profile/create.html", {"form": userprofileForm, "msg": msg})
-
+    
 
 @login_required(login_url="/login")
 def show(request, userId, msg=None):
-    if not UsersProfile.objects.get(userId=request.user.id).exists():
+    try:
+        userprofileById = UsersProfile.objects.get(userId=request.user.id)
+    except UsersProfile.DoesNotExist:
         return redirect(
                 "/profile/create", msg="Please fill in your profile information"
             )
-    try:
-        userprofileById = UsersProfile.objects.get(userId=userId)
-    except UsersProfile.DoesNotExist:
-        return redirect(
-             "/dashboard", msg="Sorry this profile does not exist"
-        )
     meta = userprofileById.as_meta()
     return render(
         request,
@@ -72,13 +67,14 @@ def show(request, userId, msg=None):
 
 
 @login_required(login_url="/login")
-async def update(request, userId, msg=None):
-    if UsersProfile.objects.get(userId=request.user.id).exists():
+def update(request, userId, msg=None):
+    try:
+        userprofileById = UsersProfile.objects.get(userId=userId)
+    except UsersProfile.DoesNotExist:
         return redirect(
                 "/profile/create", msg="Please fill in your profile information"
             )
     userprofileForm = UsersProfileMutationForm()
-    userprofileById = UsersProfile.objects.get(userId=userId)
     if request.method == "PUT":
         userprofileForm = UsersProfileMutationForm(request.POST, request.FILES)
         if userprofileForm.is_valid():
@@ -99,7 +95,7 @@ async def update(request, userId, msg=None):
             userprofileById.longitude = UsersProfileForm.cleaned_data.get("longitude")
             userprofileById.latitude = UsersProfileForm.cleaned_data.get("latitude")
             userprofileById.popularity = UsersProfileForm.cleaned_data.get("popularity")
-            await sync_to_async(userprofileById.save(), thread_sensitive=True)
+            userprofileById.save()
             msg = "Entries updated sucessfully"
         else:
             msg = "Error validating the form"
@@ -115,9 +111,14 @@ async def update(request, userId, msg=None):
 
 @login_required(login_url="/login")
 def delete(request, userId, msg=None):
-    userprofileById = UsersProfile.objects.get(userId=userId)
+    try:
+        userprofileById = UsersProfile.objects.get(userId=userId)
+    except UsersProfile.DoesNotExist:
+        return redirect(
+                "/Dashboard", msg="the requested profile does not exit"
+            )
     if request.method == "DELETE" and request.user.id == userprofileById.userId:
-        userprofileById.soft_delete()
+        userprofileById.delete()
         msg = "Deteted sucessfully"
         return redirect("/profile/usersprofiles", msg)
     else:
