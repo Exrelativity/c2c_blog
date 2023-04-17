@@ -291,7 +291,7 @@ class UsersProfileForm(ModelForm):
                 "placeholder":"Date of birth",
                 "class":"form-control",
                 "type":"date",
-                "value":"20/10/2001"}
+                "value":"2001-01-01"}
             ))
     
     gender = forms.CharField(
@@ -365,9 +365,8 @@ class UsersProfileForm(ModelForm):
                 "placeholder":"popularity",
                 "class":"form-control"}
             ))
-    media = forms.MultipleChoiceField(
-    
-        widget=forms.SelectMultiple(
+    image = forms.ChoiceField(
+        widget=forms.Select(
             attrs={
             "placeholder":"profile medias",
             "class":"form-control"}
@@ -735,9 +734,8 @@ class UsersProfileMutationForm(ModelForm):
                 "class":"form-control"}
             ))
     
-    media = forms.MultipleChoiceField(
-    
-        widget=forms.SelectMultiple(
+    image = forms.ChoiceField(
+        widget=forms.Select(
             attrs={
             "placeholder":"profile medias",
             "class":"form-control"}

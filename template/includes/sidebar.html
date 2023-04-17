@@ -13,27 +13,43 @@
                 </a>
             </div>
             <ul class="nav">
-                <li class="{% if 'index' in segment %} active {% endif %} ">
+                <li class="{% if 'dashboard' in segment %} active {% endif %} ">
                     <a href="/dashboard">
-                        <i class="tim-icons icon-chart-pie-36"></i>
+                        <i class="tim-icons icon-istanbul"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>
-                <li id="sidebar_posts" class="sidebar_dropdown_trigger {% if 'icons' in segment %} active {% endif %}">
+                <li id="sidebar_posts" class="sidebar_dropdown_trigger {% if 'posts' in segment %} active {% endif %}">
                     <a href="/posts">
-                        <i class="tim-icons icon-atom"></i>
+                        <i class="tim-icons icon-align-left-2"></i>
                         <p>Posts</p>
                     </a>
                 </li>
-                <!-- <div id="sidebar_posts"  class="sidebar_dropdown_content">
-                    <p>I am the dropdown</p>
-                </div> -->
-                <li class="{% if 'icons' in segment %} active {% endif %}">
-                    <a href="/profile">
-                        <i class="tim-icons icon-atom"></i>
-                        <p>Profile</p>
+                <div id="sidebar_posts"  style="display:none" class="sidebar_dropdown_content">
+                    <p>Add a Post</p>
+                </div>
+                 <li class="{% if 'comments' in segment %} active {% endif %}">
+                    <a href="/comments">
+                        <i class="tim-icons icon-notes"></i>
+                        <p>Comments</p>
                     </a>
                 </li>
+
+                <li class="{% if 'profile' in segment %} active {% endif %}">
+                    <a href="/profile">
+                        <i class="tim-icons icon-single-02"></i>
+                        <p>Your Profile</p>
+                    </a>
+                </li>
+                <li id="sidebar_media" class="sidebar_dropdown_trigger {% if 'media' in segment %} active {% endif %}">
+                    <a href="/media">
+                        <i class="tim-icons icon-atom"></i>
+                        <p>Media</p>
+                    </a>
+                </li>
+                <div id="sidebar_media"  style="display:none" class="sidebar_dropdown_content">
+                    <p>Add a Media</p>
+                </div>
                 <li>
                     <a href="{% url 'logout' %}">
                         <i class="tim-icons icon-button-power"></i>
@@ -44,7 +60,7 @@
         </div>
     </div>
 <script>
-windows.document.addEventListener("ready", ()=>{
+document.addEventListener("ready", ()=>{
 El_sidebarDropdownContent = document.querySelector(".sidebar_dropdown_content").style.display = "none"
 El_sidebarDropdownTrigger = document.querySelector(".sidebar_dropdown_trigger");
 El_sidebarDropdownTrigger.addEventListener("focus",()=>{

@@ -11,6 +11,7 @@ class File(BaseAbstractModel):
             ('Audio', 'Audio'),
             ('Document', 'Document'),
             ('Others', 'Others'))
+    name = models.CharField(max_length=100)
     source = models.FileField(upload_to="uploads/%Y/%m/%d/%H/%M/%S/")
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     fileType = models.CharField(max_length=12, choices=FILETYPE)

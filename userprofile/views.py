@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
+from file.forms import *
 
 
 # Create your views here.
@@ -30,8 +31,8 @@ def create(request, msg=None):
         )
     except UsersProfile.DoesNotExist:
         pass
+    fileForm = FileForm(request.POST or None, request.FILES or None)
     userprofileForm = UsersProfileForm(request.POST or None, request.FILES or None)
-    userprofileForm.media.queryset = File.objects.filter(userId = request.user.id)
     if request.method == "POST":
         if userprofileForm.is_valid():
             userprofileForm.cleaned_data.all()
@@ -43,7 +44,7 @@ def create(request, msg=None):
             msg = "Error validating the form"
     else:
         msg = "Please fill all necessary feild to make a good entry"
-    return render(request, "profile/create.html", {"form": userprofileForm, "msg": msg})
+    return render(request, "profile/create.html", {"form": userprofileForm,"fileForm":fileForm, "msg": msg})
     
 
 @login_required(login_url="/login")

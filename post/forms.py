@@ -48,26 +48,29 @@ class PostMutationForm(ModelForm):
     )
     
     status = forms.BooleanField(
-        widget=forms.CheckboxInput(
-            attrs={"placeholder": "status", "class": "form-control"}
+        widget=forms.RadioSelect(
+            attrs={"placeholder": "status", "class": "form-control"},
+            choices=(True, False)
         )
     )
     
     front = forms.BooleanField(
-        widget=forms.CheckboxInput(
-            attrs={"placeholder": "front", "class": "form-control"}
+        widget=forms.RadioSelect(
+            attrs={"placeholder": "front", "class": "form-control"},
+            choices=(True, False)
         )
     )
     
     slider = forms.BooleanField(
-        widget=forms.CheckboxInput(
-            attrs={"placeholder": "slider", "class": "form-control"}
+        widget=forms.RadioSelect(
+            attrs={"placeholder": "slider", "class": "form-control"},
+            choices=(True, False)
         )
     )
     
     content = forms.CharField(
         widget=forms.HiddenInput(
-            attrs={"placeholder": "content", "class": "form-control"}
+            attrs={"placeholder": "content", "class": "form-control", "id":"content"}
         )
     )
     

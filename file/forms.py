@@ -27,7 +27,7 @@ from django import forms
 # def authQueryset(request):
 #     try:
 #         queryset = Users.objects.get(id = request.user.id)
-       
+
 #     except Users.DoesNotExist:
 #         return None
 #     return queryset
@@ -35,7 +35,7 @@ from django import forms
 # def mediaQueryset(request):
 #     try:
 #         queryset = File.objects.filter(userId = request.user.id)
-       
+
 #     except File.DoesNotExist:
 #         return None
 #     return queryset
@@ -43,7 +43,7 @@ from django import forms
 # def profileQueryset(request):
 #     try:
 #         queryset = UsersProfile.objects.get(userId = request.user.id)
-       
+
 #     except UsersProfile.DoesNotExist:
 #         return None
 #     return queryset
@@ -60,10 +60,18 @@ class FileForm(ModelForm):
 
     userId = forms.ChoiceField(
         widget=forms.Select(
-            attrs={"placeholder": "post", "class": "form-control"}
+            attrs={
+                "placeholder": "post",
+                "class": "form-control",
+                "value": "{{request.user.id}}",
+            }
         ),
     )
 
+    name = forms.CharField(
+        widget=forms.TextInput(attrs={"placeholder": "name", "class": "form-control"})
+    )
+    
     source = forms.FileField(
         widget=forms.FileInput(attrs={"placeholder": "file", "class": "form-control"})
     )
@@ -81,16 +89,13 @@ class FileForm(ModelForm):
 
 class FilePostForm(ModelForm):
     postId = forms.ChoiceField(
-        widget=forms.Select(
-            attrs={"placeholder": "post", "class": "form-control"}
-        ),
+        widget=forms.Select(attrs={"placeholder": "post", "class": "form-control"}),
     )
 
     fileId = forms.ChoiceField(
-        widget=forms.Select(
-            attrs={"placeholder": "file", "class": "form-control"}
-        ),
+        widget=forms.Select(attrs={"placeholder": "file", "class": "form-control"}),
     )
+
     class Meta:
         model = FilePost
         fields = ("postId", "fileId")
@@ -98,16 +103,13 @@ class FilePostForm(ModelForm):
 
 class FileCategoryForm(ModelForm):
     categoryId = forms.ChoiceField(
-        widget=forms.Select(
-            attrs={"placeholder": "category", "class": "form-control"}
-        ),
+        widget=forms.Select(attrs={"placeholder": "category", "class": "form-control"}),
     )
 
     fileId = forms.ChoiceField(
-        widget=forms.Select(
-            attrs={"placeholder": "file", "class": "form-control"}
-        ),
+        widget=forms.Select(attrs={"placeholder": "file", "class": "form-control"}),
     )
+
     class Meta:
         model = FileCategory
         fields = ("categoryId", "fileId")
@@ -121,10 +123,9 @@ class FileSubCategoryForm(ModelForm):
     )
 
     fileId = forms.ChoiceField(
-        widget=forms.Select(
-            attrs={"placeholder": "file", "class": "form-control"}
-        ),
+        widget=forms.Select(attrs={"placeholder": "file", "class": "form-control"}),
     )
+
     class Meta:
         model = FileSubCategory
         fields = ("subCategoryId", "fileId")
@@ -138,9 +139,7 @@ class FileProfileForm(ModelForm):
     )
 
     fileId = forms.ChoiceField(
-        widget=forms.Select(
-            attrs={"placeholder": "file", "class": "form-control"}
-        ),
+        widget=forms.Select(attrs={"placeholder": "file", "class": "form-control"}),
     )
 
     class Meta:

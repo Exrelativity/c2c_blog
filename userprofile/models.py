@@ -9,7 +9,7 @@ class UsersProfile(ModelMeta, BaseAbstractModel):
                  ('F', 'Female'))
     firstName = models.CharField(max_length=64, null=True, blank=True)
     lastName = models.CharField(max_length=64, null=True, blank=True)
-    image = models.FileField(upload_to="uploads/%Y/%m/%d/",  null=True, blank=True)
+    image = models.CharField(max_length=150, null=True, blank=True)
     dateOfBirth = models.DateTimeField(null=True, blank=True)
     gender = models.CharField(max_length=1, choices=GENDERSET, null=True, blank=True)
     userId = models.OneToOneField(Users, on_delete=models.CASCADE, unique=True)
@@ -24,7 +24,7 @@ class UsersProfile(ModelMeta, BaseAbstractModel):
     popularity = models.DecimalField(max_digits=10,decimal_places=2, null=True, blank=True)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
-    media = models.ManyToManyField(to="file.File", through="file.FileProfile",through_fields=("profileId","fileId"), null=True, blank=True)
+    media = models.ManyToManyField(to="file.File", through="file.FileProfile",through_fields=("profileId","fileId"))
    
     _metadata = {
         'title': 'get_full_name',
@@ -33,7 +33,7 @@ class UsersProfile(ModelMeta, BaseAbstractModel):
     }
     
     def get_meta_images(self):
-        if self.file:
+        if self.media:
             return [x.source for x in self.media]
     
     def get_full_name(self):

@@ -4,8 +4,9 @@ from django.shortcuts import render, redirect
 from django.db.models import Q
 from .models import *
 from .forms import *
+from file.models import FilePost
+from file.forms import FileForm
 from django.http import JsonResponse
-from asgiref.sync import sync_to_async
 
 
 # Create your views here.
@@ -41,15 +42,18 @@ def index(request, msg=None):
 
 
 @login_required(login_url="/login")
-async def create(request, msg=None):
+def create(request, msg=None):
     postForm = PostForm(request.POST, request.FILES)
+    fileForm = FileForm(request.POST or None, request.FILES)
     category = Category.objects.all()
     subCategory = SubCategory.objects.all()
     if request.method == "POST":
         if postForm.is_valid:
             postForm.cleaned_data.all()
             postForm.instance.userId = request.user.id
-            await sync_to_async(postForm.save(), thread_sensitive=True)
+            postForm.save()
+            for i in postForm.cleaned_data.get("media"):
+                FilePost.objects.create(postId=postForm.instance.id, fileId=i)
             msg = "Entries saved sucessfully"
         else:
             msg = "Error validating the form"
@@ -60,9 +64,10 @@ async def create(request, msg=None):
         "post/create.html",
         {
             "form": postForm,
+            "fileForm":fileForm,
             "msg": msg,
-            "category": category,
-            "subCategory": subCategory,
+            "categorys": category,
+            "subCategorys": subCategory,
         },
     )
 
@@ -134,7 +139,7 @@ def show(request, id, msg=None):
 
 
 @login_required(login_url="/login")
-async def update(request, id, msg=None):
+def update(request, id, msg=None):
     postForm = PostMutationForm(request.POST, request.FILES)
     postById = Post.objects.get(id=id)
     category = Category.objects.all()
@@ -144,7 +149,7 @@ async def update(request, id, msg=None):
             if request.user.id == postById.userId:
                 postForm.cleaned_data.all()
                 postForm.instance.userId = request.user.id
-                await sync_to_async(postForm.save(), thread_sensitive=True)
+                postForm.save()
                 msg = "Entries updated sucessfully"
             else:
                 msg = "Permission Denied"
@@ -217,13 +222,14 @@ def bySubCategory(request, categoryId, subCategoryId, msg=None):
         },
     )
 
-async def createComment(request):
+
+def createComment(request):
     commentForm = CommentForm(request.POST or None)
     if request.method == "POST":
         if commentForm.is_valid:
             commentForm.cleaned_data.all()
             commentForm.instance.userId = request.user.id
-            await sync_to_async(commentForm.save(), thread_sensitive=True)
+            commentForm.save()
             msg = "Entries saved sucessfully"
             status = 200
         else:
@@ -231,10 +237,7 @@ async def createComment(request):
             status = 200
     else:
         msg = "please fill in all infomation"
-    data =  {
-            "form": commentForm,
-            "msg": msg
-            }
+    data = {"form": commentForm, "msg": msg}
     return JsonResponse(data, status)
 
 
@@ -242,11 +245,9 @@ def postComments(request, postId):
     comments = Comment.objects.filter(postId=postId)
     msg = "list of comments associated with post"
     status = 200
-    data =  {
-            "comments": comments,
-            "msg": msg
-            }
+    data = {"comments": comments, "msg": msg}
     return JsonResponse(data, status)
+
 
 @login_required(login_url="/login")
 def deleteComment(request, id, msg=None):
