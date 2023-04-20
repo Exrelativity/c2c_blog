@@ -15,11 +15,10 @@ def headerdata(request):
         subcategory = SubCategory.objects.filter(status=True, front=True)
     except:
         pass
-    if request.user.id:
-        try:
-            profile = UsersProfile.objects.get(userId=request.user.id)
-        except:
-            profile = {}
+    try:
+        profile = UsersProfile.objects.get(userId=request.user.id)
+    except:
+        profile = {}
             
     return {
         "category": category,

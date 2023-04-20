@@ -375,7 +375,7 @@ class UsersProfileForm(ModelForm):
     
     class Meta:
         model = UsersProfile
-        fields = "__all__"
+        fields = ("firstName", "lastName", "dateOfBirth", "gender", "details", "zipcode", "address", "city", "region", "longitude", "latitude", "popularity", "image")
 
 class UsersProfileMutationForm(ModelForm):
     GENDERSET = (('M', 'Male'),
@@ -744,4 +744,4 @@ class UsersProfileMutationForm(ModelForm):
     
     class Meta:
         model = UsersProfile
-        fields = "__all__"
+        fields = ("firstName", "lastName", "dateOfBirth", "gender", "details", "zipcode", "address", "city", "region", "longitude", "latitude", "popularity", "image")

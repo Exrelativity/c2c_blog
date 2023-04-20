@@ -32,12 +32,29 @@ def create(request, msg=None):
     except UsersProfile.DoesNotExist:
         pass
     fileForm = FileForm(request.POST or None, request.FILES or None)
-    userprofileForm = UsersProfileForm(request.POST or None, request.FILES or None)
+    userprofileForm = UsersProfileForm(request.POST or None)
     if request.method == "POST":
         if userprofileForm.is_valid():
-            userprofileForm.cleaned_data.all()
-            userprofileForm.instance.userId = request.user.id
-            userprofileForm.save()
+            obj = userprofileForm.save(commit=False)
+            obj.firstName = UsersProfileForm.cleaned_data.get("firstName")
+            obj.lastName = UsersProfileForm.cleaned_data.get("lastName")
+            obj.image = UsersProfileForm.cleaned_data.get("image")
+            obj.dateOfBirth = UsersProfileForm.cleaned_data.get(
+                "dateOfBirth"
+            )
+            obj.gender = UsersProfileForm.cleaned_data.get("gender")
+            obj.userId = UsersProfileForm.cleaned_data.get("userId")
+            obj.details = UsersProfileForm.cleaned_data.get("details")
+            obj.zipcode = UsersProfileForm.cleaned_data.get("zipcode")
+            obj.address = UsersProfileForm.cleaned_data.get("address")
+            obj.city = UsersProfileForm.cleaned_data.get("city")
+            obj.region = UsersProfileForm.cleaned_data.get("region")
+            obj.country = UsersProfileForm.cleaned_data.get("country")
+            obj.longitude = UsersProfileForm.cleaned_data.get("longitude")
+            obj.latitude = UsersProfileForm.cleaned_data.get("latitude")
+            obj.popularity = UsersProfileForm.cleaned_data.get("popularity")
+            obj.userId = request.user.id
+            obj.save(commit=True)
             msg = "Entries saved sucessfully"
             return redirect("/profile/" + request.user.id)
         else:

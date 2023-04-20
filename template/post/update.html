@@ -1,5 +1,6 @@
 {% extends "layouts/base-two-side.html" %}
-
+{% load absoluteurl %}
+{% absoluteurl request "/media/upload/" as fileuploaduri %}
 {% block title %} Create Post {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
@@ -34,7 +35,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form action="/profile/create" method="POST" enctype="multipart/form-data">
+            <form action="{{request.path}}" method="POST">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-12">
@@ -121,7 +122,7 @@
     bottom: 0;
     transform: translate(-50%, -50%);
   ">
-    <form action="media/upload" , enctype="multipart/formdata" , target="_self">
+    <form action="{{fileuploaduri.uri}}"  enctype="multipart/formdata" method="POST" target="_self">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-12">

@@ -70,7 +70,7 @@ class PostMutationForm(ModelForm):
     
     content = forms.CharField(
         widget=forms.HiddenInput(
-            attrs={"placeholder": "content", "class": "form-control", "id":"content"}
+            attrs={"placeholder": "content", "class": "form-control", "id":"content", "type":"hidden"}
         )
     )
     
@@ -197,7 +197,6 @@ class SubCategoryMutationForm(ModelForm):
             "front",
             "description",
             "categoryId"
-            
         )
 
 
@@ -227,7 +226,9 @@ class PostForm(ModelForm):
     
     
     content = forms.CharField(
-        widget=forms.Textarea(attrs={"placeholder": "content", "class": "form-control"})
+        widget=forms.HiddenInput(
+            attrs={"placeholder": "content", "class": "form-control", "id":"content", "type":"hidden"}
+        )
     )
     
 

@@ -12,7 +12,7 @@ class File(BaseAbstractModel):
             ('Document', 'Document'),
             ('Others', 'Others'))
     name = models.CharField(max_length=100)
-    source = models.FileField(upload_to="uploads/%Y/%m/%d/%H/%M/%S/")
+    source = models.FileField(upload_to="uploads/%Y/%m/%d/")
     userId = models.ForeignKey(Users, on_delete=models.CASCADE)
     fileType = models.CharField(max_length=12, choices=FILETYPE)
     updatedAt = models.DateTimeField(auto_now=True)

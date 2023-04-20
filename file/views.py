@@ -21,18 +21,20 @@ def index(request, msg=None):
         return JsonResponse(data, status)
     
 @login_required(login_url="/login")
-async def create(request, msg=None):
+def create(request, msg=None):
     fileForm = fileForm()
     if request.method == "POST":
         fileForm = fileForm(request.POST, request.FILES)
         if fileForm.is_valid():
-            fileForm.cleaned_data.all()
-            fileForm.instance.userId = request.user.id
-
-            await async_to_sync(fileForm.save())
+            obj = fileForm.save(commit=False)
+            obj.name = fileForm.cleaned_data.get("name")
+            obj.userId = request.user.id
+            obj.source = request.FILES['source']
+            obj.fileType = fileForm.cleaned_data.get("fileType")
+            obj.save()
             msg = "uploaded sucessfully"
             status = 200
-            return redirect("file")
+            return redirect()
         else:
             msg = "Error validating the form"
             status = 400
@@ -48,7 +50,31 @@ async def create(request, msg=None):
             }
         return JsonResponse(data, status)
        
-
+@login_required(login_url="/login")
+def update(request, id, msg=None):
+    fileForm = fileForm(request.POST, request.FILES)
+    fileById = File.objects.get(id=id)
+    if request.method == "PUT":
+        if fileForm.is_valid():
+            if request.user.id == fileById.userId:
+                fileById.name = fileForm.cleaned_data.get("name")
+                fileById.save()
+                msg = "Entries updated sucessfully"
+            else:
+                msg = "Permission Denied"
+        else:
+            msg = "Error validating the form"
+    else:
+        msg = "please fill in all infomation"
+    return render(
+        request,
+        "file/update.html",
+        {
+            "form": fileForm,
+            "msg": msg,
+            "fileById": fileById
+        },
+    )
 
 @login_required(login_url="/login")
 def show(request, id, msg=None):

@@ -1,5 +1,6 @@
 {% extends "layouts/base-two-side.html" %}
-
+{% load absoluteurl %}
+{% absoluteurl request "/media/upload/" as fileuploaduri %}
 {% block title %} Create Post {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
@@ -34,7 +35,7 @@
             </div>
         </div>
         <div class="card-body">
-            <form action="/profile/create" method="POST" enctype="multipart/form-data">
+            <form action="/post/create" method="POST" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="row">
                     <div class="col-md-12">
@@ -57,7 +58,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="row">
                     <div class="col-md-6 pr-md-1">
                         <div class="form-group">
@@ -81,18 +82,15 @@
                             <span class="text-danger">{{ form.subCategoryId.errors }}</span>
                         </div>
                     </div>
-                </div>    
+                </div>
                 <!-- saving -->
                 <div class="row">
                     <div class="col-md-12">
                         <div class="form-group">
                             <label for="about">Content</label>
                             {{ form.content }}
-                            <div id="editor-container">
-                                <p>
-                                    <pre>Decorate your texts as you would like it to be by using the various features on the editor </pre>
-                                    <pre>please note posts will not appear immediately pending approval by the administrator</pre> 
-                                </p>
+                            <div id="document-full" class="ql-scroll-y" style="height: 100%; min-height:500px;">
+                                <h1>Post</h1>
                             </div>
                             <span class="text-danger">{{ form.content.errors }}</span>
                         </div>
@@ -121,7 +119,7 @@
     bottom: 0;
     transform: translate(-50%, -50%);
   ">
-    <form action="media/upload" , enctype="multipart/formdata" , target="_self">
+    <form action="{{fileuploaduri.uri}}" enctype="multipart/formdata" method="POST" target="_self">
         {% csrf_token %}
         <div class="row">
             <div class="col-md-12">
@@ -164,33 +162,77 @@
 
 
 <script src="//cdn.quilljs.com/1.0.0/quill.js"></script>
-<script> 
+<script>
     $(document).ready(function () {
-        var quill = new Quill('#editor-container', {
-        modules: {
-            toolbar: [
-                ['bold', 'italic'],
-                ['link', 'blockquote', 'code-block', 'image'],
-                [{ list: 'ordered' }, { list: 'bullet' }]
-            ]
-        },
-        placeholder: 'Compose an epic...',
-        theme: 'snow'
+        var toolbarOptions = [
+            [{
+                'header': [1, 2, 3, 4, 5, 6, false]
+            }],
+            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+            ['blockquote', 'code-block'],
+
+            [{
+                'header': 1
+            }, {
+                'header': 2
+            }], // custom button values
+            [{
+                'list': 'ordered'
+            }, {
+                'list': 'bullet'
+            }],
+            [{
+                'script': 'sub'
+            }, {
+                'script': 'super'
+            }], // superscript/subscript
+            [{
+                'indent': '-1'
+            }, {
+                'indent': '+1'
+            }], // outdent/indent
+            [{
+                'direction': 'rtl'
+            }], // text direction
+
+            [{
+                'size': ['small', false, 'large', 'huge']
+            }], // custom dropdown
+
+            [{
+                'color': []
+            }, {
+                'background': []
+            }], // dropdown with defaults from theme
+            [{
+                'font': []
+            }],
+            [{
+                'align': []
+            }],
+            ['link', 'image'],
+
+            ['clean'] // remove formatting button
+        ];
+
+        var quill = new Quill('#document-full', {
+            modules: {
+                toolbar: toolbarOptions,
+                autoformat: true
+            },
+            theme: 'snow',
+            placeholder: "Write something..."
+        });
+
+        var form = document.querySelector('form');
+        form.onsubmit = function () {
+            // Populate hidden form on submit
+            var about = document.querySelector('input[name=content]');
+            about.value = JSON.stringify(quill.getContents());
+
+            console.log("Submitted", $(form).serialize(), $(form).serializeArray());
+        };
     });
-
-    var form = document.querySelector('form');
-    form.onsubmit = function () {
-        // Populate hidden form on submit
-        var about = document.querySelector('input[name=content]');
-        about.value = JSON.stringify(quill.getContents());
-
-        console.log("Submitted", $(form).serialize(), $(form).serializeArray());
-
-        // No back end to actually submit to!
-        alert('Open the console to see the submit data!')
-        return false;
-    };
-});
 </script>
 
 

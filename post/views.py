@@ -48,10 +48,17 @@ def create(request, msg=None):
     category = Category.objects.all()
     subCategory = SubCategory.objects.all()
     if request.method == "POST":
-        if postForm.is_valid:
-            postForm.cleaned_data.all()
-            postForm.instance.userId = request.user.id
-            postForm.save()
+        if postForm.is_valid():
+            obj = postForm.save(commit=False)
+            obj.title = postForm.cleaned_data.get("title")
+            obj.status = postForm.cleaned_data.get("status")
+            obj.front = postForm.cleaned_data.get("front")
+            obj.slider = postForm.cleaned_data.get("slider")
+            obj.content = postForm.cleaned_data.get("content")
+            obj.categoryId = postForm.cleaned_data.get("categoryId")
+            obj.subCategoryId = postForm.cleaned_data.get("subCategoryId")
+            obj.userId = request.user.id
+            obj.save()
             for i in postForm.cleaned_data.get("media"):
                 FilePost.objects.create(postId=postForm.instance.id, fileId=i)
             msg = "Entries saved sucessfully"
@@ -147,9 +154,14 @@ def update(request, id, msg=None):
     if request.method == "PUT":
         if postForm.is_valid():
             if request.user.id == postById.userId:
-                postForm.cleaned_data.all()
-                postForm.instance.userId = request.user.id
-                postForm.save()
+                postById.title = postForm.cleaned_data.get("title")
+                postById.status = postForm.cleaned_data.get("status")
+                postById.front = postForm.cleaned_data.get("front")
+                postById.slider = postForm.cleaned_data.get("slider")
+                postById.content = postForm.cleaned_data.get("content")
+                postById.categoryId = postForm.cleaned_data.get("categoryId")
+                postById.subCategoryId = postForm.cleaned_data.get("subCategoryId")
+                postById.save()
                 msg = "Entries updated sucessfully"
             else:
                 msg = "Permission Denied"

@@ -37,18 +37,18 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "blog",
+    'meta',
+    "post",
+    "userprofile",
+    "authentication",
+    "file",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "blog",
-    'meta',
-    "post",
-    "userprofile",
-    "authentication",
-    "file"
 ]
 
 MIDDLEWARE = [
@@ -90,7 +90,7 @@ SETTINGS_EXPORT = [
     'G_MAP_API_KEY',
 ]
 
-ASGI_APPLICATION = "blog.asgi.application"
+# ASGI_APPLICATION = "blog.asgi.application"
 WSGI_APPLICATION = "blog.wsgi.application"
 
 

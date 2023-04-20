@@ -4,17 +4,15 @@ from file.models import File
 register = template.Library()
 
 
-@register.simple_tag(name='headerdata')
+@register.simple_tag(name='files')
 def files(request):
     if request.user.id:
         try:
-            profile = File.objects.get(userId=request.user.id)
+            file = File.objects.get(userId=request.user.id)
         except:
-            profile = {}
+            file = {}
             
     return {
-        "category": category,
-        "subcategory": subcategory,
-        "profile": profile
+        "file": file
         }
 
