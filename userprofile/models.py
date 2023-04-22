@@ -4,7 +4,7 @@ from meta.models import ModelMeta
 from blog.models import BaseAbstractModel
 
 # Create your models here.
-class UsersProfile(ModelMeta, BaseAbstractModel):
+class UsersProfile(BaseAbstractModel, ModelMeta):
     GENDERSET = (('M', 'Male'),
                  ('F', 'Female'))
     firstName = models.CharField(max_length=64, null=True, blank=True)
@@ -40,5 +40,7 @@ class UsersProfile(ModelMeta, BaseAbstractModel):
         if self.firstName and self.lastName:
             return self.firstName +" "+ self.lastName
 
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False
   
 

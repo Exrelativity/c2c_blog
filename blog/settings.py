@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -23,16 +22,18 @@ APP_NAME = 'Blog'
 EMAIL = 'exrelativity@gmail.com'
 # please  dont use because is not mine
 G_MAP_API_KEY = 'YOUR_API_KEY'
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-1e+8-yjm9&39!%8z7pnfg83^d3nm3ps2!xl-ang!z_$ii3+#mu"
+SECRET_KEY = "django-insecure-)u+uirxemo2cc@!0cpaxz+_ui&$do++nbc3-+63#_@xlhy2tm)"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
 
 # Application definition
 
@@ -59,7 +60,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "blog.middleware.current_user_middleware",
+    "blog.middleware.current_user_middleware"
 ]
 
 ROOT_URLCONF = "blog.urls"
@@ -75,8 +76,6 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "django_settings_export.settings_export",
-                "django.template.context_processors.media",
             ],
         },
     },
@@ -90,7 +89,6 @@ SETTINGS_EXPORT = [
     'G_MAP_API_KEY',
 ]
 
-# ASGI_APPLICATION = "blog.asgi.application"
 WSGI_APPLICATION = "blog.wsgi.application"
 
 
@@ -98,7 +96,7 @@ WSGI_APPLICATION = "blog.wsgi.application"
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
-    "default": {
+   "default": {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "tutorial_blog",
         "USER": "root",
@@ -140,23 +138,14 @@ USE_I18N = True
 USE_TZ = True
 
 
-MEDIA_ROOT = "media/"
+MEDIA_ROOT = "media-assets/"
 
-MEDIA_URL = "media/"
-
+MEDIA_URL = "media-assets/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = "static/"
-
-# STATIC_ROOT = "static"
-
-STATICFILES_DIRS = [
-    BASE_DIR / "static"
-]
-
-ASSETS_ROOT = BASE_DIR/STATIC_URL
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

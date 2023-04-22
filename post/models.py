@@ -4,7 +4,7 @@ from meta.models import ModelMeta
 from blog.models import BaseAbstractModel
 
 # Create your models here.
-class Category(ModelMeta, BaseAbstractModel):
+class Category(BaseAbstractModel, ModelMeta):
     name = models.CharField(max_length=64, unique=True)
     status = models.BooleanField(default=False)
     front = models.BooleanField(default=False)
@@ -27,11 +27,14 @@ class Category(ModelMeta, BaseAbstractModel):
     def __str__(self):
         return self.name
     
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False
+    
     
    
 
 
-class SubCategory(ModelMeta, BaseAbstractModel):
+class SubCategory(BaseAbstractModel, ModelMeta):
     name = models.CharField(max_length=64, unique=True)
     status = models.BooleanField(default=False)
     front = models.BooleanField(default=False)
@@ -54,6 +57,9 @@ class SubCategory(ModelMeta, BaseAbstractModel):
         
     def __str__(self):
         return self.name
+    
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False
     
 
 
@@ -83,6 +89,9 @@ class Post(ModelMeta, BaseAbstractModel):
     def __str__(self):
         return self.title
     
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False
+    
   
 
 class Comment(BaseAbstractModel):
@@ -95,3 +104,6 @@ class Comment(BaseAbstractModel):
     #need to add a unique index for userid and content
     # blank=True,
         # null=True,
+        
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False

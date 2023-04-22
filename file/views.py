@@ -22,6 +22,7 @@ def index(request, msg=None):
     
 @login_required(login_url="/login")
 def create(request, msg=None):
+    print(request)
     fileForm = fileForm()
     if request.method == "POST":
         fileForm = fileForm(request.POST, request.FILES)

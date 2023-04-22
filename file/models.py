@@ -20,6 +20,9 @@ class File(BaseAbstractModel):
     
     def __str__(self):
         return "<div><img src=" +  str(self.source) + "></div>"
+    
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False
 
     
 class FilePost(BaseAbstractModel):
@@ -28,11 +31,16 @@ class FilePost(BaseAbstractModel):
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False
 class FileCategory(BaseAbstractModel):
     fileId = models.ForeignKey(File, on_delete=models.CASCADE)
     categoryId = models.ForeignKey(Category, on_delete=models.CASCADE) 
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False
 
 class FileSubCategory(BaseAbstractModel):
     fileId = models.ForeignKey(File, on_delete=models.CASCADE)
@@ -40,8 +48,14 @@ class FileSubCategory(BaseAbstractModel):
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False
+    
 class FileProfile(BaseAbstractModel):
     fileId = models.ForeignKey(File, on_delete=models.CASCADE)
     profileId = models.ForeignKey(UsersProfile, on_delete=models.CASCADE)
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
+    
+    class Meta(BaseAbstractModel.Meta):
+        abstract = False
