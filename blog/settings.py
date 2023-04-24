@@ -94,7 +94,7 @@ SETTINGS_EXPORT = [
 ]
 
 WSGI_APPLICATION = "blog.wsgi.application"
-ASGI_APPLICATION = 'dating_app.asgi.application'
+ASGI_APPLICATION = 'blog.asgi.application'
 
 
 # Database
