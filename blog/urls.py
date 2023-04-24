@@ -15,9 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.decorators.csrf import csrf_exempt
 from .views import *
+from graphene_django.views import GraphQLView
 from django.conf import settings
 from django.conf.urls.static import static
+from .schema import schema
 
 urlpatterns = [
     path("", index),
@@ -26,6 +29,7 @@ urlpatterns = [
     path("about", about),
     path("contact", contact),
     path("faq", faq),
+    path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
     path("media/", include('file.urls')),
     path("admin/", admin.site.urls),
     path("profile/", include('userprofile.urls')),

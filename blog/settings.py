@@ -38,6 +38,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'daphne',
     "blog",
     'meta',
     "post",
@@ -49,7 +50,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
+    "django.contrib.staticfiles", # Required for GraphiQL
+    'graphene_django',
 ]
 
 MIDDLEWARE = [
@@ -76,6 +78,8 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "django_settings_export.settings_export",
+                "django.template.context_processors.media",
             ],
         },
     },
@@ -90,6 +94,7 @@ SETTINGS_EXPORT = [
 ]
 
 WSGI_APPLICATION = "blog.wsgi.application"
+ASGI_APPLICATION = 'dating_app.asgi.application'
 
 
 # Database
@@ -102,7 +107,8 @@ DATABASES = {
         "USER": "root",
         "PASSWORD": "password",
         "HOST": "127.0.0.1",
-        "PORT": "3306"
+        "PORT": "3306",
+        'ATOMIC_MUTATIONS': True,
     }
 }
 
@@ -147,6 +153,15 @@ MEDIA_URL = "media-assets/"
 
 STATIC_URL = "static/"
 
+# STATIC_ROOT = "static"
+
+STATICFILES_DIRS = [
+    BASE_DIR / "static"
+]
+
+ASSETS_ROOT = BASE_DIR/STATIC_URL
+
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
@@ -157,3 +172,19 @@ AUTH_USER_MODEL = "authentication.Users"
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 ACCOUNT_EMAIL_VERIFICATION = "none"
+
+GRAPHENE = {
+    'SCHEMA': 'blog.schema.schema',
+    'SCHEMA_OUTPUT': 'schema.json',
+    'SCHEMA_INDENT': 4,
+    'MIDDLEWARE': (
+        'blog.middleware.AuthorizationMiddleware',
+        'blog.middleware.AuthenticationMiddleware'
+    ),
+    'RELAY_CONNECTION_ENFORCE_FIRST_OR_LAST': False,
+    'RELAY_CONNECTION_MAX_LIMIT': 300,
+    'ATOMIC_MUTATIONS': True,
+    'CAMELCASE_ERRORS': True,
+    'SUBSCRIPTION_PATH': '/ws/graphql',
+    'GRAPHIQL_HEADER_EDITOR_ENABLED': True,
+}

@@ -23,3 +23,14 @@ def current_user_middleware(get_response):
     return middleware
 
 
+class AuthorizationMiddleware(object):
+    def resolve(self, next, root, info, **args):
+        # if info.field_name == 'user':
+        #     return None
+        return next(root, info, **args)
+    
+class AuthenticationMiddleware(object):
+    def resolve(self, next, root, info, **args):
+        # if info.field_name == 'user':
+        #     return None
+        return next(root, info, **args)
