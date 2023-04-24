@@ -1,4 +1,16 @@
-# Routes for our blog
+# Blog
+
+# To run the project
+
+```
+source venv/bin/activate
+```
+
+```
+python3 manage.py runserver
+```
+
+## Routes for our blog
 
 ```
 admin  
