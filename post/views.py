@@ -58,7 +58,7 @@ def create(request, msg=None):
             obj.categoryId = postForm.cleaned_data.get("categoryId")
             obj.subCategoryId = postForm.cleaned_data.get("subCategoryId")
             obj.userId = request.user.id
-            obj.save()
+            obj.save(force_create=True)
             for i in postForm.cleaned_data.get("media"):
                 FilePost.objects.create(postId=postForm.instance.id, fileId=i)
             msg = "Entries saved sucessfully"
@@ -161,7 +161,7 @@ def update(request, id, msg=None):
                 postById.content = postForm.cleaned_data.get("content")
                 postById.categoryId = postForm.cleaned_data.get("categoryId")
                 postById.subCategoryId = postForm.cleaned_data.get("subCategoryId")
-                postById.save()
+                postById.save(force_update=True)
                 msg = "Entries updated sucessfully"
             else:
                 msg = "Permission Denied"
@@ -241,7 +241,7 @@ def createComment(request):
         if commentForm.is_valid:
             commentForm.cleaned_data.all()
             commentForm.instance.userId = request.user.id
-            commentForm.save()
+            commentForm.instance.save(force_create=True)
             msg = "Entries saved sucessfully"
             status = 200
         else:

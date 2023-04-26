@@ -17,7 +17,7 @@ class BaseAbstractModel(models.Model):
     #     """soft  delete a model instance"""
     #     self.deletedAt = datetime.now() 
     #     self.save()
-
+        
     class Meta:
         abstract = True
         ordering = ['createdAt']

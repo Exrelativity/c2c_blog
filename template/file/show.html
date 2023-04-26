@@ -1,0 +1,174 @@
+{% extends "layouts/base-two-side.html" %}
+
+{% block title %} 
+{% if profile %}
+{{ profile.firstName }} 
+{{ profile.lastName }}
+{%  endif  %} 
+{%  endblock  %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock %}
+
+{% block content %}
+
+
+<div class="" style="width:100%">
+  <div class="card">
+    <div class="card-header">
+      <h5 class="title">
+        {% if profile %}
+        {{ profile.firstName }} 
+        {{ profile.lastName }}
+        {% endif %}</h5>
+      <h6 class="card-category">
+        {% if alert %}
+        <span class="text-danger">{{ alert | safe }}</span>
+        {% endif %}
+      </h6>
+
+      <div class="card-body">
+
+        <div class="row" id="profilebtn">
+          <ul>
+            <li><a href="/profile/{{request.user.id}}/update">
+              <button type="button" class="btn-primary"> show Profile</button></a>
+          </li>
+            <li><a href="/interests"><button type="button" class="btn-primary"> Interest </button></a></li>
+          </ul>
+        </div>
+        <div class="row">
+          <ul>
+            <li>
+              <p>UserId (readonly):
+                <span>{{ request.user.id }}</span>
+              </p>
+            </li>
+            <li>
+              <p>Username (readonly):
+                <span>{{ request.user.username }}</span>
+              </p>
+            </li>
+            <li>
+              <p>Email address (readonly):
+                <span>{{ request.user.email }}</span>
+              </p>
+            </li>
+            {% if profile %}
+            <li>
+              <p>First Name:
+                <span>{{ profile.firstName }} </span>
+              </p>
+            </li>
+            <li>
+              <p>Last Name:
+                <span>{{ profile.lastName }} </span>
+              </p>
+            </li>
+            <li>
+              <p>Marital Status:
+                <span>{{ profile.maritalStatus }}</span>
+              </p>
+            </li>
+            <li>
+              <p>Date of Birth:
+                <span>{{ profile.dateOfBirth }} </span>
+              </p>
+            </li>
+            <li>
+              <p>Gender:
+                <span>{{ profile.genderId }} 
+                  </span>
+              </p>
+            </li>
+            <li>
+              <p>Address:
+                <span>{{ profile.address }} </span>
+              </p>
+            </li>
+            <li>
+              <p>City:
+                <span>{{ profile.city }} </span>
+              </p>
+            </li>
+            <li>
+              <p>Country:
+                <span>{{ profile.country }} </span>
+              </p>
+            </li>
+            <li>
+              <p>Postal Code/Zip Code:
+                <span>{{ profile.zipcode }} </span>
+              </p>
+            </li>
+            <li>
+              <p>About Me:
+                <Span>{{ profile.details }} </span>
+              </p>
+            </li>
+            <li>
+              <p for="lat">Latitude (readonly):
+                <span>{{ profile.latitude }}</span>
+              </p>
+            </li>
+            <li>
+              <p for="lng">Longitude (readonly):
+                <span>{{ profile.longitude }} </span>
+              </p>
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+
+      </div>
+
+
+
+      {% endblock content %}
+
+      <!-- Specific Page JS goes HERE  -->
+      {% block javascripts %}
+
+      <script>
+        $(document).ready(function () {
+
+          var locationButton = document.getElementById("locationButton");
+          locationButton.addEventListener("click", () => {
+            // Try HTML5 geolocation.
+            var latElement = document.getElementById("id_latitude");
+            var longElement = document.getElementById("id_longitude");
+      
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  let pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                  };
+                  latElement.removeAttribute("readonly");
+                  longElement.removeAttribute("readonly");
+                  latElement.value = pos.lat;
+                  longElement.value = pos.lng;
+                  latElement.setAttribute("readonly");
+                  longElement.setAttribute("readonly");
+                  alert("Location found.");
+                },
+                () => {
+                  handleLocationError(true);
+                }
+              );
+            } else {
+              // Browser doesn't support Geolocation
+              handleLocationError(false);
+            }
+          });
+      
+          var handleLocationError = (browserHasGeolocation) => {
+            browserHasGeolocation
+              ? alert("The Geolocation service failed.")
+              : alert("Error: Your browser doesn't support geolocation.")
+          };
+        });
+      </script>
+
+      {% endblock javascripts %}

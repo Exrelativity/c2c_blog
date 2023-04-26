@@ -54,7 +54,7 @@ def create(request, msg=None):
             obj.latitude = UsersProfileForm.cleaned_data.get("latitude")
             obj.popularity = UsersProfileForm.cleaned_data.get("popularity")
             obj.userId = request.user.id
-            obj.save(commit=True)
+            obj.save(force_create=True)
             msg = "Entries saved sucessfully"
             return redirect("/profile/" + request.user.id)
         else:
@@ -109,7 +109,7 @@ def update(request, userId, msg=None):
             userprofileById.longitude = UsersProfileForm.cleaned_data.get("longitude")
             userprofileById.latitude = UsersProfileForm.cleaned_data.get("latitude")
             userprofileById.popularity = UsersProfileForm.cleaned_data.get("popularity")
-            userprofileById.save()
+            userprofileById.save(force_update=True)
             msg = "Entries updated sucessfully"
         else:
             msg = "Error validating the form"

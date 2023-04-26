@@ -8,12 +8,15 @@ from asgiref.sync import async_to_sync
 # Create your views here.
 @login_required(login_url="/login")
 def index(request, msg=None):
-    fileById = File.objects.get(userId=request.user.id)
+    try:
+        fileById = File.objects.get(userId=request.user.id)
+    except File.DoesNotExist:
+        return redirect("/media/upload")
     status = 200
     if request.accepts('text/html'):
         return render(
         request,
-        "file/list.html",
+        "file/index.html",
         {"msg": msg, "file": fileById},
     )
     else:
@@ -22,17 +25,16 @@ def index(request, msg=None):
     
 @login_required(login_url="/login")
 def create(request, msg=None):
-    print(request)
-    fileForm = fileForm()
+    fileForm = FileForm()
     if request.method == "POST":
-        fileForm = fileForm(request.POST, request.FILES)
+        fileForm = FileForm(request.POST, request.FILES)
         if fileForm.is_valid():
             obj = fileForm.save(commit=False)
             obj.name = fileForm.cleaned_data.get("name")
             obj.userId = request.user.id
             obj.source = request.FILES['source']
             obj.fileType = fileForm.cleaned_data.get("fileType")
-            obj.save()
+            obj.save(force_create=True)
             msg = "uploaded sucessfully"
             status = 200
             return redirect()
@@ -42,24 +44,24 @@ def create(request, msg=None):
     else:
         msg = "Please fill all necessary feild to make a good entry"
     if request.accepts('text/html'):
-        return render(request, "file/upload.html", {"form": fileForm, "msg": msg})
+        return render(request, "file/upload.html", {"fileForm": fileForm, "msg": msg})
     else:
         data = {
                 "error":fileForm.errors,
-                "form": fileForm, 
+                "fileForm": fileForm, 
                 "msg": msg
             }
         return JsonResponse(data, status)
        
 @login_required(login_url="/login")
 def update(request, id, msg=None):
-    fileForm = fileForm(request.POST, request.FILES)
+    fileForm = FileForm(request.POST, request.FILES)
     fileById = File.objects.get(id=id)
     if request.method == "PUT":
         if fileForm.is_valid():
             if request.user.id == fileById.userId:
                 fileById.name = fileForm.cleaned_data.get("name")
-                fileById.save()
+                fileById.save(force_update=True)
                 msg = "Entries updated sucessfully"
             else:
                 msg = "Permission Denied"
@@ -105,7 +107,7 @@ def show(request, id, msg=None):
 def delete(request, id, msg=None):
     fileById = File.objects.get(id=id)
     if request.method == "DELETE" and request.user.id == fileById.userId:
-        fileById.soft_delete()
+        fileById.delete()
         msg = "Deteted sucessfully"
         response = redirect("/file", msg)
         status = 200

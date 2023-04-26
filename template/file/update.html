@@ -1,7 +1,7 @@
 {% extends "layouts/base-two-side.html" %}
 <!-- {% load absoluteurl %}
 {% absoluteurl request=request uri="/media/upload/" as fileuploaduri %} -->
-{% block title %} Create Profile {% endblock %}
+{% block title %} File Upload {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %} {% block content %}
@@ -11,7 +11,7 @@
     <div class="card-header">
       <div class="row">
         <div class="col-md-8 pr-md-1">
-          <h5 class="title">Create Profile</h5>
+          <h5 class="title">File Upload</h5>
           <h6 class="card-category">
             {% if alert %}
             <span class="text-danger">{{ alert | safe }}</span>
@@ -20,138 +20,46 @@
             {% endif %}
           </h6>
         </div>
-        <div class="col-md-4 pl-md-1">
+        <!-- <div class="col-md-4 pl-md-1">
           <div class="form-group">
             <button type="button" id="divOpen" class="btn btn-fill btn-primary">
               File Upload
             </button>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="card-body">
-      <form action="/profile/create" method="POST" enctype="multipart/form-data">
+      <form action="{{ settings.BASE_URL }}/media/update"  enctype="multipart/formdata" method="POST" target="_self">
         {% csrf_token %}
         <div class="row">
-          <div class="col-md-6 pr-md-1">
-            <div class="form-group">
-              <label>First Name</label>
-              {{ form.firstName }}
-              <span class="text-danger">{{ form.firstName.errors }}</span>
-            </div>
-          </div>
-          <div class="col-md-6 pl-md-1">
-            <div class="form-group">
-              <label>Last Name</label>
-              {{ form.lastName }}
-              <span class="text-danger">{{ form.lastName.errors }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
           <div class="col-md-12">
-            <div class="form-group">
-              <label for="image">Profile Picture</label>
-              <select class="form-control" name="image" id="">
-                {% for file in userfiles %}
-                <option value="{{ files.source }}">{{ files.name }}</option>
-                {% endfor %}
-              </select>
-            </div>
+            <label for="name">name</label>
+            {{ fileForm.name }}
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-6 pr-md-1">
-            <div class="form-group">
-              <label>Date of Birth</label>
-              {{ form.dateOfBirth }}
-            </div>
-          </div>
-          <div class="col-md-6 pl-md-1">
-            <div class="form-group">
-              <label>Gender</label>
-              {{ form.gender }}
-              <span class="text-danger">{{ form.gender.errors }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
+        <div class="row mt-2">
           <div class="col-md-12">
-            <div class="form-group">
-              <label>Address</label>
-              {{ form.address }}
-              <span class="text-danger">{{ form.address.errors }}</span>
-            </div>
+            <label for="source">Source</label>
+            {{ fileForm.source }}
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-4 pr-md-1">
-            <div class="form-group">
-              <label>City</label>
-              {{ form.city }}
-              <span class="text-danger">{{ form.city.errors }}</span>
-            </div>
-          </div>
-          <div class="col-md-4 px-md-1">
-            <div class="form-group">
-              <label>Country</label>
-              {{ form.country }}
-              <span class="text-danger">{{ form.country.errors }}</span>
-            </div>
-          </div>
-          <div class="col-md-4 pl-md-1">
-            <div class="form-group">
-              <label>Postal Code/Zip Code</label>
-              {{ form.zipcode }}
-              <span class="text-danger">{{ form.zipcode.errors }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
+        <div class="row mt-2">
           <div class="col-md-12">
-            <button title="click to set your location" type="button" id="locationButton"
-              class="btn btn-fill btn-primary">
-              Location Button
-            </button>
+            <label for="lng">File Type </label>
+            {{ fileForm.fileType }}
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-4 pr-md-1">
-            <label for="Continent">State </label>
-            <input type="text" class="form-control" required name="region" placeholder="State"
-              value="{% if usersprofile %}{{usersprofile.region}{% endif %}" />
-            <span class="text-danger">{{ form.region.errors }}</span>
-          </div>
-          <div class="col-md-4 px-md-1">
-            <label for="lat">Latitude (readonly Dynamic)</label>
-            {{ form.latitude }}
-            <span class="text-danger">{{ form.latitude.errors }}</span>
-          </div>
-          <div class="col-md-4 pl-md-1">
-            <label for="lng">Longitude (readonly Dynamic)</label>
-            {{ form.longitude }}
-            <span class="text-danger">{{ form.longitude.errors }}</span>
-          </div>
-        </div>
-        <div class="row">
+        <div class="row mt-2">
           <div class="col-md-12">
-            <div class="form-group">
-              <label>About Me</label>
-              {{ form.details }}
-              <span class="text-danger">{{ form.details.errors }}</span>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-12">
-            <input name="submit" value="submit" type="submit" id="submit" class="btn btn-fill btn-primary" />
+            <input name="submit" value="submit" type="submit" id="submit" class="btn btn-fill btn-primary" , />
           </div>
         </div>
       </form>
     </div>
   </div>
 </div>
-<div id="fileUpload" style="
+<!-- <div id="fileUpload" style="
     display: none;
     background-color: #bbc0c5;
     border-radius: 10px;
@@ -196,7 +104,7 @@
       </button>
     </div>
   </div>
-</div>
+</div> -->
 
 {% endblock content %}
 
