@@ -11,7 +11,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
-
+from datetime import timedelta
+from django.conf import settings as django_settings
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -39,12 +40,6 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'daphne',
-    "blog",
-    'meta',
-    "post",
-    "userprofile",
-    "authentication",
-    "file",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -52,6 +47,15 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles", # Required for GraphiQL
     'graphene_django',
+    'graphql_jwt.refresh_token.apps.RefreshTokenConfig',
+    'graphql_auth',
+    'django_filters',
+    "blog",
+    'meta',
+    "post",
+    "userprofile",
+    "authentication",
+    "file",
 ]
 
 MIDDLEWARE = [
@@ -62,7 +66,8 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "blog.middleware.current_user_middleware"
+    "blog.middleware.current_user_middleware",
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
 ]
 
 ROOT_URLCONF = "blog.urls"
@@ -179,7 +184,8 @@ GRAPHENE = {
     'SCHEMA_INDENT': 4,
     'MIDDLEWARE': (
         'blog.middleware.AuthorizationMiddleware',
-        'blog.middleware.AuthenticationMiddleware'
+        'blog.middleware.AuthenticationMiddleware',
+        'graphql_jwt.middleware.JSONWebTokenMiddleware',
     ),
     'RELAY_CONNECTION_ENFORCE_FIRST_OR_LAST': False,
     'RELAY_CONNECTION_MAX_LIMIT': 300,
@@ -187,4 +193,94 @@ GRAPHENE = {
     'CAMELCASE_ERRORS': True,
     'SUBSCRIPTION_PATH': '/ws/graphql',
     'GRAPHIQL_HEADER_EDITOR_ENABLED': True,
+}
+
+AUTHENTICATION_BACKENDS = [
+    # 'graphql_jwt.backends.JSONWebTokenBackend',
+    'django.contrib.auth.backends.ModelBackend',
+    "graphql_auth.backends.GraphQLAuthBackend",
+
+]
+
+GRAPHQL_JWT = {
+    "JWT_VERIFY_EXPIRATION": True,
+
+    # optional
+    "JWT_LONG_RUNNING_REFRESH_TOKEN": True, 
+    "JWT_ALLOW_ANY_CLASSES": [
+        "graphql_auth.mutations.Register",
+        "graphql_auth.mutations.VerifyAccount",
+        "graphql_auth.mutations.ResendActivationEmail",
+        "graphql_auth.mutations.SendPasswordResetEmail",
+        "graphql_auth.mutations.PasswordReset",
+        "graphql_auth.mutations.ObtainJSONWebToken",
+        "graphql_auth.mutations.VerifyToken",
+        "graphql_auth.mutations.RefreshToken",
+        "graphql_auth.mutations.RevokeToken",
+        "graphql_auth.mutations.VerifySecondaryEmail",
+        
+    ],
+}
+
+
+DEFAULTS = {
+    # if allow to login without verification,
+    # the register mutation will return a token
+    "ALLOW_LOGIN_NOT_VERIFIED": True,
+    # mutations fields options
+    "LOGIN_ALLOWED_FIELDS": ["email", "username"],
+    "ALLOW_LOGIN_WITH_SECONDARY_EMAIL": True,
+    # required fields on register, plus password1 and password2,
+    # can be a dict like UPDATE_MUTATION_FIELDS setting
+    "REGISTER_MUTATION_FIELDS": ["email", "username"],
+    "REGISTER_MUTATION_FIELDS_OPTIONAL": [],
+    # optional fields on update account, can be list of fields
+    "UPDATE_MUTATION_FIELDS": {"first_name": "String", "last_name": "String"},
+    # tokens
+    "EXPIRATION_ACTIVATION_TOKEN": timedelta(days=7),
+    "EXPIRATION_PASSWORD_RESET_TOKEN": timedelta(hours=1),
+    "EXPIRATION_SECONDARY_EMAIL_ACTIVATION_TOKEN": timedelta(hours=1),
+    "EXPIRATION_PASSWORD_SET_TOKEN": timedelta(hours=1),
+    # email stuff
+    "EMAIL_FROM": getattr(django_settings, "DEFAULT_FROM_EMAIL", "exrelativity@gmail.com"),
+    "SEND_ACTIVATION_EMAIL": True,
+    # client: example.com/activate/token
+    "ACTIVATION_PATH_ON_EMAIL": "activate",
+    "ACTIVATION_SECONDARY_EMAIL_PATH_ON_EMAIL": "activate",
+    # client: example.com/password-set/token
+    "PASSWORD_SET_PATH_ON_EMAIL": "password-set",
+    # client: example.com/password-reset/token
+    "PASSWORD_RESET_PATH_ON_EMAIL": "password-reset",
+    # email subjects templates
+    "EMAIL_SUBJECT_ACTIVATION": "email/activation_subject.txt",
+    "EMAIL_SUBJECT_ACTIVATION_RESEND": "email/activation_subject.txt",
+    "EMAIL_SUBJECT_SECONDARY_EMAIL_ACTIVATION": "email/activation_subject.txt",
+    "EMAIL_SUBJECT_PASSWORD_SET": "email/password_set_subject.txt",
+    "EMAIL_SUBJECT_PASSWORD_RESET": "email/password_reset_subject.txt",
+    # email templates
+    "EMAIL_TEMPLATE_ACTIVATION": "email/activation_email.html",
+    "EMAIL_TEMPLATE_ACTIVATION_RESEND": "email/activation_email.html",
+    "EMAIL_TEMPLATE_SECONDARY_EMAIL_ACTIVATION": "email/activation_email.html",
+    "EMAIL_TEMPLATE_PASSWORD_SET": "email/password_set_email.html",
+    "EMAIL_TEMPLATE_PASSWORD_RESET": "email/password_reset_email.html",
+    "EMAIL_TEMPLATE_VARIABLES": {},
+    # query stuff
+    "USER_NODE_EXCLUDE_FIELDS": ["password", "is_superuser"],
+    "USER_NODE_FILTER_FIELDS": {
+        "email": ["exact"],
+        "username": ["exact", "icontains", "istartswith"],
+        "is_active": ["exact"],
+        "status__archived": ["exact"],
+        "status__verified": ["exact"],
+        "status__secondary_email": ["exact"],
+    },
+    # turn is_active to False instead
+    "ALLOW_DELETE_ACCOUNT": False,
+    # string path for email function wrapper, see the testproject example
+    "EMAIL_ASYNC_TASK": False,
+    # mutation error type
+    "CUSTOM_ERROR_TYPE": None,
+    # registration with no password
+    "ALLOW_PASSWORDLESS_REGISTRATION": False,
+    "SEND_PASSWORD_SET_EMAIL": False,
 }

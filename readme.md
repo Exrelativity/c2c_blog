@@ -5,7 +5,9 @@
 ```
 source venv/bin/activate
 ```
-
+```
+python manage.py loaddata users.json
+```
 ```
 python3 manage.py runserver
 ```

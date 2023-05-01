@@ -9,6 +9,8 @@ from authentication.forms import *
 from post.forms import *
 from file.forms import *
 from userprofile.forms import * 
+from graphql_auth.schema import UserQuery, MeQuery
+from graphql_auth import mutations
 
 class UsersType(DjangoObjectType):
     class Meta:
@@ -82,7 +84,7 @@ class UsersProfileMutation(DjangoModelFormMutation):
 
 
 
-class Query(ObjectType):
+class Query(UserQuery, MeQuery, ObjectType):
     all_users = List(UsersType)
     all_files = List(FileType)
     all_posts = List(PostType)
@@ -153,8 +155,29 @@ class Query(ObjectType):
             return None
 
 
+class AuthMutation(ObjectType):
+    register = mutations.Register.Field()
+    verify_account = mutations.VerifyAccount.Field()
+    resend_activation_email = mutations.ResendActivationEmail.Field()
+    send_password_reset_email = mutations.SendPasswordResetEmail.Field()
+    password_reset = mutations.PasswordReset.Field()
+    password_set = mutations.PasswordSet.Field() # For passwordless registration
+    password_change = mutations.PasswordChange.Field()
+    update_account = mutations.UpdateAccount.Field()
+    archive_account = mutations.ArchiveAccount.Field()
+    delete_account = mutations.DeleteAccount.Field()
+    send_secondary_email_activation =  mutations.SendSecondaryEmailActivation.Field()
+    verify_secondary_email = mutations.VerifySecondaryEmail.Field()
+    swap_emails = mutations.SwapEmails.Field()
+    remove_secondary_email = mutations.RemoveSecondaryEmail.Field()
 
-class Mutation(ObjectType):
+    # django-graphql-jwt inheritances
+    token_auth = mutations.ObtainJSONWebToken.Field()
+    verify_token = mutations.VerifyToken.Field()
+    refresh_token = mutations.RefreshToken.Field()
+    revoke_token = mutations.RevokeToken.Field()
+
+class Mutation(AuthMutation, ObjectType):
     users = UsersMutation.Field()
     file = FileMutation.Field()
     posts = PostMutation.Field()
