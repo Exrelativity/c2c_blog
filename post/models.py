@@ -1,9 +1,9 @@
 from django.db import models
 from authentication.models import Users
-from meta.models import ModelMeta
 from blog.models import BaseAbstractModel
-
+from meta.models import ModelMeta
 # Create your models here.
+
 class Category(BaseAbstractModel, ModelMeta):
     name = models.CharField(max_length=64, unique=True)
     status = models.BooleanField(default=False)
@@ -29,7 +29,7 @@ class Category(BaseAbstractModel, ModelMeta):
     
     class Meta(BaseAbstractModel.Meta):
         abstract = False
-    
+
     
    
 
@@ -92,7 +92,7 @@ class Post(ModelMeta, BaseAbstractModel):
     class Meta(BaseAbstractModel.Meta):
         abstract = False
     
-  
+
 
 class Comment(BaseAbstractModel):
     postId = models.ForeignKey(Post, on_delete=models.CASCADE)

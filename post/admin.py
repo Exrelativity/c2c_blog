@@ -4,6 +4,7 @@ from .models import *
 
 
 # Register your models here.
+
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     class Meta:

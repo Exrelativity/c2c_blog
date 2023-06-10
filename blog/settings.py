@@ -99,7 +99,7 @@ SETTINGS_EXPORT = [
 ]
 
 WSGI_APPLICATION = "blog.wsgi.application"
-ASGI_APPLICATION = 'blog.asgi.application'
+ASGI_APPLICATION = "blog.asgi.application"
 
 
 # Database
@@ -110,7 +110,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.mysql",
         "NAME": "tutorial_blog",
         "USER": "root",
-        "PASSWORD": "password",
+        "PASSWORD": "",
         "HOST": "127.0.0.1",
         "PORT": "3306",
         'ATOMIC_MUTATIONS': True,
