@@ -43,4 +43,4 @@ class UsersProfile(BaseAbstractModel, ModelMeta):
     class Meta(BaseAbstractModel.Meta):
         abstract = False
   
-
+                                   
