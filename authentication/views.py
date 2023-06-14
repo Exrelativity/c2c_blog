@@ -77,6 +77,7 @@ def register_user(request, *args, **kwargs):
             email = form.cleaned_data.get("email")
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
+            UsersProfile.objects.create(userId = user)
             mailSubject = f"Welcome to {settings.APP_NAME}"
             mailContent = f"""Hi,\n\n\n Welcome to {settings.BASE_URL}.\n One more process to complete...\n\n 
                 {settings.BASE_URL}/confirm/email/{email}\n\nPlease click the link above or copy to your browser to send a request of email confirmation.

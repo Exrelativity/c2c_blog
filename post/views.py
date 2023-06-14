@@ -118,7 +118,7 @@ def show(request, id, msg=None):
         )
     except Post.DoesNotExist:
         msg = "Sorry Post Dost not exist"
-    meta = postById.as_meta()
+   
     if request.user.is_authenticated:
         return render(
             request,
@@ -128,7 +128,7 @@ def show(request, id, msg=None):
                 "post": postById,
                 "relatedPostByCategory": relatedPostByCategory,
                 "relatedPostBySubCategory": relatedPostBySubCategory,
-                "meta": meta,
+                
             },
         )
     else:
@@ -140,7 +140,7 @@ def show(request, id, msg=None):
                 "post": postById,
                 "relatedPostByCategory": relatedPostByCategory,
                 "relatedPostBySubCategory": relatedPostBySubCategory,
-                "meta": meta,
+                
             },
         )
 

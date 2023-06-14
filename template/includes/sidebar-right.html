@@ -12,7 +12,7 @@
             <div class="block block-three"></div>
             <div class="block block-four"></div>
             <a href="javascript:void(0)">
-                <img class="avatar" src="{% static headerdatas.profile.image %}" alt="avatar">
+                <img class="avatar" src="{% if headerdatas.profile.image %} {% static headerdatas.profile.image %} {% endif %}" alt="avatar">
                 <h5 class="title">{{ request.username }}</h5>
             </a>
             <p class="description">
