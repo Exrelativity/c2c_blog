@@ -55,9 +55,9 @@ def create(request, msg=None):
             obj.front = postForm.cleaned_data.get("front")
             obj.slider = postForm.cleaned_data.get("slider")
             obj.content = postForm.cleaned_data.get("content")
-            obj.categoryId = postForm.cleaned_data.get("categoryId")
-            obj.subCategoryId = postForm.cleaned_data.get("subCategoryId")
-            obj.userId = request.user.id
+            obj.categoryId = Category.objects.get(postForm.cleaned_data.get("categoryId"))
+            obj.subCategoryId = SubCategory.objects.get(postForm.cleaned_data.get("subCategoryId"))
+            obj.userId = request.user
             obj.save(force_create=True)
             for i in postForm.cleaned_data.get("media"):
                 FilePost.objects.create(postId=postForm.instance.id, fileId=i)
@@ -159,8 +159,8 @@ def update(request, id, msg=None):
                 postById.front = postForm.cleaned_data.get("front")
                 postById.slider = postForm.cleaned_data.get("slider")
                 postById.content = postForm.cleaned_data.get("content")
-                postById.categoryId = postForm.cleaned_data.get("categoryId")
-                postById.subCategoryId = postForm.cleaned_data.get("subCategoryId")
+                postById.categoryId = Category.objects.get(postForm.cleaned_data.get("categoryId"))
+                postById.subCategoryId = SubCategory.objects.get(postForm.cleaned_data.get("subCategoryId"))
                 postById.save(force_update=True)
                 msg = "Entries updated sucessfully"
             else:
@@ -240,7 +240,7 @@ def createComment(request):
     if request.method == "POST":
         if commentForm.is_valid:
             commentForm.cleaned_data.all()
-            commentForm.instance.userId = request.user.id
+            commentForm.instance.userId = request.user
             commentForm.instance.save(force_create=True)
             msg = "Entries saved sucessfully"
             status = 200

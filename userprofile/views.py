@@ -54,7 +54,7 @@ def create(request, msg=None):
             obj.longitude = UsersProfileForm.cleaned_data.get("longitude")
             obj.latitude = UsersProfileForm.cleaned_data.get("latitude")
             obj.popularity = UsersProfileForm.cleaned_data.get("popularity")
-            obj.userId = request.user.id
+            obj.userId = request.user
             obj.save(force_create=True)
             msg = "Entries saved sucessfully"
             return redirect("/profile/" + request.user.id)

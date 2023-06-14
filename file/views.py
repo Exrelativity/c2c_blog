@@ -33,7 +33,7 @@ def create(request, msg=None):
         if fileForm.is_valid():
             obj = fileForm.save(commit=False)
             obj.name = fileForm.cleaned_data.get("name")
-            obj.userId = request.user.id
+            obj.userId = request.user
             obj.source = request.FILES['source']
             obj.fileType = fileForm.cleaned_data.get("fileType")
             obj.save(force_create=True)
