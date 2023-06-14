@@ -3,8 +3,6 @@ from .models import *
 from django import forms
 
 class PostMutationForm(ModelForm):
-
-
     title = forms.CharField(
         widget=forms.TextInput(attrs={"placeholder": "title", "class": "form-control"})
     )
