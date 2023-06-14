@@ -1,14 +1,7 @@
 from django.forms import ModelForm
 from .models import UsersProfile
-from file.models import File
 from django import forms
 
-# def mediaQueryset(request):
-#     try:
-#         queryset = File.objects.filter(userId = request.user.id)
-#     except File.DoesNotExist:
-#         return None
-#     return queryset
 
 class UsersProfileForm(ModelForm):
     GENDERSET = (('M', 'Male'),

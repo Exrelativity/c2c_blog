@@ -37,24 +37,24 @@ def create(request, msg=None):
     if request.method == "POST":
         if userprofileForm.is_valid():
             obj = userprofileForm.save(commit=False)
-            obj.firstName = UsersProfileForm.cleaned_data.get("firstName")
-            obj.lastName = UsersProfileForm.cleaned_data.get("lastName")
-            obj.image = UsersProfileForm.cleaned_data.get("image")
-            obj.dateOfBirth = UsersProfileForm.cleaned_data.get(
+            obj.firstName = userprofileForm.cleaned_data.get("firstName")
+            obj.lastName = userprofileForm.cleaned_data.get("lastName")
+            obj.image = userprofileForm.cleaned_data.get("image")
+            obj.dateOfBirth = userprofileForm.cleaned_data.get(
                 "dateOfBirth"
             )
-            obj.gender = UsersProfileForm.cleaned_data.get("gender")
-            obj.userId = UsersProfileForm.cleaned_data.get("userId")
-            obj.details = UsersProfileForm.cleaned_data.get("details")
-            obj.zipcode = UsersProfileForm.cleaned_data.get("zipcode")
-            obj.address = UsersProfileForm.cleaned_data.get("address")
-            obj.city = UsersProfileForm.cleaned_data.get("city")
-            obj.region = UsersProfileForm.cleaned_data.get("region")
-            obj.country = UsersProfileForm.cleaned_data.get("country")
-            obj.longitude = UsersProfileForm.cleaned_data.get("longitude")
-            obj.latitude = UsersProfileForm.cleaned_data.get("latitude")
-            obj.popularity = UsersProfileForm.cleaned_data.get("popularity")
-            obj.userId = request.user
+            obj.gender = userprofileForm.cleaned_data.get("gender")
+            obj.userId = userprofileForm.cleaned_data.get("userId")
+            obj.details = userprofileForm.cleaned_data.get("details")
+            obj.zipcode = userprofileForm.cleaned_data.get("zipcode")
+            obj.address = userprofileForm.cleaned_data.get("address")
+            obj.city = userprofileForm.cleaned_data.get("city")
+            obj.region = userprofileForm.cleaned_data.get("region")
+            obj.country = userprofileForm.cleaned_data.get("country")
+            obj.longitude = userprofileForm.cleaned_data.get("longitude")
+            obj.latitude = userprofileForm.cleaned_data.get("latitude")
+            obj.popularity = userprofileForm.cleaned_data.get("popularity")
+            obj.userId = request.user 
             obj.save(force_create=True)
             msg = "Entries saved sucessfully"
             return redirect("/profile/" + request.user.id)
@@ -89,27 +89,27 @@ def update(request, userId, msg=None):
     userprofileById = UsersProfile.objects.get(userId=request.user.id)
     fileForm = FileForm(request.POST or None, request.FILES or None)
     userprofileForm = UsersProfileMutationForm(userprofileById.__dict__ or None)
-    print(userprofileForm)
+  
     if request.method == "POST":
         userprofileForm = UsersProfileMutationForm(request.POST, request.FILES)
         if userprofileForm.is_valid():
-            userprofileById.firstName = UsersProfileForm.cleaned_data.get("firstName")
-            userprofileById.lastName = UsersProfileForm.cleaned_data.get("lastName")
-            userprofileById.image = UsersProfileForm.cleaned_data.get("image")
-            userprofileById.dateOfBirth = UsersProfileForm.cleaned_data.get(
+            userprofileById.firstName = userprofileForm.cleaned_data.get("firstName")
+            userprofileById.lastName = userprofileForm.cleaned_data.get("lastName")
+            userprofileById.image = userprofileForm.cleaned_data.get("image")
+            userprofileById.dateOfBirth = userprofileForm.cleaned_data.get(
                 "dateOfBirth"
             )
-            userprofileById.gender = UsersProfileForm.cleaned_data.get("gender")
-            userprofileById.userId = UsersProfileForm.cleaned_data.get("userId")
-            userprofileById.details = UsersProfileForm.cleaned_data.get("details")
-            userprofileById.zipcode = UsersProfileForm.cleaned_data.get("zipcode")
-            userprofileById.address = UsersProfileForm.cleaned_data.get("address")
-            userprofileById.city = UsersProfileForm.cleaned_data.get("city")
-            userprofileById.region = UsersProfileForm.cleaned_data.get("region")
-            userprofileById.country = UsersProfileForm.cleaned_data.get("country")
-            userprofileById.longitude = UsersProfileForm.cleaned_data.get("longitude")
-            userprofileById.latitude = UsersProfileForm.cleaned_data.get("latitude")
-            userprofileById.popularity = UsersProfileForm.cleaned_data.get("popularity")
+            userprofileById.gender = userprofileForm.cleaned_data.get("gender")
+            userprofileById.userId = userprofileForm.cleaned_data.get("userId")
+            userprofileById.details = userprofileForm.cleaned_data.get("details")
+            userprofileById.zipcode = userprofileForm.cleaned_data.get("zipcode")
+            userprofileById.address = userprofileForm.cleaned_data.get("address")
+            userprofileById.city = userprofileForm.cleaned_data.get("city")
+            userprofileById.region = userprofileForm.cleaned_data.get("region")
+            userprofileById.country = userprofileForm.cleaned_data.get("country")
+            userprofileById.longitude = userprofileForm.cleaned_data.get("longitude")
+            userprofileById.latitude = userprofileForm.cleaned_data.get("latitude")
+            userprofileById.popularity = userprofileForm.cleaned_data.get("popularity")
             userprofileById.save(force_update=True)
             msg = "Entries updated sucessfully"
         else:
