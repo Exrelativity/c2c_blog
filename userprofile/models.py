@@ -1,10 +1,9 @@
 from django.db import models
 from authentication.models import Users
-from meta.models import ModelMeta
 from blog.models import BaseAbstractModel
 
 # Create your models here.
-class UsersProfile(BaseAbstractModel, ModelMeta):
+class UsersProfile(BaseAbstractModel):
     GENDERSET = (('M', 'Male'),
                  ('F', 'Female'))
     firstName = models.CharField(max_length=64, null=True, blank=True)
@@ -26,16 +25,6 @@ class UsersProfile(BaseAbstractModel, ModelMeta):
     createdAt = models.DateTimeField(auto_now_add=True)
     media = models.ManyToManyField(to="file.File", through="file.FileProfile",through_fields=("profileId","fileId"))
    
-    _metadata = {
-        'title': 'get_full_name',
-        'description': 'details',
-        'image': 'get_meta_images',
-    }
-    
-    def get_meta_images(self):
-        if self.media:
-            return [x.source for x in self.media]
-    
     def get_full_name(self):
         if self.firstName and self.lastName:
             return self.firstName +" "+ self.lastName

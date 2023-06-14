@@ -1,10 +1,9 @@
 from django.db import models
 from authentication.models import Users
 from blog.models import BaseAbstractModel
-from meta.models import ModelMeta
 # Create your models here.
 
-class Category(BaseAbstractModel, ModelMeta):
+class Category(BaseAbstractModel):
     name = models.CharField(max_length=64, unique=True)
     status = models.BooleanField(default=False)
     front = models.BooleanField(default=False)
@@ -14,15 +13,6 @@ class Category(BaseAbstractModel, ModelMeta):
     createdAt = models.DateTimeField(auto_now_add=True)
     files = models.ManyToManyField(to="file.File",through="file.FileCategory",through_fields=("categoryId","fileId"))
 
-    _metadata = {
-        "title": "name",
-        "description": "content",
-        "image": "get_meta_images",
-    }
-
-    def get_meta_images(self):
-        if self.file:
-            return [x.source for x in self.files]
     
     def __str__(self):
         return self.name
@@ -34,7 +24,7 @@ class Category(BaseAbstractModel, ModelMeta):
    
 
 
-class SubCategory(BaseAbstractModel, ModelMeta):
+class SubCategory(BaseAbstractModel):
     name = models.CharField(max_length=64, unique=True)
     status = models.BooleanField(default=False)
     front = models.BooleanField(default=False)
@@ -45,16 +35,6 @@ class SubCategory(BaseAbstractModel, ModelMeta):
     createdAt = models.DateTimeField(auto_now_add=True)
     files = models.ManyToManyField(to="file.File",through="file.FileSubCategory",through_fields=("subCategoryId","fileId"))
 
-    _metadata = {
-        "title": "name",
-        "description": "description",
-        "images": "get_meta_images",
-    }
-
-    def get_meta_images(self):
-        if self.file:
-            return [x.source for x in self.files]
-        
     def __str__(self):
         return self.name
     
@@ -63,7 +43,7 @@ class SubCategory(BaseAbstractModel, ModelMeta):
     
 
 
-class Post(ModelMeta, BaseAbstractModel):
+class Post(BaseAbstractModel):
     title = models.CharField(max_length=150, unique=True)
     status = models.BooleanField(default=False)
     front = models.BooleanField(default=False)
@@ -75,16 +55,6 @@ class Post(ModelMeta, BaseAbstractModel):
     updatedAt = models.DateTimeField(auto_now=True)
     createdAt = models.DateTimeField(auto_now_add=True)
     files = models.ManyToManyField(to="file.File",through="file.FilePost",through_fields=("postId", "fileId"))
-
-    _metadata = {
-        "title": "title",
-        "description": "description",
-        "images": "get_meta_images",
-    }
-
-    def get_meta_images(self):
-        if self.file:
-            return [x.source for x in self.files]
         
     def __str__(self):
         return self.title
