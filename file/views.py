@@ -3,8 +3,7 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_protect
-
+from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
 # Create your views here.
 @login_required(login_url="/login")
@@ -24,7 +23,7 @@ def index(request, msg=None):
         data = {"msg": msg, "file": fileById}
         return JsonResponse(data, status)
 
-@csrf_protect
+@csrf_exempt
 @login_required(login_url="/login")
 def create(request, msg=None):
     fileForm = FileForm()
@@ -39,7 +38,7 @@ def create(request, msg=None):
             obj.save(force_create=True)
             msg = "uploaded sucessfully"
             status = 200
-            return redirect()
+            return redirect().back()
         else:
             msg = "Error validating the form"
             status = 400

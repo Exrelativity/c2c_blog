@@ -2,9 +2,8 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
-from file.forms import *
+from file.forms import FileForm
 from django.views.decorators.csrf import csrf_protect
-
 
 
 # Create your views here.
@@ -34,6 +33,7 @@ def create(request, msg=None):
 
     fileForm = FileForm(request.POST or None, request.FILES or None)
     userprofileForm = UsersProfileForm(request.POST or None)
+
     if request.method == "POST":
         if userprofileForm.is_valid():
             obj = userprofileForm.save(commit=False)
@@ -87,7 +87,9 @@ def update(request, userId, msg=None):
                 "/profile/create", msg="Please fill in your profile information"
             )
     userprofileById = UsersProfile.objects.get(userId=request.user.id)
+    fileForm = FileForm(request.POST or None, request.FILES or None)
     userprofileForm = UsersProfileMutationForm(userprofileById.__dict__ or None)
+    print(userprofileForm)
     if request.method == "POST":
         userprofileForm = UsersProfileMutationForm(request.POST, request.FILES)
         if userprofileForm.is_valid():
@@ -118,7 +120,7 @@ def update(request, userId, msg=None):
     return render(
         request,
         "profile/update.html",
-        {"form": userprofileForm, "msg": msg, "profile": userprofileById},
+        {"form": userprofileForm, "fileForm":fileForm, "msg": msg, "profile": userprofileById},
     )
 
 

@@ -23,7 +23,6 @@ def about(request, msg = None):
 def contact(request, msg = None):
     return render(request, "contact.html")
 
-
 def faq(request, msg = None):
     return render(request, "faq.html")
 

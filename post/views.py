@@ -147,8 +147,9 @@ def show(request, id, msg=None):
 @csrf_protect
 @login_required(login_url="/login")
 def update(request, id, msg=None):
-    postForm = PostMutationForm(request.POST, request.FILES)
+   
     postById = Post.objects.get(id=id)
+    postForm = PostMutationForm(request.POST or postById.__dict__ )
     category = Category.objects.all()
     subCategory = SubCategory.objects.all()
     if request.method == "PUT":
