@@ -3,6 +3,8 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from file.forms import *
+from django.views.decorators.csrf import csrf_protect
+
 
 
 # Create your views here.
@@ -20,7 +22,8 @@ def index(request, msg=None):
         "profile/show.html",
         {"msg": msg, "profile": userprofileById, "meta": meta},
     )
-    
+
+@csrf_protect
 @login_required(login_url="/login")
 def create(request, msg=None):
     try:
@@ -79,7 +82,7 @@ def show(request, userId, msg=None):
         {"msg": msg, "profile": userprofileById, "meta": meta},
     )
 
-
+@csrf_protect
 @login_required(login_url="/login")
 def update(request, userId, msg=None):
     try:

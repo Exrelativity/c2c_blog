@@ -34,5 +34,6 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("profile/", include('userprofile.urls')),
     path("posts/", include('post.urls')),
-    path("", include("authentication.urls"))
+    path("", include("authentication.urls")),
+    path("__debug__/", include("debug_toolbar.urls")),
     ]   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

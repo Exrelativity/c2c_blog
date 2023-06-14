@@ -7,7 +7,7 @@ from .forms import *
 from file.models import FilePost
 from file.forms import FileForm
 from django.http import JsonResponse
-
+from django.views.decorators.csrf import csrf_protect
 
 # Create your views here.
 def index(request, msg=None):
@@ -40,7 +40,7 @@ def index(request, msg=None):
             },
         )
 
-
+@csrf_protect
 @login_required(login_url="/login")
 def create(request, msg=None):
     postForm = PostForm(request.POST, request.FILES)
@@ -144,7 +144,7 @@ def show(request, id, msg=None):
             },
         )
 
-
+@csrf_protect
 @login_required(login_url="/login")
 def update(request, id, msg=None):
     postForm = PostMutationForm(request.POST, request.FILES)

@@ -3,7 +3,8 @@ from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
 from django.http import JsonResponse
-from asgiref.sync import async_to_sync
+from django.views.decorators.csrf import csrf_protect
+
 
 # Create your views here.
 @login_required(login_url="/login")
@@ -22,7 +23,8 @@ def index(request, msg=None):
     else:
         data = {"msg": msg, "file": fileById}
         return JsonResponse(data, status)
-    
+
+@csrf_protect
 @login_required(login_url="/login")
 def create(request, msg=None):
     fileForm = FileForm()
@@ -52,7 +54,8 @@ def create(request, msg=None):
                 "msg": msg
             }
         return JsonResponse(data, status)
-       
+
+@csrf_protect      
 @login_required(login_url="/login")
 def update(request, id, msg=None):
     fileForm = FileForm(request.POST, request.FILES)
