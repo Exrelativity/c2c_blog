@@ -14,6 +14,7 @@ constantly==15.1.0
 cryptography==41.0.1
 daphne==4.0.0
 Django==4.1.7
+django-debug-toolbar==4.1.0
 django-filter==22.1
 django-graph-auth @ file:///C:/Users/relativity/Documents/Projects/c2c_blog/venv/lib/python3.10/site-packages/django-graph-auth/dist/django-graph-auth-0.1.0.tar.gz#sha256=d4c0384dd178aade926b8016c1a11f7bcb35c53be4215e3c7eb2418fad31e47d
 django-graphql-auth==0.3.16
