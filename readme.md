@@ -1,4 +1,18 @@
-# Routes for our blog
+# Blog
+
+# To run the project
+
+```
+source venv/bin/activate
+```
+```
+python manage.py loaddata users.json
+```
+```
+python3 manage.py runserver
+```
+
+## Routes for our blog
 
 ```
 admin  
@@ -18,3 +32,6 @@ auth/password/forgot
 auth/password/update  
 auth/confirm/email  
 ```
+
+Please note for new setup comments ### fields on the post form.py file with modelchoice as this fields courses migration errors,
+after migration the field can be uncommented back.

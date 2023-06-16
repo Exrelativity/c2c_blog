@@ -31,16 +31,10 @@ def login_view(request, *args, **kwargs):
             if user is not None:
                 login(request, user)
                 try:
-                    usersprofile = UsersProfile.objects.get(userId = user.id)
+                    UsersProfile.objects.get(userId = user.id)
                 except UsersProfile.DoesNotExist:
                     return redirect("profile/create", msg="Please fill in your profile information")
-                else:
-                    if len(usersprofile) > 0:
-                        request.session["usersprofile"] = usersprofile
-                    else:
-                        return redirect("profile/create", msg="Please fill in your profile information")
-                        
-                    return redirect("/dashboard", kwargs={"msg":"Hi, Welcome"})
+                return redirect("/dashboard", kwargs={"msg":"Hi, Welcome"})
             else:
                 msg = "Invalid credentials"
         else:
@@ -61,7 +55,6 @@ def logout_view(request, *args, **kwargs):
         msg = "Logged out sucessfully"
     else:
         msg = "Error validating the logut"
-
     output = redirect("/login", msg)
     return output
 
@@ -78,11 +71,13 @@ def register_user(request, *args, **kwargs):
     form = SignUpForm(request.POST or None)
     if request.method == "POST":
         if form.is_valid():
+            form.cleaned_data
             form.save()
             username = form.cleaned_data.get("username")
             email = form.cleaned_data.get("email")
             raw_password = form.cleaned_data.get("password1")
             user = authenticate(username=username, password=raw_password)
+            # UsersProfile.objects.create(userId = user)
             mailSubject = f"Welcome to {settings.APP_NAME}"
             mailContent = f"""Hi,\n\n\n Welcome to {settings.BASE_URL}.\n One more process to complete...\n\n 
                 {settings.BASE_URL}/confirm/email/{email}\n\nPlease click the link above or copy to your browser to send a request of email confirmation.
@@ -140,7 +135,7 @@ def update_password(request, id=None, token=None, *args, **kwargs):
         return redirect("/notfound")
         
     userTokenColumn = PasswordReset.objects.filter(userId=id,token=token)
-    form = UpdatePasswordForm(request.POST or None)
+    form = UpdatePasswordForm(request.POST or userById)
     if request.method == "POST" and userTokenColumn.exist():
         if form.is_valid() and userTokenColumn.createdAt > (datetime.now() - timedelta(2,0,0)):
             password = form.cleaned_data.get("password1")

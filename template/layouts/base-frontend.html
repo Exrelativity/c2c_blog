@@ -1,13 +1,13 @@
-{% load static %} {% load meta %}
+{% load static %} 
 <!DOCTYPE html>
 <html lang="en">
 
-<head {% meta_namespaces %}>
+<head >
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <link rel="apple-touch-icon" sizes="76x76" href="{% static 'img/apple-icon.png' %}">
   <link rel="icon" type="image/png" href="{% static 'img/favicon.png' %}">
-  {% include "meta/meta.html" %}
+
   <title>
     {{ settings.APP_NAME }} - {% block title %}{% endblock %} | {{ settings.APP_NAME }}
   </title>
@@ -52,17 +52,17 @@
 
 <body class="" style="width: 100%; font-size: medium;">
 
-<div style="width: 100%; display:flex;">
-  {% include 'includes/header.html' %}
+  <div style="width: 100%; display:flex;">
+    {% include 'includes/header.html' %}
 
-  <div class="container-fluid" style="position: relative; width: 100%; padding-top: 70px;">
-    
-    {% block content %}{% endblock content %}
-    {% include 'includes/fixed-plugin.html' %}
-    {% include 'includes/footer-fullscreen.html' %}
-  
+    <div class="container-fluid" style="position: relative; width: 100%; padding-top: 70px;">
+
+      {% block content %}{% endblock content %}
+      {% include 'includes/fixed-plugin.html' %}
+      {% include 'includes/footer-fullscreen.html' %}
+
+    </div>
   </div>
-</div>
 
 
   {% include 'includes/scripts.html' %}

@@ -1,195 +1,296 @@
-{% extends "layouts/base.html" %}
-
+{% extends "layouts/base-two-side.html" %}
+{% load absoluteurl %}
+{% absoluteurl request "/media/upload/" as fileuploaduri %}
 {% block title %} Create Post {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}
-<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet" />{% endblock stylesheets %}
 
+<link href="https://cdn.quilljs.com/1.0.0/quill.snow.css" rel="stylesheet" />
+
+{% endblock stylesheets %}
 {% block content %}
 
-<div class="content">
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    <h5 class="title">Add Post</h5>
+<div class="" style="width: 100%">
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-md-8 pr-md-1">
+                    <h5 class="title">Create Post</h5>
                     <h6 class="card-category">
-                        {% if msg %}
-                          <span class="text-danger">{{ msg | safe }}</span>
-                        {% endif %}  
+                        {% if alert %}
+                        <span class="text-danger">{{ alert | safe }}</span>
+                        {% else %}
+                        <span> Please create your new post </span>
+                        {% endif %}
                     </h6>
                 </div>
-                <div class="card-body">
-                    <form action="/posts/create" method="POST" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Title</label>
-                                    <input type="text" name="title" class="form-control" required value="">
-                                </div>
-                                <span class="text-danger">{{ form.title.errors }}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label>Image</label>
-                                    <input type="file" name="image" class="form-control-file" accept="image/*" value="">
-                                </div>
-                                <span class="text-danger">{{ form.image.errors }}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Category</label>
-                                    <select name="categoryId" class="form-control">
-                                        {% for categorys in category %}
-                                        <option value="{{ categorys.id }}">{{ categorys.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <span class="text-danger">{{ form.categoryId.errors }}</span>
-                            </div>
-                        
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Sub Category</label>
-                                    <select name="subCategoryId" class="form-control">
-                                        {% for subCategorys in subCategory %}
-                                        <option value="{{ subCategorys.id }}">{{ subCategorys.name }}</option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                                <span class="text-danger">{{ form.subCategoryId.errors }}</span>
-                            </div>
-
-                           
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>User Id (readonly)</label>
-                                    <input type="text" readonly name="userId" class="form-control"
-                                        value="{{ request.user.id }}">
-                                </div>
-                                <span class="text-danger">{{ form.userId.errors }}</span>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Status (active)</label>
-                                    <input type="checkbox" name="status" class="form-control" required value="">
-                                </div>
-                                <span class="text-danger">{{ form.status.errors }}</span>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Front (readonly)</label>
-                                    <input type="checkbox" readonly name="front" class="form-control" value="">
-                                </div>
-                                <span class="text-danger">{{ form.front.errors }}</span>
-                            </div>
-                            <div class="col-md-2">
-                                <div class="form-group">
-                                    <label>Slider (readonly)</label>
-                                    <input type="checkbox" readonly name="slider" class="form-control" required value="">
-                                </div>
-                                <span class="text-danger">{{ form.slider.errors }}</span>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="form-group">
-                                    <label for="about">Content</label>
-                                    <input name="content" type="hidden">
-                                    <div id="editor-container">
-                                        <p>A robot who has developed sentience, and is the only robot of his kind shown
-                                            to be still functioning on Earth.</p>
-                                    </div>
-                                    <span class="text-danger">{{ form.content.errors }}</span>
-                                </div>
-                            </div>
-                        </div>
-                       
-                        <div class="row">
-                           
-                        </div>
-                        <div class="card-footer">
-                            <input type="submit" name="submit" class="btn btn-fill btn-primary" value="submit">
-                        </div>
-                    </form>
+                <div class="col-md-4 pl-md-1">
+                    <div class="form-group">
+                        <button type="button" id="divOpen" class="btn btn-fill btn-primary">
+                            File Upload
+                        </button>
+                    </div>
                 </div>
-
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="card card-user">
-                <div class="card-body">
-                    <p class="card-text">
-                    <div class="author">
-                        <div class="block block-one"></div>
-                        <div class="block block-two"></div>
-                        <div class="block block-three"></div>
-                        <div class="block block-four"></div>
-                        <a href="javascript:void(0)">
-                            <img class="avatar" src="{{ request.session.usersprofile.image }}" alt="...">
-                            <h5 class="title">{{ request.user.get_full_name }}</h5>
-                        </a>
-                        <p class="description">
-                            "Quote of the day"
-                        </p>
-                    </div>
-                    </p>
-                    <div class="card-description">
-                        request.session['userprofile']['details']
+        <div class="card-body">
+            <form action="/post/create" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Title</label>
+                            {{ form.title }}
+                            <span class="text-danger">{{ form.title.errors }}</span>
+                        </div>
                     </div>
                 </div>
-                <div class="card-footer">
-                    <div class="button-container">
-                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-facebook">
-                            <i class="fab fa-facebook"></i>
-                        </button>
-                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-twitter">
-                            <i class="fab fa-twitter"></i>
-                        </button>
-                        <button href="javascript:void(0)" class="btn btn-icon btn-round btn-google">
-                            <i class="fab fa-google-plus"></i>
-                        </button>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="media">Select relevant media files for the post</label>
+                            <select required class="form-control" name="media" id="" multiple>
+                                {% for file in userfiles %}
+                                <option value="{{ files.id }}">{{ files.name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
+
+                <div class="row">
+                    <div class="col-md-6 pr-md-1">
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select required class="form-control" name="categoryId" id="category">
+                                {% for category in categorys %}
+                                <option value="{{ category.id }}">{{ category.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="text-danger">{{ form.categoryId.errors }}</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pl-md-1">
+                        <div class="form-group">
+                            <label>Sub Category</label>
+                            <select required class="form-control" name="subCategoryId" id="subcategory">
+                                {% for subCategory in subCategorys %}
+                                <option value="{{ subCategory.id }}">{{ subCategory.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <span class="text-danger">{{ form.subCategoryId.errors }}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- saving -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="about">Content</label>
+                            {{ form.content }}
+                            <div id="document-full" class="ql-scroll-y" style="height: 100%; min-height:500px;">
+                                <h1>Post</h1>
+                            </div>
+                            <span class="text-danger">{{ form.content.errors }}</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- saving -->
+                <div class="row">
+                    <div class="col-md-12">
+                        <input name="submit" value="submit" type="submit" id="submit"
+                            class="btn btn-fill btn-primary" />
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+<div id="fileUpload" style="
+    display: none;
+    background-color: #bbc0c5;
+    border-radius: 10px;
+    padding: 25px;
+    z-index: 10;
+    width: 600px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+  ">
+    <form action="{{ settings.BASE_URL }}/media/upload/" enctype="multipart/formdata" method="POST" target="_self">
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-12">
+                <label for="name">name</label>
+                {{ fileForm.name }}
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <label for="source">Source</label>
+                {{ fileForm.source }}
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <label for="lng">File Type </label>
+                {{ fileForm.fileType }}
+            </div>
+        </div>
+        <div class="row mt-2">
+            <div class="col-md-12">
+                <input name="submit" value="submit" type="submit" id="submit" class="btn btn-fill btn-primary" , />
+            </div>
+        </div>
+    </form>
+    <div class="row mt-2">
+        <div class="col-md-12">
+            <button name="close" type="button" id="divClose" class="btn btn-fill btn-primary" ,>
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
 
 {% endblock content %}
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+
+
 <script src="//cdn.quilljs.com/1.0.0/quill.js"></script>
-<script> var quill = new Quill('#editor-container', {
-        modules: {
-            toolbar: [
-                ['bold', 'italic'],
-                ['link', 'blockquote', 'code-block', 'image'],
-                [{ list: 'ordered' }, { list: 'bullet' }]
-            ]
-        },
-        placeholder: 'Compose an epic...',
-        theme: 'snow'
+<script>
+    $(document).ready(function () {
+        var toolbarOptions = [
+            [{
+                'header': [1, 2, 3, 4, 5, 6, false]
+            }],
+            ['bold', 'italic', 'underline', 'strike'], // toggled buttons
+            ['blockquote', 'code-block'],
+
+            [{
+                'header': 1
+            }, {
+                'header': 2
+            }], // custom button values
+            [{
+                'list': 'ordered'
+            }, {
+                'list': 'bullet'
+            }],
+            [{
+                'script': 'sub'
+            }, {
+                'script': 'super'
+            }], // superscript/subscript
+            [{
+                'indent': '-1'
+            }, {
+                'indent': '+1'
+            }], // outdent/indent
+            [{
+                'direction': 'rtl'
+            }], // text direction
+
+            [{
+                'size': ['small', false, 'large', 'huge']
+            }], // custom dropdown
+
+            [{
+                'color': []
+            }, {
+                'background': []
+            }], // dropdown with defaults from theme
+            [{
+                'font': []
+            }],
+            [{
+                'align': []
+            }],
+            ['link', 'image'],
+
+            ['clean'] // remove formatting button
+        ];
+
+        var quill = new Quill('#document-full', {
+            modules: {
+                toolbar: toolbarOptions,
+                autoformat: true
+            },
+            theme: 'snow',
+            placeholder: "Write something..."
+        });
+
+        var form = document.querySelector('form');
+        form.onsubmit = function () {
+            // Populate hidden form on submit
+            var about = document.querySelector('input[name=content]');
+            about.value = JSON.stringify(quill.getContents());
+
+            console.log("Submitted", $(form).serialize(), $(form).serializeArray());
+        };
     });
+</script>
 
-    var form = document.querySelector('form');
-    form.onsubmit = function () {
-        // Populate hidden form on submit
-        var about = document.querySelector('input[name=content]');
-        about.value = JSON.stringify(quill.getContents());
 
-        console.log("Submitted", $(form).serialize(), $(form).serializeArray());
+<script>
+    $(document).ready(function () {
+        // close upload window
+        var divCloseButton = document.getElementById("divClose");
+        divCloseButton.addEventListener("click", () => {
+            var fileuploadDiv = document.getElementById("fileUpload");
+            fileuploadDiv.style.display = "none";
+        });
 
-        // No back end to actually submit to!
-        alert('Open the console to see the submit data!')
-        return false;
-    };
-</script>{% endblock javascripts %}
+        // open upload window
+        var divOpenButton = document.getElementById("divOpen");
+        divOpenButton.addEventListener("click", () => {
+            var fileuploadDiv = document.getElementById("fileUpload");
+            fileuploadDiv.style.display =
+                fileuploadDiv.style.display === "block" ? "none" : "block";
+        });
+
+        //geting the location
+        var locationButton = document.getElementById("locationButton");
+        locationButton.addEventListener("click", () => {
+            // Try HTML5 geolocation.
+            var latElement = document.getElementById("id_latitude");
+            var longElement = document.getElementById("id_longitude");
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        let pos = {
+                            lat: position.coords.latitude,
+                            lng: position.coords.longitude,
+                        };
+                        latElement.removeAttribute("readonly");
+                        longElement.removeAttribute("readonly");
+                        latElement.value = pos.lat;
+                        longElement.value = pos.lng;
+                        latElement.setAttribute("readonly");
+                        longElement.setAttribute("readonly");
+                        alert("Location found.");
+                    },
+                    () => {
+                        handleLocationError(true);
+                    }
+                );
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false);
+            }
+        });
+
+        var handleLocationError = (browserHasGeolocation) => {
+            browserHasGeolocation
+                ? alert("The Geolocation service failed.")
+                : alert("Error: Your browser doesn't support geolocation.");
+        };
+    });
+</script>
+
+{% endblock javascripts %}

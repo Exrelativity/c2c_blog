@@ -11,18 +11,19 @@
     <div class="row">
         <div class="col-md-12">
             <div class="card ">
-                <div class="card-header" style="display: flex; flex-direction: row; align-items: center; justify-content: space-around;">
+                <div class="card-header"
+                    style="display: flex; flex-direction: row; align-items: center; justify-content: space-around;">
                     <div>
                         <h4 class="card-title"> List of all Posts Made</h4>
                         <!-- <p class="category"> Here is a subtitle for this table</p> -->
                         <h6 class="card-category">
                             {% if msg %}
-                              <span class="text-danger">{{ msg | safe }}</span>
-                            {% endif %}  
+                            <span class="text-danger">{{ msg | safe }}</span>
+                            {% endif %}
                         </h6>
                     </div>
                     <div>
-                        <a href="/posts/create"><button class="btn btn-fill btn-primary" >Add</button></a>
+                        <a href="/posts/create"><button class="btn btn-fill btn-primary">Add</button></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -49,13 +50,7 @@
                                         Updated At
                                     </th>
                                     <th class="text-center">
-                                        View Button
-                                    </th>
-                                    <th class="text-center">
-                                        Update Button
-                                    </th>
-                                    <th class="text-center">
-                                        Delete Button
+                                        Action Buttons
                                     </th>
                                 </tr>
                             </thead>
@@ -82,13 +77,15 @@
                                         {{ posts.updatedAt }}
                                     </td>
                                     <td class="text-center">
-                                        <a href="/posts/{{  posts.id  }}"> <button> View</button> </a>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="/posts/{{  posts.id  }}/update"> <button> Update</button> </a>
-                                    </td>
-                                    <td class="text-center">
-                                        <a href="/posts/{{  posts.id  }}/delete"> <button> Delete</button> </a>
+                                        <div>
+                                            <a href="/posts/{{  posts.id  }}"> <button> View</button> </a>
+                                        </div>
+                                        <div>
+                                            <a href="/posts/{{  posts.id  }}/update"> <button> Update</button> </a>
+                                        </div>
+                                        <div>
+                                            <a href="/posts/{{  posts.id  }}/delete"> <button> Delete</button> </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -100,19 +97,18 @@
             </div>
         </div>
     </div>
-</div>
 
-{% endblock content %}
+    {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}
+    <!-- Specific Page JS goes HERE  -->
+    {% block javascripts %}
 
-<script>
-    $(document).ready(function () {
-        // Javascript method's body can be found in assets/js/demos.js
-        demo.initDashboardPageCharts();
+    <script>
+        $(document).ready(function () {
+            // Javascript method's body can be found in assets/js/demos.js
+            demo.initDashboardPageCharts();
 
-    });
-</script>
+        });
+    </script>
 
-{% endblock javascripts %}
+    {% endblock javascripts %}

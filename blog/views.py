@@ -23,7 +23,6 @@ def about(request, msg = None):
 def contact(request, msg = None):
     return render(request, "contact.html")
 
-
 def faq(request, msg = None):
     return render(request, "faq.html")
 
@@ -36,7 +35,7 @@ def search(request, msg = None):
             search_list = search.split(" ")
             for i in search_list:
                 post += Post.objects.filter(Q(title__icontains= i) | Q(content__icontains= i))
-    paginator = Paginator(post, 15) # Show 15 contacts per page.
+    paginator = Paginator(post, 15) 
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
     return render(request, "post-front/search.html", {"msg":msg, "form":form, "page_obj":page_obj})
@@ -45,9 +44,7 @@ def search(request, msg = None):
 @login_required(login_url="/login")
 def dashboard(request, msg = None):
     category = Category.objects.prefetch_related("subCategory__post").filter(status=True, front=True)[:7]
-    # subCategory = category.subCategory.all()
-    # post = category.posts.all()
-    return render(request, "dashboard.html", {"msg":msg,"category": category }) #"subCategory":subCategory, "post":post})
+    return render(request, "dashboard.html", {"msg":msg,"category": category })
 
 def error_404_handler(request, exception):
     return render(request, 'notfound.html')

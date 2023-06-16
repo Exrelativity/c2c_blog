@@ -1,10 +1,14 @@
 {% extends "layouts/base-two-side.html" %}
 
-{% block title %} {% if usersprofile %}{{ usersprofile.firstName }}
-{{ usersprofile.lastName }}{% endif %} {% endblock %}
+{% block title %}
+{% if profile %}
+{{ profile.firstName }}
+{{ profile.lastName }} 
+{% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+{% endblock %}
 
 {% block content %}
 
@@ -12,25 +16,25 @@
 <div class="" style="width:100%">
   <div class="card">
     <div class="card-header">
-      <h5 class="title">{% if usersprofile %}{{ usersprofile.firstName }}
-        {{ usersprofile.lastName }}{% endif %}</h5>
+      <h5 class="title">{% if profile %} {{ profile.firstName }}{% endif %}
+        {{ profile.lastName }}</h5>
       <h6 class="card-category">
         {% if alert %}
         <span class="text-danger">{{ alert | safe }}</span>
-        {% endif %}
+        
       </h6>
 
       <div class="card-body">
 
         <div class="row" id="profilebtn">
           <ul>
-            <li><a href="profile/{{ request.user.id }}/update"><button type="button" class="btn-primary"> Edith Profile1
+            <li><a href="profile/{{ request.user.id }}/update"><button type="button" class="btn-primary"> Edit Profile
         </div>
         <div class="row">
           <ul>
             <li>
               <p>UserId (readonly):
-                <span>{{ userId }}</span>
+                <span>{{ request.user.id }}</span>
               </p>
             </li>
             <li>
@@ -43,67 +47,69 @@
                 <span>{{ request.user.email }}</span>
               </p>
             </li>
+            {% if profile %}
             <li>
               <p>First Name:
-                <span>{% if usersprofile %} {{ usersprofile.firstName }} {% endif %}</span>
+                <span>{{ profile.firstName }} </span>
               </p>
             </li>
             <li>
               <p>Last Name:
-                <span>{% if usersprofile %} {{ usersprofile.lastName }} {% endif %}</span>
+                <span>{{ profile.lastName }} </span>
               </p>
             </li>
             <li>
               <p>Marital Status:
-                <span>{% if usersprofile %}{{ usersprofile.maritalStatus }}{% endif %}</span>
+                <span>{{ profile.maritalStatus }}</span>
               </p>
             </li>
             <li>
               <p>Date of Birth:
-                <span>{% if usersprofile %} {{ usersprofile.dateOfBirth }} {% endif %}</span>
+                <span>{{ profile.dateOfBirth }} </span>
               </p>
             </li>
             <li>
               <p>Gender:
-                <span>{% if usersprofile %} {% if genders.id == usersprofile.genderId %} {{ gender.name }} {% endif %}
-                  {% endif %}</span>
+                <span>{{ profile.genderId }} 
+                  </span>
               </p>
             </li>
             <li>
               <p>Address:
-                <span>{% if usersprofile %} {{ usersprofile.address }} {% endif %}</span>
+                <span>{{ profile.address }} </span>
               </p>
             </li>
             <li>
               <p>City:
-                <span>{% if usersprofile %} {{ usersprofile.city }} {% endif %}</span>
+                <span>{{ profile.city }} </span>
               </p>
             </li>
             <li>
               <p>Country:
-                <span>{% if usersprofile %} {{ usersprofile.country }} {% endif %}</span>
+                <span>{{ profile.country }} </span>
               </p>
             </li>
             <li>
               <p>Postal Code/Zip Code:
-                <span>{% if usersprofile %} {{ usersprofile.zipcode }} {% endif %}</span>
+                <span>{{ profile.zipcode }} </span>
               </p>
             </li>
             <li>
               <p>About Me:
-                <Span>{% if usersprofile %} {{ usersprofile.details }} {% endif %}</span>
+                <Span>{{ profile.details }} </span>
               </p>
             </li>
             <li>
               <p for="lat">Latitude (readonly):
-                <span> {% if usersprofile %}{{usersprofile.latitude}}{% endif %}</span>
+                <span>{{ profile.latitude }}</span>
               </p>
             </li>
             <li>
               <p for="lng">Longitude (readonly):
-                <span>{% if usersprofile %}{{usersprofile.longitude}}{% endif %} </span>
+                <span>{{ profile.longitude }} </span>
               </p>
             </li>
+            {% endif %}
           </ul>
         </div>
 
@@ -118,14 +124,43 @@
 
       <script>
         $(document).ready(function () {
-          // Javascript method's body can be found in assets/js/demos.js
-          demo.initDashboardPageCharts();
-          demo.initGoogleMaps();
-          if (pos > 0) {
-            document.getElementById("lat").value = pos.lat;
-            document.getElementById("lng").value = pos.lng;
-          };
 
+          var locationButton = document.getElementById("locationButton");
+          locationButton.addEventListener("click", () => {
+            // Try HTML5 geolocation.
+            var latElement = document.getElementById("id_latitude");
+            var longElement = document.getElementById("id_longitude");
+      
+            if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(
+                (position) => {
+                  let pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                  };
+                  latElement.removeAttribute("readonly");
+                  longElement.removeAttribute("readonly");
+                  latElement.value = pos.lat;
+                  longElement.value = pos.lng;
+                  latElement.setAttribute("readonly");
+                  longElement.setAttribute("readonly");
+                  alert("Location found.");
+                },
+                () => {
+                  handleLocationError(true);
+                }
+              );
+            } else {
+              // Browser doesn't support Geolocation
+              handleLocationError(false);
+            }
+          });
+      
+          var handleLocationError = (browserHasGeolocation) => {
+            browserHasGeolocation
+              ? alert("The Geolocation service failed.")
+              : alert("Error: Your browser doesn't support geolocation.")
+          };
         });
       </script>
 

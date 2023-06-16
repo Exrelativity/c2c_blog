@@ -16,10 +16,11 @@ Including another URLconf
 
 from django.urls import path
 from .views import *
+
 urlpatterns = [
     path("", index),
-    path("<int:id>", show),
-    path("<int:id>/update", update),
-    path('create', create),
-    path('<int:id>/delete', delete),
+    path("<uuid:userId>", show),
+    path("<uuid:userId>/update", update),
+    path("create", create),
+    path("<uuid:userId>/delete", delete),
 ]

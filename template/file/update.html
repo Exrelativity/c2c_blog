@@ -1,0 +1,171 @@
+{% extends "layouts/base-two-side.html" %}
+<!-- {% load absoluteurl %}
+{% absoluteurl request=request uri="/media/upload/" as fileuploaduri %} -->
+{% block title %} File Upload {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %} {% block content %}
+
+<div class="" style="width: 100%">
+  <div class="card">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-8 pr-md-1">
+          <h5 class="title">File Upload</h5>
+          <h6 class="card-category">
+            {% if alert %}
+            <span class="text-danger">{{ alert | safe }}</span>
+            {% else %}
+            <span> Please enter your info </span>
+            {% endif %}
+          </h6>
+        </div>
+        <!-- <div class="col-md-4 pl-md-1">
+          <div class="form-group">
+            <button type="button" id="divOpen" class="btn btn-fill btn-primary">
+              File Upload
+            </button>
+          </div>
+        </div> -->
+      </div>
+    </div>
+    <div class="card-body">
+      <form action="{{ settings.BASE_URL }}/media/update"  enctype="multipart/formdata" method="POST" target="_self">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-12">
+            <label for="name">name</label>
+            {{ fileForm.name }}
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <label for="source">Source</label>
+            {{ fileForm.source }}
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <label for="lng">File Type </label>
+            {{ fileForm.fileType }}
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-md-12">
+            <input name="submit" value="submit" type="submit" id="submit" class="btn btn-fill btn-primary" , />
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- <div id="fileUpload" style="
+    display: none;
+    background-color: #bbc0c5;
+    border-radius: 10px;
+    padding: 25px;
+    z-index: 10;
+    width: 600px;
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    transform: translate(-50%, -50%);
+  ">
+  <form action="{{ settings.BASE_URL }}/media/upload"  enctype="multipart/formdata" method="POST" target="_self">
+    {% csrf_token %}
+    <div class="row">
+      <div class="col-md-12">
+        <label for="name">name</label>
+        {{ fileForm.name }}
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <label for="source">Source</label>
+        {{ fileForm.source }}
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <label for="lng">File Type </label>
+        {{ fileForm.fileType }}
+      </div>
+    </div>
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <input name="submit" value="submit" type="submit" id="submit" class="btn btn-fill btn-primary" , />
+      </div>
+    </div>
+  </form>
+  <div class="row mt-2">
+    <div class="col-md-12">
+      <button name="close" type="button" id="divClose" class="btn btn-fill btn-primary" ,>
+        Close
+      </button>
+    </div>
+  </div>
+</div> -->
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+<script>
+  $(document).ready(function () {
+    // close upload window
+    var divCloseButton = document.getElementById("divClose");
+    divCloseButton.addEventListener("click", () => {
+      var fileuploadDiv = document.getElementById("fileUpload");
+      fileuploadDiv.style.display = "none";
+    });
+
+    // open upload window
+    var divOpenButton = document.getElementById("divOpen");
+    divOpenButton.addEventListener("click", () => {
+      var fileuploadDiv = document.getElementById("fileUpload");
+      fileuploadDiv.style.display =
+        fileuploadDiv.style.display === "block" ? "none" : "block";
+    });
+
+    //geting the location
+    var locationButton = document.getElementById("locationButton");
+    locationButton.addEventListener("click", () => {
+      // Try HTML5 geolocation.
+      var latElement = document.getElementById("id_latitude");
+      var longElement = document.getElementById("id_longitude");
+
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            let pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            latElement.removeAttribute("readonly");
+            longElement.removeAttribute("readonly");
+            latElement.value = pos.lat;
+            longElement.value = pos.lng;
+            latElement.setAttribute("readonly");
+            longElement.setAttribute("readonly");
+            alert("Location found.");
+          },
+          () => {
+            handleLocationError(true);
+          }
+        );
+      } else {
+        // Browser doesn't support Geolocation
+        handleLocationError(false);
+      }
+    });
+
+    var handleLocationError = (browserHasGeolocation) => {
+      browserHasGeolocation
+        ? alert("The Geolocation service failed.")
+        : alert("Error: Your browser doesn't support geolocation.");
+    };
+  });
+</script>
+
+{% endblock javascripts %}

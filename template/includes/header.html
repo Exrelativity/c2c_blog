@@ -1,4 +1,6 @@
 {% load static %}
+{% load headerdata %}
+{% headerdata request as headerdatas %}
 <!-- HEADER -->
 <header class="navbar navbar-expand-lg navbar-absolute" style="font-size:x-large;">
     <div class="container-fluid">
@@ -20,8 +22,8 @@
         </button>
         <div class="collapse navbar-collapse" id="navigation">
             <ul class="navbar-nav ml-auto">
-                {% if request.session.category and request.session.subCategory %}
-                {% for categorys in request.session.category %}
+            
+                {% for categorys in headerdatas.category %}
                 <li class="dropdown nav-item">
                     <a href="javascript:void(0)" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <div class="category d-none d-lg-block d-xl-block"></div>
@@ -31,7 +33,7 @@
                         </p>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right dropdown-navbar">
-                        {% for subCategorys in request.session.subCategory %}
+                        {% for subCategorys in headerdatas.subCategory %}
                         {% if subCategorys.categoryId == categorys.id %}
                         <li class="nav-link">
                             <a href="category/{{ categorys.id }}/{{ subCategorys.id }}"
@@ -42,7 +44,6 @@
                     </ul>
                 </li>
                 {% endfor %}
-                {% endif %}
                 <li class="search-bar input-group">
                     <button class="btn btn-link" id="search-button" data-toggle="modal" data-target="#searchModal"><i
                             class="tim-icons icon-zoom-split"></i>
@@ -79,7 +80,7 @@
                 <li class="dropdown nav-item">
                     <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                         <div class="photo">
-                            <img src="{% static 'img/anime3.png' %}" alt="Profile Photo">
+                            <img src="{% if headerdatas.profile.image %} {% static headerdatas.profile.image %} {% else %} {% static 'img/anime3.png' %}{% endif %}" alt="Profile Photo">
                         </div>
                         <b class="caret d-none d-lg-block d-xl-block"></b>
                         <p class="d-lg-none">
@@ -88,7 +89,10 @@
                     </a>
                     <ul class="dropdown-menu dropdown-navbar">
                         <li class="nav-link">
-                            <a href="/profile/{{user.id}}" class="nav-item dropdown-item">Profile</a>
+                            <a href="/dashboard" class="nav-item dropdown-item">Dashboard</a>
+                        </li>
+                        <li class="nav-link">
+                            <a href="/profile/{{ request.user.id }}" class="nav-item dropdown-item">Profile</a>
                         </li>
                         <li class="dropdown-divider"></li>
                         <li class="nav-link">

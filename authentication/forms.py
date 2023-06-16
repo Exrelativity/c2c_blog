@@ -53,7 +53,7 @@ class SignUpForm(UserCreationForm):
         fields = ("username", "email","phone", "password1", "password2")
 
 class ForgotPasswordForm(forms.Form):
-     email = forms.EmailField(
+    email = forms.EmailField(
         widget=forms.EmailInput(
             attrs={
                 "placholder":"Email",
@@ -77,6 +77,11 @@ class UpdatePasswordForm(forms.Form):
 
 class UserForm(forms.ModelForm):
     
+    class Meta:
+        model = Users
+        fields = "__all__"
+
+class UsersMutationForm(forms.ModelForm):
     class Meta:
         model = Users
         fields = "__all__"

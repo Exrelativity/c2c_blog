@@ -1,4 +1,6 @@
 {% load static %}
+{% load headerdata %}
+{% headerdata request as headerdatas %}
 
 <div class="" style="width:100%">
   <div class="card card-user">
@@ -10,8 +12,8 @@
             <div class="block block-three"></div>
             <div class="block block-four"></div>
             <a href="javascript:void(0)">
-                <img class="avatar" src="{% static request.session.userprofile.image %} alt="...">
-                <h5 class="title">{{ request.user.get_full_name }}</h5>
+                <img class="avatar" src="{% if headerdatas.profile.image %} {% static headerdatas.profile.image %} {% endif %}" alt="avatar">
+                <h5 class="title">{{ request.username }}</h5>
             </a>
             <p class="description">
                 "Quote of the day"
@@ -19,7 +21,7 @@
         </div>
         </p>
         <div class="card-description">
-            {{ request.session.userprofile.details }}
+            {{ header.profile.details }}
         </div>
     </div>
     <div class="card-footer">

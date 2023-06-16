@@ -1,5 +1,4 @@
 """blog URL Configuration
-
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
 Examples:
@@ -15,12 +14,16 @@ Including another URLconf
 """
 from django.urls import path
 from .views import *
+
 urlpatterns = [
     path("", index),
-    path("<int:id>", show),
-    path("<int:id>/update", update),
-    path('create', create),
-    path('<int:id>/delete', delete),
-    path('category/<int:categoryId>', byCategory),
-    path('category/<str:categoryId>/<str:subCategoryId>', bySubCategory)
+    path("<uuid:id>", show),
+    path("<uuid:id>/update", update),
+    path("create", create),
+    path("<uuid:id>/delete", delete),
+    path("category/<uuid:categoryId>", byCategory),
+    path("category/<uuid:categoryId>/<uuid:subCategoryId>", bySubCategory),
+    path("comments/<uuid:postId>", postComments),
+    path("comments/create", createComment),
+    path("comments/<uuid:id>/delete", deleteComment)
 ]
