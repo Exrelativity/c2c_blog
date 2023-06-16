@@ -3,52 +3,6 @@ from .models import *
 from django import forms
 
 
-# def categoryQueryset():
-#     try:
-#         queryset = Category.objects.all()
-#     except Category.DoesNotExist:
-#         return None
-#     return queryset
-
-# def subCategoryQueryset():
-#     try:
-#         queryset = SubCategory.objects.all()
-#     except SubCategory.DoesNotExist:
-#         return None
-#     return queryset
-
-# def postQueryset():
-#     try:
-#         queryset = Post.objects.all()
-#     except Post.DoesNotExist:
-#         return None
-#     return queryset
-
-# def authQueryset(request):
-#     try:
-#         queryset = Users.objects.get(id = request.user.id)
-
-#     except Users.DoesNotExist:
-#         return None
-#     return queryset
-
-# def mediaQueryset(request):
-#     try:
-#         queryset = File.objects.filter(userId = request.user.id)
-
-#     except File.DoesNotExist:
-#         return None
-#     return queryset
-
-# def profileQueryset(request):
-#     try:
-#         queryset = UsersProfile.objects.get(userId = request.user.id)
-
-#     except UsersProfile.DoesNotExist:
-#         return None
-#     return queryset
-
-
 class FileForm(ModelForm):
     FILETYPE = (
         ("Image", "Image"),

@@ -3,56 +3,21 @@ from .models import *
 from django import forms
 
 class PostMutationForm(ModelForm):
-    title = forms.CharField(
-        widget=forms.TextInput(attrs={"placeholder": "title", "class": "form-control"})
-    )
+    title = forms.CharField()
     
-    status = forms.BooleanField(
-        widget=forms.RadioSelect(
-            attrs={"placeholder": "status", "class": "form-control"},
-            choices=(True, False)
-        )
-    )
+    status = forms.BooleanField()
     
-    front = forms.BooleanField(
-        widget=forms.RadioSelect(
-            attrs={"placeholder": "front", "class": "form-control"},
-            choices=(True, False)
-        )
-    )
+    front = forms.BooleanField()
     
-    slider = forms.BooleanField(
-        widget=forms.RadioSelect(
-            attrs={"placeholder": "slider", "class": "form-control"},
-            choices=(True, False)
-        )
-    )
+    slider = forms.BooleanField()
     
-    content = forms.CharField(
-        widget=forms.HiddenInput(
-            attrs={"placeholder": "content", "class": "form-control", "id":"content", "type":"hidden"}
-        )
-    )
+    content = forms.CharField()
     
-    categoryId = forms.ChoiceField(
-        widget=forms.Select(
-            attrs={"placeholder": "category", "class": "form-control"}
-        ),
-    )
+    categoryId = forms.ChoiceField()
 
-    subCategoryId = forms.ChoiceField(
-        widget=forms.Select(
-            attrs={"placeholder": "sub Category", "class": "form-control"}
-        )
-    )
+    subCategoryId = forms.ChoiceField()
     
-    media = forms.MultipleChoiceField(
-        widget=forms.SelectMultiple(
-            attrs={
-            "placeholder":"profile medias",
-            "class":"form-control"}
-        )
-    )
+    media = forms.MultipleChoiceField()
 
     class Meta:
         model = Post
@@ -70,37 +35,15 @@ class PostMutationForm(ModelForm):
 
 class CategoryMutationForm(ModelForm):
 
-    name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={"placeholder": "name", "class": "form-control"}
-        )
-    )
+    name = forms.CharField()
     
-    status = forms.BooleanField(
-        widget=forms.CheckboxInput(
-            attrs={"placeholder": "status", "class": "form-control"}
-        )
-    )
+    status = forms.BooleanField()
     
-    front = forms.BooleanField(
-        widget=forms.CheckboxInput(
-            attrs={"placeholder": "front", "class": "form-control"}
-        )
-    )
+    front = forms.BooleanField()
     
-    description = forms.CharField(
-        widget=forms.TextInput(
-            attrs={"placeholder": "description", "class": "form-control"}
-        )
-    )
+    description = forms.CharField()
     
-    media = forms.MultipleChoiceField(
-        widget=forms.SelectMultiple(
-            attrs={
-            "placeholder":"profile medias",
-            "class":"form-control"}
-        )
-    )
+    media = forms.MultipleChoiceField()
 
 
     class Meta:
@@ -111,44 +54,18 @@ class CategoryMutationForm(ModelForm):
 class SubCategoryMutationForm(ModelForm):
 
 
-    name = forms.CharField(
-        widget=forms.TextInput(
-            attrs={"placeholder": "name", "class": "form-control"}
-        )
-    )
+    name = forms.CharField()
     
-    status = forms.BooleanField(
-        widget=forms.CheckboxInput(
-            attrs={"placeholder": "status", "class": "form-control"}
-        )
-    )
+    status = forms.BooleanField()
     
-    front = forms.BooleanField(
-        widget=forms.CheckboxInput(
-            attrs={"placeholder": "front", "class": "form-control"}
-        )
-    )
+    front = forms.BooleanField()
     
+    description = forms.CharField()
     
-    description = forms.CharField(
-        widget=forms.TextInput(
-            attrs={"placeholder": "description", "class": "form-control"}
-        )
-    )
-    
-    categoryId = forms.ChoiceField(
-        widget=forms.Select(
-            attrs={"placeholder": "category", "class": "form-control"}
-        ),
-    )
+    categoryId = forms.ChoiceField()
 
-    media = forms.MultipleChoiceField(
-        widget=forms.SelectMultiple(
-            attrs={
-            "placeholder":"profile medias",
-            "class":"form-control"}
-        )
-    )
+    media = forms.MultipleChoiceField()
+    
     class Meta:
         model = SubCategory
         fields = (
