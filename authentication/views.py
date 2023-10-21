@@ -93,20 +93,24 @@ def forgot_password(request):
     form = ForgotPasswordForm(request.POST or None)
 
     if request.method == "POST":
-        if form is valid():
+        if form.is_valid():
             email = form.cleaned_data.get("email")
             user_by_email = Users.objects.filter(email=email).first()
+            
             if user_by_email:
-                token = ''.join(choices(ascii_letters + digits, k=16))
+                token = ''.join(choices(string.ascii_letters + string.digits, k=16))
                 PasswordReset.objects.create(userId=user_by_email, token=token)
-                mail_subject = f"Forgot password Email from {settings.APP_NAME}"
-                mail_content = f"""You recently triggered a Reset/Forgot password from our website {settings.BASE_URL}.\nTo proceed with the process...\n\n 
-                {settings.BASE_URL}/password/update/{user_by_email.id}/{token}
-                \nPlease click the link above or copy it to your browser and send a request within 48 hours to reset your password.\n\n
-                Do not neglect this email if this was not a mistake or is important; otherwise, report any suspicious activities in your account."""
+                
+                mail_subject = f"Forgot Password Email from {settings.APP_NAME}"
+                reset_link = f"{settings.BASE_URL}/password/update/{user_by_email.id}/{token}"
+                mail_content = f"""You recently triggered a password reset for your account on {settings.APP_NAME}.\n
+                To proceed with the process, please click the link below or copy it into your browser within the next 48 hours:\n\n
+                {reset_link}\n\n
+                If you did not request this password reset, please report any suspicious activities in your account.
+                """
 
                 send_mail(mail_subject, mail_content, settings.EMAIL, [email])
-                msg = "Please check your email for a password reset link. If you can't find it in your inbox, please check the spam or junk email box."
+                msg = "Please check your email for a password reset link. If you can't find it in your inbox, please check the spam or junk email folder."
 
     return render(request, "auth/forgot_password.html", {"form": form, "msg": msg})
 
