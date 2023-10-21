@@ -1,37 +1,23 @@
 from django.contrib import admin
-from .forms import *
-from .models import *
+from .models import File, FilePost, FileSubCategory, FileCategory, FileProfile
 
 # Register your models here.
 @admin.register(File)
 class FileAdmin(admin.ModelAdmin):
+    pass
 
-    class Meta:
-        form = FileForm
-        
-        
 @admin.register(FilePost)
 class FilePostAdmin(admin.ModelAdmin):
-    
-    class Meta:
-        form = FilePostForm
-        
+    pass
 
 @admin.register(FileSubCategory)
 class FileSubCategoryAdmin(admin.ModelAdmin):
-    
-    class Meta:
-        form = FileSubCategoryForm
-        
+    pass
+
 @admin.register(FileCategory)
 class FileCategoryAdmin(admin.ModelAdmin):
-    
-    class Meta:
-        form = FileCategoryForm
-        
+    pass
 
 @admin.register(FileProfile)
 class FileProfileAdmin(admin.ModelAdmin):
-    
-    class Meta:
-        form = FileProfileForm
+    pass

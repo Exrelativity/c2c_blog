@@ -8,13 +8,15 @@ from file.models import FilePost
 from file.forms import FileForm
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_protect
+from django.core.exceptions import ObjectDoesNotExist
 
 # Create your views here.
+
 def index(request, msg=None):
     category = Category.objects.filter(status=True)
     subCategory = SubCategory.objects.filter(status=True)
     post = Post.objects.filter(status=True)
-    paginator = Paginator(post, 15)  # Show 15 posts per page.
+    paginator = Paginator(post, 15)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     if request.user.is_authenticated:
@@ -55,33 +57,32 @@ def create(request, msg=None):
             obj.front = postForm.cleaned_data.get("front")
             obj.slider = postForm.cleaned_data.get("slider")
             obj.content = postForm.cleaned_data.get("content")
-            obj.categoryId = Category.objects.get(postForm.cleaned_data.get("categoryId"))
-            obj.subCategoryId = SubCategory.objects.get(postForm.cleaned_data.get("subCategoryId"))
+            obj.categoryId = Category.objects.get(id=postForm.cleaned_data.get("categoryId"))
+            obj.subCategoryId = SubCategory.objects.get(id=postForm.cleaned_data.get("subCategoryId"))
             obj.userId = request.user
-            obj.save(force_create=True)
+            obj.save()
             for i in postForm.cleaned_data.get("media"):
-                FilePost.objects.create(postId=postForm.instance.id, fileId=i)
-            msg = "Entries saved sucessfully"
+                FilePost.objects.create(postId=obj, fileId=i)
+            msg = "Entries saved successfully"
         else:
             msg = "Error validating the form"
     else:
-        msg = "please fill in all infomation"
+        msg = "Please fill in all information"
     return render(
         request,
         "post/create.html",
         {
             "form": postForm,
-            "fileForm":fileForm,
+            "fileForm": fileForm,
             "msg": msg,
             "categorys": category,
             "subCategorys": subCategory,
         },
     )
 
-
 def search(request, msg=None):
     form = SearchForm(request.POST)
-    post = {}
+    post = []
     if request.method == "POST":
         if form.is_valid():
             search = form.cleaned_data.get("search")
@@ -90,7 +91,7 @@ def search(request, msg=None):
                 post += Post.objects.filter(
                     Q(title__icontains=i) | Q(content__icontains=i)
                 )
-    paginator = Paginator(post, 15)  # Show 15 posts per page.
+    paginator = Paginator(post, 15)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     if request.user.is_authenticated:
@@ -106,19 +107,14 @@ def search(request, msg=None):
             {"msg": msg, "form": form, "page_obj": page_obj},
         )
 
-
 def show(request, id, msg=None):
     try:
-        postById = Post.objects.select_related("UserId").get(id=id)
-        relatedPostByCategory = Category.objects.prefetch_related("Post").get(
-            id=postById.categoryId
-        )
-        relatedPostBySubCategory = SubCategory.objects.prefetch_related("Post").get(
-            id=postById.subCategoryId
-        )
-    except Post.DoesNotExist:
-        msg = "Sorry Post Dost not exist"
-   
+        postById = Post.objects.get(id=id)
+        relatedPostByCategory = postById.category.post_set.all()
+        relatedPostBySubCategory = postById.subCategory.post_set.all()
+    except ObjectDoesNotExist:
+        msg = "Sorry, this post does not exist"
+
     if request.user.is_authenticated:
         return render(
             request,
@@ -128,7 +124,6 @@ def show(request, id, msg=None):
                 "post": postById,
                 "relatedPostByCategory": relatedPostByCategory,
                 "relatedPostBySubCategory": relatedPostBySubCategory,
-                
             },
         )
     else:
@@ -140,69 +135,65 @@ def show(request, id, msg=None):
                 "post": postById,
                 "relatedPostByCategory": relatedPostByCategory,
                 "relatedPostBySubCategory": relatedPostBySubCategory,
-                
             },
         )
 
 @csrf_protect
 @login_required(login_url="/login")
 def update(request, id, msg=None):
-   
-    postById = Post.objects.get(id=id)
-    postForm = PostMutationForm(request.POST or postById.__dict__ )
-    category = Category.objects.all()
-    subCategory = SubCategory.objects.all()
-    if request.method == "PUT":
-        if postForm.is_valid():
-            if request.user.id == postById.userId:
-                postById.title = postForm.cleaned_data.get("title")
-                postById.status = postForm.cleaned_data.get("status")
-                postById.front = postForm.cleaned_data.get("front")
-                postById.slider = postForm.cleaned_data.get("slider")
-                postById.content = postForm.cleaned_data.get("content")
-                postById.categoryId = Category.objects.get(postForm.cleaned_data.get("categoryId"))
-                postById.subCategoryId = SubCategory.objects.get(postForm.cleaned_data.get("subCategoryId"))
-                postById.save(force_update=True)
-                msg = "Entries updated sucessfully"
+    try:
+        postById = Post.objects.get(id=id)
+        postForm = PostMutationForm(request.POST or None, instance=postById)
+        category = Category.objects.all()
+        subCategory = SubCategory.objects.all()
+        if request.method == "POST":
+            if postForm.is_valid():
+                if request.user.id == postById.userId.id:
+                    postForm.save()
+                    msg = "Entry updated successfully"
+                else:
+                    msg = "Permission Denied"
             else:
-                msg = "Permission Denied"
+                msg = "Error validating the form"
         else:
-            msg = "Error validating the form"
-    else:
-        msg = "please fill in all infomation"
-    return render(
-        request,
-        "post/update.html",
-        {
-            "form": postForm,
-            "msg": msg,
-            "postById": postById,
-            "category": category,
-            "subCategory": subCategory,
-        },
-    )
-
+            msg = "Please fill in all information"
+        return render(
+            request,
+            "post/update.html",
+            {
+                "form": postForm,
+                "msg": msg,
+                "postById": postById,
+                "category": category,
+                "subCategory": subCategory,
+            },
+        )
+    except ObjectDoesNotExist:
+        msg = "Sorry, this post does not exist"
+        return render(request, "post/update.html", {"msg": msg})
 
 @login_required(login_url="/login")
 def delete(request, id, msg=None):
-    postById = Post.objects.get(id=id)
-    if request.method == "DELETE":
-        if request.user.id == postById.userId:
-            postById.delete()
-            msg = "Deteted sucessfully"
+    try:
+        postById = Post.objects.get(id=id)
+        if request.method == "POST":
+            if request.user.id == postById.userId.id:
+                postById.delete()
+                msg = "Deleted successfully"
+            else:
+                msg = "Permission Denied"
         else:
-            msg = "Permission Denied"
-    else:
-        msg = "Error deleting the entry"
-        return redirect(f"show/{id}", msg)
-    return redirect("/post/", msg)
-
+            msg = "Error deleting the entry"
+        return redirect("/post/", msg)
+    except ObjectDoesNotExist:
+        msg = "Sorry, this post does not exist"
+        return redirect("/post/", msg)
 
 def byCategory(request, categoryId, msg=None):
     category = Category.objects.filter(status=True)
     subCategory = SubCategory.objects.filter(status=True)
-    post = Post.objects.filter(categoryId=categoryId)
-    paginator = Paginator(post, 15)  # Show 15 contacts per page.
+    post = Post.objects.filter(categoryId=categoryId, status=True)
+    paginator = Paginator(post, 15)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
@@ -215,13 +206,12 @@ def byCategory(request, categoryId, msg=None):
             "page_obj": page_obj,
         },
     )
-
 
 def bySubCategory(request, categoryId, subCategoryId, msg=None):
     category = Category.objects.filter(status=True)
     subCategory = SubCategory.objects.filter(status=True)
-    post = Post.objects.filter(subCategoryId=subCategoryId)
-    paginator = Paginator(post, 15)  # Show 15 contacts per page.
+    post = Post.objects.filter(subCategoryId=subCategoryId, status=True)
+    paginator = Paginator(post, 15)
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
     return render(
@@ -235,43 +225,44 @@ def bySubCategory(request, categoryId, subCategoryId, msg=None):
         },
     )
 
-
 def createComment(request):
-    commentForm = CommentForm(request.POST or None)
     if request.method == "POST":
-        if commentForm.is_valid:
-            commentForm.cleaned_data.all()
-            commentForm.instance.userId = request.user
-            commentForm.instance.save(force_create=True)
-            msg = "Entries saved sucessfully"
+        commentForm = CommentForm(request.POST)
+        if commentForm.is_valid():
+            comment = commentForm.save(commit=False)
+            comment.userId = request.user
+            comment.save()
+            msg = "Entry saved successfully"
             status = 200
         else:
             msg = "Error validating the form"
-            status = 200
+            status = 400
     else:
-        msg = "please fill in all infomation"
-    data = {"form": commentForm, "msg": msg}
-    return JsonResponse(data, status)
-
+        msg = "Please fill in all information"
+        status = 400
+    data = {"msg": msg}
+    return JsonResponse(data, status=status)
 
 def postComments(request, postId):
     comments = Comment.objects.filter(postId=postId)
-    msg = "list of comments associated with post"
+    msg = "List of comments associated with the post"
     status = 200
     data = {"comments": comments, "msg": msg}
-    return JsonResponse(data, status)
-
+    return JsonResponse(data, status=status)
 
 @login_required(login_url="/login")
 def deleteComment(request, id, msg=None):
-    commentById = Comment.objects.get(id=id)
-    if request.method == "DELETE":
-        if request.user.id == commentById.userId:
-            commentById.delete()
-            msg = "Deteted sucessfully"
+    try:
+        commentById = Comment.objects.get(id=id)
+        if request.method == "POST":
+            if request.user.id == commentById.userId.id:
+                commentById.delete()
+                msg = "Deleted successfully"
+            else:
+                msg = "Permission Denied"
         else:
-            msg = "Permission Denied"
-    else:
-        msg = "Error deleting the entry"
-        return redirect(f"show/{id}", msg)
-    return redirect("/post/", msg)
+            msg = "Error deleting the entry"
+        return redirect("/post/", msg)
+    except ObjectDoesNotExist:
+        msg = "Sorry, this comment does not exist"
+        return redirect("/post/", msg)

@@ -22,18 +22,50 @@ from django.conf import settings
 from django.conf.urls.static import static
 from .schema import schema
 
+# urlpatterns = [
+#     path("", index),
+#     path("search", search),
+#     path("dashboard", dashboard),
+#     path("about", about),
+#     path("contact", contact),
+#     path("faq", faq),
+#     path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
+#     path("media/", include('file.urls')),
+#     path("admin/", admin.site.urls),
+#     path("profile/", include('userprofile.urls')),
+#     path("posts/", include('post.urls')),
+#     path("", include("authentication.urls")),
+#     path("__debug__/", include("debug_toolbar.urls")),
+#     ]   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+# Separate URLs for the 'blog' app
+blog_urls = [
+    path("", index, name="index"),
+    path("search", search, name="search"),
+    path("dashboard", dashboard, name="dashboard"),
+    path("about", about, name="about"),
+    path("contact", contact, name="contact"),
+    path("faq", faq, name="faq"),
+]
+
+# Separate URLs for the 'file' app
+file_urls = [
+    path("media/", include("file.urls")),
+]
+
+# Separate URLs for the 'userprofile' app
+userprofile_urls = [
+    path("profile/", include("userprofile.urls", namespace="profiles")),
+]
+
+# Separate URLs for the 'post' app
+post_urls = [
+    path("posts/", include("post.urls", namespace="posts")),
+]
+
+# Extend the main urlpatterns list with app-specific URLs
 urlpatterns = [
-    path("", index),
-    path("search", search),
-    path("dashboard", dashboard),
-    path("about", about),
-    path("contact", contact),
-    path("faq", faq),
-    path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True, schema=schema))),
-    path("media/", include('file.urls')),
-    path("admin/", admin.site.urls),
-    path("profile/", include('userprofile.urls')),
-    path("posts/", include('post.urls')),
-    path("", include("authentication.urls")),
-    path("__debug__/", include("debug_toolbar.urls")),
-    ]   + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    # ... other URLs
+] + blog_urls + file_urls + userprofile_urls + post_urls + [
+    # ... other URLs
+]

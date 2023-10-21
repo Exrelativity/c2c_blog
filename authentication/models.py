@@ -1,31 +1,29 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser as BaseUser
-from blog.models import BaseAbstractModel
+from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
-class Users(BaseUser, BaseAbstractModel):
-    phone = models.CharField(max_length=15, null=True, unique=True)
-    
+class Users(AbstractUser):
+    phone = models.CharField(max_length=15, blank=True, unique=True)
 
-
-class PasswordReset(BaseAbstractModel):
-    userId = models.OneToOneField("authentication.Users", null=True, on_delete=models.SET_NULL, unique=True)
+class PasswordReset(models.Model):
+    user = models.OneToOneField(Users, on_delete=models.SET_NULL, null=True, unique=True)
     token = models.CharField(max_length=15, null=True)
-    updatedAt = models.DateTimeField(auto_now=True)
-    createdAt = models.DateTimeField(auto_created=True)
-    
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        verbose_name = "PasswordReset"
-        verbose_name_plural = "PasswordResets"
+        verbose_name = "Password Reset"
+        verbose_name_plural = "Password Resets"
 
+class VerifiedEmail(models.Model):
+    email = models.EmailField(max_length=150, unique=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
-class VerifiedEmail(BaseAbstractModel):
-    email = models.CharField(max_length=150, null=True, unique=True)
-    updatedAt = models.DateTimeField(auto_now=True)
-    createdAt = models.DateTimeField(auto_created=True)
-    
     class Meta:
-        verbose_name = "VerifiedEmail"
-        verbose_name_plural = "VerifiedEmails"
+        verbose_name = "Verified Email"
+        verbose_name_plural = "Verified Emails"
 
+class UserMedia(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    file = models.FileField(upload_to='user_media/')
+    # Add other fields for media files

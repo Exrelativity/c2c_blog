@@ -1,32 +1,21 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import *
-from .forms import *
+from .models import File
+from .forms import FileForm
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt, csrf_protect
 
-# Create your views here.
 @login_required(login_url="/login")
 def index(request, msg=None):
-    try:
-        fileById = File.objects.get(userId=request.user.id)
-    except File.DoesNotExist:
-        return redirect("/media/upload")
-    status = 200
+    file = get_object_or_404(File, userId=request.user.id)
     if request.accepts('text/html'):
-        return render(
-        request,
-        "file/index.html",
-        {"msg": msg, "file": fileById},
-    )
+        return render(request, "file/index.html", {"msg": msg, "file": file})
     else:
-        data = {"msg": msg, "file": fileById}
-        return JsonResponse(data, status)
+        data = {"msg": msg, "file": file}
+        return JsonResponse(data, status=200)
 
 @csrf_exempt
 @login_required(login_url="/login")
 def create(request, msg=None):
-    fileForm = FileForm()
     if request.method == "POST":
         fileForm = FileForm(request.POST, request.FILES)
         if fileForm.is_valid():
@@ -35,90 +24,73 @@ def create(request, msg=None):
             obj.userId = request.user
             obj.source = request.FILES['source']
             obj.fileType = fileForm.cleaned_data.get("fileType")
-            obj.save(force_create=True)
-            msg = "uploaded sucessfully"
-            status = 200
-            return redirect().back()
+            obj.save()
+            msg = "Uploaded successfully"
+            if request.accepts('text/html'):
+                return redirect("index")
+            else:
+                return JsonResponse({"msg": msg}, status=201)
         else:
             msg = "Error validating the form"
             status = 400
     else:
-        msg = "Please fill all necessary feild to make a good entry"
+        msg = "Please fill in all necessary fields"
     if request.accepts('text/html'):
         return render(request, "file/upload.html", {"fileForm": fileForm, "msg": msg})
     else:
-        data = {
-                "error":fileForm.errors,
-                "fileForm": fileForm, 
-                "msg": msg
-            }
-        return JsonResponse(data, status)
+        return JsonResponse({"error": fileForm.errors, "msg": msg}, status=400)
 
-@csrf_protect      
+# Other views (update, show, delete) can be refactored in a similar way.
+
+
 @login_required(login_url="/login")
 def update(request, id, msg=None):
-    fileForm = FileForm(request.POST, request.FILES)
-    fileById = File.objects.get(id=id)
+    file = get_object_or_404(File, id=id)
     if request.method == "PUT":
+        fileForm = FileForm(request.POST, request.FILES, instance=file)
         if fileForm.is_valid():
-            if request.user.id == fileById.userId:
-                fileById.name = fileForm.cleaned_data.get("name")
-                fileById.save(force_update=True)
-                msg = "Entries updated sucessfully"
+            if request.user.id == file.userId.id:
+                file.name = fileForm.cleaned_data.get("name")
+                file.save()
+                msg = "Entry updated successfully"
+                if request.accepts('text/html'):
+                    return redirect("show", id=id)
+                else:
+                    return JsonResponse({"msg": msg}, status=200)
             else:
                 msg = "Permission Denied"
         else:
             msg = "Error validating the form"
     else:
-        msg = "please fill in all infomation"
-    return render(
-        request,
-        "file/update.html",
-        {
-            "form": fileForm,
-            "msg": msg,
-            "fileById": fileById
-        },
-    )
+        msg = "Please fill in all information"
+    if request.accepts('text/html'):
+        return render(request, "file/update.html", {"form": fileForm, "msg": msg, "file": file})
+    else:
+        return JsonResponse({"error": fileForm.errors, "msg": msg}, status=400)
 
 @login_required(login_url="/login")
 def show(request, id, msg=None):
-    try:
-        fileById = File.objects.get(id=id)
-    except File.DoesNotExist:
-        return redirect(
-             "/file", msg="Sorry this file does not exist"
-        )
-    meta = fileById.as_meta()
-
-    status = 200
+    file = get_object_or_404(File, id=id)
+    meta = file.as_meta()
     if request.accepts('text/html'):
-        return render(
-        request,
-        "file/show.html",
-        {"msg": msg, "file": fileById, "meta": meta},
-    )
+        return render(request, "file/show.html", {"msg": msg, "file": file, "meta": meta})
     else:
-        data =  {"msg": msg, "file": fileById, "meta": meta}
-        return JsonResponse(data, status)
-
-
-
+        data = {"msg": msg, "file": file, "meta": meta}
+        return JsonResponse(data, status=200)
 
 @login_required(login_url="/login")
 def delete(request, id, msg=None):
-    fileById = File.objects.get(id=id)
-    if request.method == "DELETE" and request.user.id == fileById.userId:
-        fileById.delete()
-        msg = "Deteted sucessfully"
-        response = redirect("/file", msg)
-        status = 200
+    file = get_object_or_404(File, id=id)
+    if request.method == "DELETE" and request.user.id == file.userId.id:
+        file.delete()
+        msg = "Deleted successfully"
+        if request.accepts('text/html'):
+            return redirect("index", msg)
+        else:
+            return JsonResponse({"msg": msg}, status=204)
     else:
         msg = "Error deleting the entry"
-        response = redirect(f"/file/{id}", msg)
-        status = 400
-    if request.accepts('text/html'):
-        return response
-    else:
-        data =  {"msg": msg, "file": fileById}
-        return JsonResponse(data, status)
+        if request.accepts('text/html'):
+            return redirect("show", id=id, msg)
+        else:
+            return JsonResponse({"msg": msg}, status=400)

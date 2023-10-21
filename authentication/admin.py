@@ -1,9 +1,7 @@
 from django.contrib import admin
-from .forms import *
+from .models import Users
+from .forms import UsersMutationForm
 
-# Register your models here.
 @admin.register(Users)
 class UsersAdmin(admin.ModelAdmin):
-    class Meta:
-        form = UsersMutationForm
-        
+    form = UsersMutationForm

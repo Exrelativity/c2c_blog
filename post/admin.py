@@ -1,29 +1,19 @@
 from django.contrib import admin
-from .forms import *
-from .models import *
-
+from .models import Category, SubCategory, Post, Comment
 
 # Register your models here.
-
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    class Meta:
-        form = CategoryForm
-
+    pass
 
 @admin.register(SubCategory)
-class SubCatgoryAdmin(admin.ModelAdmin):
-    class Meta:
-        form = SubCategoryForm
-
+class SubCategoryAdmin(admin.ModelAdmin):
+    pass
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    class Meta:
-        form = PostForm
+    pass
 
 @admin.register(Comment)
 class CommentAdmin(admin.ModelAdmin):
-    
-    class Meta:
-        form = CommentForm
+    pass
