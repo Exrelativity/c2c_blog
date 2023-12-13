@@ -1,13 +1,19 @@
 # Blog
 
+```
+requirement python==3.9.0
+```
+
 # To run the project
 
 ```
 source venv/bin/activate
 ```
+
 ```
 python manage.py loaddata users.json
 ```
+
 ```
 python3 manage.py runserver
 ```
