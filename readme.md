@@ -41,3 +41,5 @@ auth/confirm/email
 
 Please note for new setup comments ### fields on the post form.py file with modelchoice as this fields courses migration errors,
 after migration the field can be uncommented back.
+
+NB: while installing dependencies comment django-jwt after which install the version 0.4.0 of this dependency.
