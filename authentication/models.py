@@ -5,7 +5,8 @@ from blog.models import BaseAbstractModel
 # Create your models here.
 class Users(BaseUser, BaseAbstractModel):
     phone = models.CharField(max_length=15, null=True, unique=True)
-    
+    USERNAME_FIELD = "username"   # e.g: "username", "email"
+    EMAIL_FIELD = "email"         # e.g: "email", "primary_email"
 
 
 class PasswordReset(BaseAbstractModel):
