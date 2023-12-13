@@ -177,7 +177,9 @@ class AuthMutation(ObjectType):
     refresh_token = mutations.RefreshToken.Field()
     revoke_token = mutations.RevokeToken.Field()
 
-class Mutation(AuthMutation, ObjectType):
+class Mutation(
+    AuthMutation, 
+    ObjectType):
     users = UsersMutation.Field()
     file = FileMutation.Field()
     posts = PostMutation.Field()

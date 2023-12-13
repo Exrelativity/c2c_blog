@@ -38,7 +38,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="/home/exrelativity/Documents/python/django_23/blog/venv"
+VIRTUAL_ENV="/Users/relativity/Documents/Projects/Python Projects/c2c_blog/venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

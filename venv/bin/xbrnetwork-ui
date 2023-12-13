@@ -1,4 +1,6 @@
-#!/home/exrelativity/Documents/python/django_23/blog/venv/bin/python3
+#!/bin/sh
+'''exec' "/Users/relativity/Documents/Projects/Python Projects/c2c_blog/venv/bin/python3.11" "$0" "$@"
+' '''
 # -*- coding: utf-8 -*-
 import re
 import sys
